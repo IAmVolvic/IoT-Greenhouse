@@ -1,50 +1,62 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 🌤️ Greenhouse Observer – Frontend
 
-Currently, two official plugins are available:
+> Real-time greenhouse monitoring dashboard built with React, WebSockets, and modern frontend tools.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 📘 Overview
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+This is the **frontend** component of the *Greenhouse Observer – IoT* project. It connects to the backend via **WebSockets** to visualize real-time environmental data like **temperature**, **gas levels**, and **light intensity** in a greenhouse.
 
-- Configure the top-level `parserOptions` property like this:
+Hosted on **Firebase**, the UI is responsive, fast, and designed for low-latency monitoring.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+---
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 🚀 Features
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- 📡 Real-time WebSocket integration  
+- 🌡️ Live display of sensor data (temperature, gas, light)  
+- 💻 Clean, responsive UI with Tailwind + DaisyUI + shadcn  
+- ⚡ Built with Vite + TypeScript  
+- 🧭 Smooth navigation via React Router  
+- 🔥 Toast notifications with react-hot-toast  
+- 🌍 Rich icons via lucide-react  
+- 📦 Typed API client generated from Swagger  
+- 🧠 Lightweight state management with zustand  
+- 🌐 3D support via Three.js (planned or used for advanced visuals)
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+---
+
+## 🛠️ Tech Stack
+
+| Category | Tools |
+|---------|-------|
+| **Framework** | React (Vite) + TypeScript |
+| **State Management** | Zustand |
+| **Styling** | TailwindCSS, DaisyUI, shadcn/ui |
+| **Routing** | React Router DOM |
+| **API & Data** | Axios, Swagger TypeScript API |
+| **UI** | Lucide React, React Hot Toast |
+| **3D Graphics** | Three.js |
+| **Build & Hosting** | Vite, Firebase |
+
+---
+
+## 📸 UI Preview
+
+TBD
+
+---
+
+## 🤝 Project Context
+
+This frontend is part of the full-stack **Greenhouse Observer** system built for our **4th Semester IoT Exam Project (2025)**.  
+Check the [main repo](https://github.com/IAmVolvic/IoT-Greenhouse) for backend and hardware integration.
+
+---
+
+## 👨‍💻 Authors
+
+**Tymon & Kyle**  
+*Fourth Semester IoT Project – 2025*
