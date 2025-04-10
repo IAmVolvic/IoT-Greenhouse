@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.BackgroundVolvic {
+    background-size: cover;
+    background-position: center;
+    background-image: url("");
+}
+
+.BackgroundVolvicShape {
+    background: radial-gradient(circle at 80% 50%, #0000 0%, oklch(var(--b1)) calc(80%))
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.navButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: .25rem solid transparent;
+}
+
+.status-ring {
+    position: relative;
+}
+
+@layer utilities {
+  .status-ring::before {
+    content: '';
+    position: absolute;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
+  }
+
+  /* Variants for different status states */
+  .status-ring-online,
+  .status-ring-online::before {
+    background-color: oklch(var(--su));
+  }
+
+  .status-ring-offline,
+  .status-ring-offline::before {
+    background-color: oklch(var(--er));
+  }
+
+  .status-ring-busy,
+  .status-ring-busy::before {
+    background-color: oklch(var(--wa));
+  }
+}
+
+/* TABLE */
