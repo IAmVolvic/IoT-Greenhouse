@@ -1,26 +1,45 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net8.0": {
+      "Greenhouse.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Greenhouse.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Greenhouse.Domain.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Greenhouse.Domain/1.0.0": {
+      "type": "project",
+      "path": "../Greenhouse.Domain/Greenhouse.Domain.csproj",
+      "msbuildProject": "../Greenhouse.Domain/Greenhouse.Domain.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net8.0": [
+      "Greenhouse.Domain >= 1.0.0"
+    ]
   },
   "packageFolders": {
-    "/Users/volvic/.nuget/packages/": {}
+    "C:\\Users\\kyle1\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/volvic/Desktop/Github/IoT-Greenhouse/Backend/Greenhouse.Application/Greenhouse.Application.csproj",
+      "projectUniqueName": "C:\\Users\\kyle1\\Desktop\\Github Projects\\IoT-Greenhouse\\Backend\\Greenhouse.Application\\Greenhouse.Application.csproj",
       "projectName": "Greenhouse.Application",
-      "projectPath": "/Users/volvic/Desktop/Github/IoT-Greenhouse/Backend/Greenhouse.Application/Greenhouse.Application.csproj",
-      "packagesPath": "/Users/volvic/.nuget/packages/",
-      "outputPath": "/Users/volvic/Desktop/Github/IoT-Greenhouse/Backend/Greenhouse.Application/obj/",
+      "projectPath": "C:\\Users\\kyle1\\Desktop\\Github Projects\\IoT-Greenhouse\\Backend\\Greenhouse.Application\\Greenhouse.Application.csproj",
+      "packagesPath": "C:\\Users\\kyle1\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\kyle1\\Desktop\\Github Projects\\IoT-Greenhouse\\Backend\\Greenhouse.Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/volvic/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\kyle1\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -31,7 +50,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\kyle1\\Desktop\\Github Projects\\IoT-Greenhouse\\Backend\\Greenhouse.Domain\\Greenhouse.Domain.csproj": {
+              "projectPath": "C:\\Users\\kyle1\\Desktop\\Github Projects\\IoT-Greenhouse\\Backend\\Greenhouse.Domain\\Greenhouse.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -64,7 +87,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.402/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

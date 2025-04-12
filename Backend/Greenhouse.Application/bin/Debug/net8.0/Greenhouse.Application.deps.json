@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Greenhouse.Application/1.0.0": {
+        "dependencies": {
+          "Greenhouse.Domain": "1.0.0"
+        },
+        "runtime": {
+          "Greenhouse.Application.dll": {}
+        }
+      },
+      "Greenhouse.Domain/1.0.0": {
+        "runtime": {
+          "Greenhouse.Domain.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Greenhouse.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Greenhouse.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
