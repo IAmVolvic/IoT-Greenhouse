@@ -16,9 +16,16 @@ public class WebSocketHandler(WebApplication app, HashSet<Type> clientEventHandl
         server.Start(ws =>
         {
             ws.OnOpen = () => { _wsConnections.Add(ws); };
+            
+            ws.OnClose = () => { _wsConnections.Remove(ws); };
 
             ws.OnMessage = message =>
             {
+                foreach (var clients in _wsConnections)
+                {
+                    clients.Send("Everyone");
+                }
+                
                 try
                 {
                     var eventTask = app.InvokeClientEventHandler(clientEventHandlers, ws, message);
