@@ -1,8 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "tvSxD9cdGgQ=",
+  "dgSpecHash": "WgfjpmAOMMI=",
   "success": true,
   "projectFilePath": "C:\\Users\\kyle1\\Desktop\\Github Projects\\IoT-Greenhouse\\Backend\\Greenhouse.Application\\Greenhouse.Application.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\kyle1\\.nuget\\packages\\fleck\\1.2.0\\fleck.1.2.0.nupkg.sha512",
+    "C:\\Users\\kyle1\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.1\\microsoft.extensions.logging.abstractions.7.0.1.nupkg.sha512",
+    "C:\\Users\\kyle1\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\kyle1\\.nuget\\packages\\system.reactive\\6.0.0\\system.reactive.6.0.0.nupkg.sha512",
+    "C:\\Users\\kyle1\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512",
+    "C:\\Users\\kyle1\\.nuget\\packages\\uldahlalex.websocket.boilerplate\\2.3.4\\uldahlalex.websocket.boilerplate.2.3.4.nupkg.sha512",
+    "C:\\Users\\kyle1\\.nuget\\packages\\websocket.client\\5.0.0\\websocket.client.5.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

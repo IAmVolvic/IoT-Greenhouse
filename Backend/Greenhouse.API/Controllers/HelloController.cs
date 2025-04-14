@@ -1,7 +1,7 @@
 using Greenhouse.Application;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Greenhouse.API;
+namespace Greenhouse.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

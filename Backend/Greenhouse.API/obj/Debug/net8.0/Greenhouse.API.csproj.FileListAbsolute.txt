@@ -146,3 +146,8 @@ C:\Users\kyle1\Desktop\Github Projects\IoT-Greenhouse\Backend\Greenhouse.API\bin
 C:\Users\kyle1\Desktop\Github Projects\IoT-Greenhouse\Backend\Greenhouse.API\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Abstractions.dll
 C:\Users\kyle1\Desktop\Github Projects\IoT-Greenhouse\Backend\Greenhouse.API\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Physical.dll
 C:\Users\kyle1\Desktop\Github Projects\IoT-Greenhouse\Backend\Greenhouse.API\bin\Debug\net8.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Users\kyle1\Desktop\Github Projects\IoT-Greenhouse\Backend\Greenhouse.API\bin\Debug\net8.0\Fleck.dll
+C:\Users\kyle1\Desktop\Github Projects\IoT-Greenhouse\Backend\Greenhouse.API\bin\Debug\net8.0\System.Reactive.dll
+C:\Users\kyle1\Desktop\Github Projects\IoT-Greenhouse\Backend\Greenhouse.API\bin\Debug\net8.0\Websocket.Boilerplate.dll
+C:\Users\kyle1\Desktop\Github Projects\IoT-Greenhouse\Backend\Greenhouse.API\bin\Debug\net8.0\Websocket.Client.dll
+C:\Users\kyle1\Desktop\Github Projects\IoT-Greenhouse\Backend\Greenhouse.API\bin\Debug\net8.0\Newtonsoft.Json.dll

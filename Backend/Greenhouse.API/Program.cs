@@ -1,51 +1,40 @@
-using System.Net.WebSockets;
-using System.Text;
+using System.Reflection;
+using Greenhouse.API;
 using Greenhouse.Application;
+using Greenhouse.Application.Websocket.Interfaces;
 using Greenhouse.Infrastructure;
+using Greenhouse.Infrastructure.WebsocketServices;
 using Microsoft.EntityFrameworkCore;
+using WebSocketBoilerplate;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// ===================== * DATABASE CONTEXT * ===================== //
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// builder.WebHost.ConfigureKestrel(options => { options.ListenAnyIP(4000); });
-
+// ===================== * DEPENDENCY INJECTION * ===================== //
+builder.Services.AddScoped<IServerToClient, ServerToClient>();
 builder.Services.AddScoped<IHelloService, HelloService>();
 
+// ===================== * CONTROLLERS & MVC * ===================== //
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// ===================== * BUILD & MIDDLEWARE PIPELINE * ===================== //
+var clientEventHandlers = builder.FindAndInjectClientEventHandlers(Assembly.GetExecutingAssembly());
 var app = builder.Build();
 
+// ===================== * SWAGGER SETUP * ===================== //
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// ===================== * ROUTES & ENDPOINTS * ===================== //
 app.MapControllers();
 
-app.UseWebSockets();
-app.Map("/ws", async context =>
-{
-    if (context.WebSockets.IsWebSocketRequest)
-    {
-        var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-        var buffer = new byte[1024 * 4];
+// ===================== * WEB SOCKET SERVER SETUP * ===================== //
+var webSocketHandler = new WebSocketHandler(app, clientEventHandlers);
+webSocketHandler.StartServer();
 
-        while (true)
-        {
-            var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-
-            if (result.MessageType == WebSocketMessageType.Close)
-                break;
-
-            var response = Encoding.UTF8.GetBytes("You said: " + Encoding.UTF8.GetString(buffer, 0, result.Count));
-            await webSocket.SendAsync(new ArraySegment<byte>(response), WebSocketMessageType.Text, true, CancellationToken.None);
-        }
-    }
-    else
-    {
-        context.Response.StatusCode = 400;
-    }
-});
-
+// ===================== * RUN THE APPLICATION * ===================== //
 app.Run();
