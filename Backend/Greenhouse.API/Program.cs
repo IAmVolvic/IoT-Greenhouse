@@ -1,6 +1,8 @@
 using System.Reflection;
+using Application.Services;
 using Greenhouse.API;
 using Greenhouse.Application;
+using Greenhouse.Application.Websocket;
 using Greenhouse.Application.Websocket.Interfaces;
 using Greenhouse.Infrastructure;
 using Greenhouse.Infrastructure.WebsocketServices;
@@ -15,7 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder
 // ===================== * DEPENDENCY INJECTION * ===================== //
 builder.Services.AddScoped<IServerToClient, ServerToClient>();
 builder.Services.AddScoped<IHelloService, HelloService>();
-
+builder.Services.AddScoped<IWebsocketSubscriptionService, WebsocketSubscriptionService>();
+builder.Services.AddSingleton<IConnectionManager, WebSocketConnectionManager>();
 // ===================== * CONTROLLERS & MVC * ===================== //
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
