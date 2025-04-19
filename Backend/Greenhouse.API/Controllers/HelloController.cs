@@ -1,3 +1,4 @@
+using API.Attributes;
 using Greenhouse.Application;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,7 @@ public class HelloController : ControllerBase
     }
 
     [HttpGet]
+    [Authenticated]
     public async Task<IActionResult> Get()
     {
         var response = await _helloService.GetHelloAsync();

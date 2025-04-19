@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
 using Greenhouse.Application.Security;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
-namespace Greenhouse.Application;
+namespace Greenhouse.Domain;
 
-public class UserDto
+public class User
 {
     public Guid Id { get; set; }
 
@@ -11,6 +12,6 @@ public class UserDto
 
     public string Passwordhash { get; set; } = null!;
     
-    [Newtonsoft.Json.JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(StringEnumConverter))]
     public UserRole Role { get; set; }
 }
