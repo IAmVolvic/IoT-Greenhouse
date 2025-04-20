@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Greenhouse.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public class HelloController : ControllerBase
 {
     private readonly IHelloService _helloService;
@@ -16,8 +16,8 @@ public class HelloController : ControllerBase
     }
 
     [HttpGet]
-    [Authenticated]
-    public async Task<IActionResult> Get()
+    [Route("HelloWorld")]
+    public async Task<IActionResult> HelloWorld()
     {
         var response = await _helloService.GetHelloAsync();
         return Ok(response);
