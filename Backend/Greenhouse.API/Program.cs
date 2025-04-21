@@ -24,10 +24,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // ===================== * DATABASE CONTEXT * ===================== //
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// ===================== * DEPENDENCY INJECTION * ===================== //
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
+// ===================== * DEPENDENCY INJECTION * ===================== //
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.AddService<AuthenticatedFilter>();
