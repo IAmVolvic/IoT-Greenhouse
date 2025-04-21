@@ -5,6 +5,6 @@ namespace Greenhouse.Application.Security;
 
 public interface IJwtManager
 {
-    public string CreateJWT(User user);
-    public ClaimsPrincipal IsJWTValid(string token);
+    public string CreateJwt(User user);
+    public ClaimsPrincipal IsJwtValid(string token);
 }

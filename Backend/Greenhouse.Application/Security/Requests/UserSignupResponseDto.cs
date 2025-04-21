@@ -13,7 +13,7 @@ public class UserSignupResponseDto
         return new UserSignupResponseDto()
         {
             Id = user.Id.ToString(),
-            JwtToken = manager.CreateJWT(user)
+            JwtToken = manager.CreateJwt(user)
         };
     }
 }

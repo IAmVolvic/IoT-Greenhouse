@@ -1,6 +1,7 @@
 using System.Reflection;
 using API.ActionFilters;
 using Application.Services;
+using Application.Services.User;
 using Greenhouse.API;
 using Greenhouse.API.ActionFilters;
 using Greenhouse.Application;
@@ -9,7 +10,9 @@ using Greenhouse.Application.Websocket;
 using Greenhouse.Application.Websocket.Interfaces;
 using Greenhouse.Domain;
 using Greenhouse.Infrastructure;
+using Greenhouse.Infrastructure.AuthService;
 using Greenhouse.Infrastructure.Security;
+using Greenhouse.Infrastructure.Services;
 using Greenhouse.Infrastructure.WebsocketServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +41,7 @@ builder.Services.AddScoped<IWebsocketSubscriptionService, WebsocketSubscriptionS
 builder.Services.AddSingleton<IConnectionManager, WebSocketConnectionManager>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtManager, JwtManager>();
 builder.Services.AddScoped<AuthenticatedFilter>();

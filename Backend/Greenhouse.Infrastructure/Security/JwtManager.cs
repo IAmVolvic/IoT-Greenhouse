@@ -14,7 +14,7 @@ public class JwtManager : IJwtManager
     private readonly string _jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER")!;
     private readonly string _jtwAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE")!;
     
-    public string CreateJWT(User user)
+    public string CreateJwt(User user)
     {
         // Get the secret key for signing the token
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtToken));
@@ -41,7 +41,7 @@ public class JwtManager : IJwtManager
     }
     
     
-    public ClaimsPrincipal IsJWTValid(string token)
+    public ClaimsPrincipal IsJwtValid(string token)
     {
         var securityKey =  new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtToken));
         var tokenHandler = new JsonWebTokenHandler();

@@ -1,12 +1,11 @@
 using API.Exceptions;
 using Greenhouse.Application.Security;
 using Greenhouse.Domain;
-using Greenhouse.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Service.Services.Interfaces;
 using Service.TransferModels.Responses;
 
-namespace Service.Services;
+namespace Greenhouse.Infrastructure.AuthService;
 
 public class AuthService : IAuthService
 {
@@ -21,7 +20,7 @@ public class AuthService : IAuthService
     
     public async Task<AuthorizedUserResponseDTO> GetAuthorizedUser(string jwtToken)
     {
-        var jwtData = _jwtManager.IsJWTValid(jwtToken);
+        var jwtData = _jwtManager.IsJwtValid(jwtToken);
         var uuidClaim = jwtData.Claims.FirstOrDefault(claim => claim.Type == "uuid");
         var userData = await _repository.Users.FindAsync(Guid.Parse(uuidClaim.Value));
         
@@ -36,7 +35,7 @@ public class AuthService : IAuthService
 
     public void IsUserAuthenticated(string jwtToken)
     {
-        var jwtData = _jwtManager.IsJWTValid(jwtToken);
+        var jwtData = _jwtManager.IsJwtValid(jwtToken);
     
         if (jwtData == null)
         {
@@ -54,8 +53,4 @@ public class AuthService : IAuthService
             throw new ErrorException("Authorization", "User does not have the required role.");
         }
     }
-    
-    public void SignUp(){}
-    
-    public void Login(){}
 }

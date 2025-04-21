@@ -1,4 +1,5 @@
 using API.Attributes;
+using Application.Services.User;
 using Greenhouse.Application.Security.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Service.TransferModels.Responses;
@@ -7,8 +8,10 @@ namespace Greenhouse.API.Controllers;
 
 [ApiController]
 [Route("[controller]/@user")]
-public class AuthController : ControllerBase
+public class AuthController(IUserService userService) : ControllerBase
 {
+    private readonly IUserService _userService = userService;
+
     [HttpGet]
     [Route("")]
     [Authenticated]
@@ -26,7 +29,7 @@ public class AuthController : ControllerBase
     [Route("login")]
     public ActionResult<UserLoginResponseDto> PLogin([FromBody] UserLoginDto data)
     {
-        return Ok("OK");
+        return Ok(_userService.Login());
     }
     
     [HttpPost]

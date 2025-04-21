@@ -8,12 +8,12 @@ public class UserLoginResponseDto
     
     public string JwtToken { get; set; } = null!;
 
-    public static UserSignupResponseDto FromEntity(User user, IJwtManager manager)
+    public static UserLoginResponseDto FromEntity(User user, IJwtManager manager)
     {
-        return new UserSignupResponseDto()
+        return new UserLoginResponseDto()
         {
             Id = user.Id.ToString(),
-            JwtToken = manager.CreateJWT(user)
+            JwtToken = manager.CreateJwt(user)
         };
     }
 }
