@@ -1,16 +1,18 @@
 using API.Attributes;
+using Greenhouse.Application.Security.Requests;
 using Microsoft.AspNetCore.Mvc;
+using Service.TransferModels.Responses;
 
 namespace Greenhouse.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]/@user")]
 public class AuthController : ControllerBase
 {
     [HttpGet]
-    [Route("@user")]
+    [Route("")]
     [Authenticated]
-    public ActionResult<string> GetUser()
+    public ActionResult<AuthorizedUserResponseDTO> GetUser()
     {
         if (!ModelState.IsValid)
         {
@@ -18,5 +20,19 @@ public class AuthController : ControllerBase
         }
         
         return new OkObjectResult("Ok");
+    }
+    
+    [HttpPost]
+    [Route("login")]
+    public ActionResult<UserLoginResponseDto> PLogin([FromBody] UserLoginDto data)
+    {
+        return Ok("OK");
+    }
+    
+    [HttpPost]
+    [Route("signup")]
+    public ActionResult<UserSignupResponseDto> PSignup([FromBody] UserSignupDto request)
+    {
+        return Ok("OK");
     }
 }

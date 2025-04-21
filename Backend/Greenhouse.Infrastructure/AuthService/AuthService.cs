@@ -54,4 +54,8 @@ public class AuthService : IAuthService
             throw new ErrorException("Authorization", "User does not have the required role.");
         }
     }
+    
+    public void SignUp(){}
+    
+    public void Login(){}
 }
