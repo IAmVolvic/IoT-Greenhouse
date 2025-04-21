@@ -1,6 +1,6 @@
-using Application.Services.User;
 using Greenhouse.Application.Security;
 using Greenhouse.Application.Security.Requests;
+using Greenhouse.Application.Services.User;
 using Greenhouse.Domain;
 using Microsoft.AspNetCore.Identity;
 
@@ -16,9 +16,22 @@ public class UserService : IUserService
         _repository = userRepository;
         _jwtManager = jwtManager;
     }
-    
-    
-    public void SignUp(){}
+
+
+    public UserSignupResponseDto SignUp()
+    {
+        Guid userId = Guid.NewGuid();
+        
+        var user = new User
+        {
+            Id = userId,
+            Name = "John Doe",
+            Passwordhash = "password",
+            Role = UserRole.USER
+        };
+        
+        return UserSignupResponseDto.FromEntity(user, _jwtManager);
+    }
 
     public UserLoginResponseDto Login()
     {

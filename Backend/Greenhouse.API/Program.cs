@@ -1,11 +1,12 @@
 using System.Reflection;
 using API.ActionFilters;
 using Application.Services;
-using Application.Services.User;
 using Greenhouse.API;
 using Greenhouse.API.ActionFilters;
 using Greenhouse.Application;
+using Greenhouse.Application.Environment;
 using Greenhouse.Application.Security;
+using Greenhouse.Application.Services.User;
 using Greenhouse.Application.Websocket;
 using Greenhouse.Application.Websocket.Interfaces;
 using Greenhouse.Domain;
@@ -16,7 +17,6 @@ using Greenhouse.Infrastructure.Services;
 using Greenhouse.Infrastructure.WebsocketServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Service.Services;
 using Service.Services.Interfaces;
 using WebSocketBoilerplate;
 
@@ -26,6 +26,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // ===================== * DEPENDENCY INJECTION * ===================== //
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.AddService<AuthenticatedFilter>();

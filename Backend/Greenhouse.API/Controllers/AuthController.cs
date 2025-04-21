@@ -1,6 +1,6 @@
 using API.Attributes;
-using Application.Services.User;
 using Greenhouse.Application.Security.Requests;
+using Greenhouse.Application.Services.User;
 using Microsoft.AspNetCore.Mvc;
 using Service.TransferModels.Responses;
 
@@ -36,6 +36,6 @@ public class AuthController(IUserService userService) : ControllerBase
     [Route("signup")]
     public ActionResult<UserSignupResponseDto> PSignup([FromBody] UserSignupDto request)
     {
-        return Ok("OK");
+        return Ok(_userService.SignUp());
     }
 }

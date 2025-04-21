@@ -10,10 +10,10 @@ public class PasswordManger<TUser> : IPasswordHasher<TUser> where TUser : class
 {
     public string HashPassword(TUser user, string password)
     {
-        var saltCount = Int32.Parse(Environment.GetEnvironmentVariable("PM_BYTES_SIZE_A")!) / Int32.Parse(Environment.GetEnvironmentVariable("PM_BYTES_SIZE_B")!);
+        var saltCount = Int32.Parse(System.Environment.GetEnvironmentVariable("PM_BYTES_SIZE_A")!) / Int32.Parse(System.Environment.GetEnvironmentVariable("PM_BYTES_SIZE_B")!);
         var salt = RandomNumberGenerator.GetBytes(saltCount);
         var hash = GenerateHash(password, salt);
-        return $"{Environment.GetEnvironmentVariable("PM_SALT")!}${Encode(salt)}${Encode(hash)}";
+        return $"{System.Environment.GetEnvironmentVariable("PM_SALT")!}${Encode(salt)}${Encode(hash)}";
     }
 
     public PasswordVerificationResult VerifyHashedPassword(TUser user, string hashedPassword, string providedPassword)
@@ -32,9 +32,9 @@ public class PasswordManger<TUser> : IPasswordHasher<TUser> where TUser : class
         using var hashAlgo = new Argon2id(Encoding.UTF8.GetBytes(password))
         {
             Salt = salt,
-            MemorySize = Int32.Parse(Environment.GetEnvironmentVariable("PM_SALT_MEMORYSIZE")!),
-            Iterations = Int32.Parse(Environment.GetEnvironmentVariable("PM_ITERATIONS")!),
-            DegreeOfParallelism = Int32.Parse(Environment.GetEnvironmentVariable("PM_DEGREEOFPARALLELISM")!)
+            MemorySize = Int32.Parse(System.Environment.GetEnvironmentVariable("PM_SALT_MEMORYSIZE")!),
+            Iterations = Int32.Parse(System.Environment.GetEnvironmentVariable("PM_ITERATIONS")!),
+            DegreeOfParallelism = Int32.Parse(System.Environment.GetEnvironmentVariable("PM_DEGREEOFPARALLELISM")!)
         };
         return hashAlgo.GetBytes(256 / 8);
     }

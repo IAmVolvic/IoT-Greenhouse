@@ -1,9 +1,9 @@
 using Greenhouse.Application.Security.Requests;
 
-namespace Application.Services.User;
+namespace Greenhouse.Application.Services.User;
 
 public interface IUserService
 {
-    public void SignUp();
+    public UserSignupResponseDto SignUp();
     public UserLoginResponseDto Login();
 }
