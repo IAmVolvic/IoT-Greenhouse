@@ -10,8 +10,6 @@ namespace Greenhouse.API.Controllers;
 [Route("[controller]/@user")]
 public class AuthController(IUserService userService) : ControllerBase
 {
-    private readonly IUserService _userService = userService;
-
     [HttpGet]
     [Route("")]
     [Authenticated]
@@ -27,15 +25,15 @@ public class AuthController(IUserService userService) : ControllerBase
     
     [HttpPost]
     [Route("login")]
-    public ActionResult<UserLoginResponseDto> PLogin([FromBody] UserLoginDto data)
+    public ActionResult<UserLoginResponseDto> PLogin([FromBody] UserLoginDto request)
     {
-        return Ok(_userService.Login());
+        return Ok(userService.Login());
     }
     
     [HttpPost]
     [Route("signup")]
     public ActionResult<UserSignupResponseDto> PSignup([FromBody] UserSignupDto request)
     {
-        return Ok(_userService.SignUp());
+        return Ok(userService.SignUp(request));
     }
 }
