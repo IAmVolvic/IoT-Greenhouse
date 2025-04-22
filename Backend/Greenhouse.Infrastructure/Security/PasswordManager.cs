@@ -1,22 +1,27 @@
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
+using Greenhouse.Application.Environment;
+using Greenhouse.Domain;
 using Konscious.Security.Cryptography;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
-namespace Greenhouse.Application.Security;
+namespace Greenhouse.Infrastructure.Security;
 
-public class PasswordManger<TUser> : IPasswordHasher<TUser> where TUser : class
+public class PasswordManger(IOptions<PasswordSettings> passwordSettings)
 {
-    public string HashPassword(TUser user, string password)
+    private readonly PasswordSettings _passwordSettings = passwordSettings.Value;
+    
+    public string HashPassword(User user, string password)
     {
-        var saltCount = Int32.Parse(System.Environment.GetEnvironmentVariable("PM_BYTES_SIZE_A")!) / Int32.Parse(System.Environment.GetEnvironmentVariable("PM_BYTES_SIZE_B")!);
+        var saltCount = _passwordSettings.ByteSizeA / _passwordSettings.ByteSizeB;
         var salt = RandomNumberGenerator.GetBytes(saltCount);
         var hash = GenerateHash(password, salt);
-        return $"{System.Environment.GetEnvironmentVariable("PM_SALT")!}${Encode(salt)}${Encode(hash)}";
+        return $"{_passwordSettings.Salt}${Encode(salt)}${Encode(hash)}";
     }
 
-    public PasswordVerificationResult VerifyHashedPassword(TUser user, string hashedPassword, string providedPassword)
+    public PasswordVerificationResult VerifyHashedPassword(User user, string hashedPassword, string providedPassword)
     {
         var parts = hashedPassword.Split('$');
         var salt = Decode(parts[1]);
@@ -32,9 +37,9 @@ public class PasswordManger<TUser> : IPasswordHasher<TUser> where TUser : class
         using var hashAlgo = new Argon2id(Encoding.UTF8.GetBytes(password))
         {
             Salt = salt,
-            MemorySize = Int32.Parse(System.Environment.GetEnvironmentVariable("PM_SALT_MEMORYSIZE")!),
-            Iterations = Int32.Parse(System.Environment.GetEnvironmentVariable("PM_ITERATIONS")!),
-            DegreeOfParallelism = Int32.Parse(System.Environment.GetEnvironmentVariable("PM_DEGREEOFPARALLELISM")!)
+            MemorySize = _passwordSettings.MemorySize,
+            Iterations = _passwordSettings.Iterations,
+            DegreeOfParallelism = _passwordSettings.DegreeOfParallelism
         };
         return hashAlgo.GetBytes(256 / 8);
     }

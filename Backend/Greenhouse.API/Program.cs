@@ -25,6 +25,7 @@ var builder = WebApplication.CreateBuilder(args);
 // ===================== * DATABASE CONTEXT * ===================== //
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.Configure<PasswordSettings>(builder.Configuration.GetSection("PasswordSettings"));
 
 // ===================== * DEPENDENCY INJECTION * ===================== //
 builder.Services.AddControllersWithViews(options =>
