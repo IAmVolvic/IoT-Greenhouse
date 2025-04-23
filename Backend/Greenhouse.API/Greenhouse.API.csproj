@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Greenhouse.Application\Greenhouse.Application.csproj" />
     <ProjectReference Include="..\Greenhouse.Infrastructure\Greenhouse.Infrastructure.csproj" />
+    <ProjectReference Include="..\Greenhouse.DataAccess\Greenhouse.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

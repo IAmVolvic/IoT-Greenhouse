@@ -9,6 +9,7 @@ using Greenhouse.Application.Security;
 using Greenhouse.Application.Services.User;
 using Greenhouse.Application.Websocket;
 using Greenhouse.Application.Websocket.Interfaces;
+using Greenhouse.DataAccess;
 using Greenhouse.Domain;
 using Greenhouse.Infrastructure;
 using Greenhouse.Infrastructure.AuthService;

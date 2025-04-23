@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Greenhouse.API", "Greenhous
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Greenhouse.Tests", "Greenhouse.Tests\Greenhouse.Tests.csproj", "{A38CB8F9-53E5-4958-8826-90AF6F722A94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Greenhouse.DataAccess", "Greenhouse.DataAccess\Greenhouse.DataAccess.csproj", "{356FA7B4-ED9E-4FA8-8212-873F6A3CCFFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{A38CB8F9-53E5-4958-8826-90AF6F722A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A38CB8F9-53E5-4958-8826-90AF6F722A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A38CB8F9-53E5-4958-8826-90AF6F722A94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{356FA7B4-ED9E-4FA8-8212-873F6A3CCFFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{356FA7B4-ED9E-4FA8-8212-873F6A3CCFFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{356FA7B4-ED9E-4FA8-8212-873F6A3CCFFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{356FA7B4-ED9E-4FA8-8212-873F6A3CCFFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

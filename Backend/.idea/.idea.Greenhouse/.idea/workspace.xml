@@ -9,7 +9,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="" />
+    <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.API/Greenhouse.API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.API/Greenhouse.API.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.API/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.Infrastructure/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.DataAccess/AppDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.Infrastructure/AuthService/AuthService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/AuthService/AuthService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.Infrastructure/Greenhouse.Infrastructure.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/Greenhouse.Infrastructure.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.Infrastructure/Migrations/20250419185408_InitialCreate.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.DataAccess/Migrations/20250419185408_InitialCreate.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.Infrastructure/Migrations/20250419185408_InitialCreate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.DataAccess/Migrations/20250419185408_InitialCreate.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.Infrastructure/Migrations/AppDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.DataAccess/Migrations/AppDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.Infrastructure/Services/HelloService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/Services/HelloService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.Infrastructure/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/Services/UserService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.sln" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +30,13 @@
   </component>
   <component name="DpaMonitoringSettings">
     <option name="autoShow" value="false" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JSON File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -47,7 +67,7 @@
     &quot;.NET Launch Settings Profile.Greenhouse.API: http.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/JWT&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/userflow&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -107,6 +127,8 @@
       <workItem from="1745250731036" duration="605000" />
       <workItem from="1745253498911" duration="2873000" />
       <workItem from="1745264600622" duration="1410000" />
+      <workItem from="1745354403110" duration="4384000" />
+      <workItem from="1745428365369" duration="979000" />
     </task>
     <servers />
   </component>

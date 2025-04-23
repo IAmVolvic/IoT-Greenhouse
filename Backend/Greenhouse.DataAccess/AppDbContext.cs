@@ -2,12 +2,10 @@ using Greenhouse.Application.Security;
 using Greenhouse.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace Greenhouse.Infrastructure;
+namespace Greenhouse.DataAccess;
 
-public class AppDbContext : DbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
-
     public DbSet<RequestCount> RequestCounts { get; set; }
     public DbSet<User> Users { get; set; }
     

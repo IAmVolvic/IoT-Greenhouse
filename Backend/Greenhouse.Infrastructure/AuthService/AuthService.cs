@@ -1,5 +1,6 @@
 using API.Exceptions;
 using Greenhouse.Application.Security;
+using Greenhouse.DataAccess;
 using Greenhouse.Domain;
 using Microsoft.AspNetCore.Identity;
 using Service.Services.Interfaces;
