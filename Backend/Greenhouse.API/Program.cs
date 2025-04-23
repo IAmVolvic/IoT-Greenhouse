@@ -5,11 +5,13 @@ using Greenhouse.API;
 using Greenhouse.API.ActionFilters;
 using Greenhouse.Application;
 using Greenhouse.Application.Environment;
+using Greenhouse.Application.Repositories;
 using Greenhouse.Application.Security;
 using Greenhouse.Application.Services.User;
 using Greenhouse.Application.Websocket;
 using Greenhouse.Application.Websocket.Interfaces;
 using Greenhouse.DataAccess;
+using Greenhouse.DataAccess.Repositories;
 using Greenhouse.Domain;
 using Greenhouse.Infrastructure;
 using Greenhouse.Infrastructure.AuthService;
@@ -25,6 +27,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // ===================== * DATABASE CONTEXT * ===================== //
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.Configure<PasswordSettings>(builder.Configuration.GetSection("PasswordSettings"));
 
