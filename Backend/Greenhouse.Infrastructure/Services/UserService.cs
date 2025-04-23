@@ -1,13 +1,11 @@
+using System.ComponentModel.DataAnnotations;
 using API.Exceptions;
 using Greenhouse.Application.Repositories;
 using Greenhouse.Application.Security;
 using Greenhouse.Application.Security.Requests;
 using Greenhouse.Application.Services.User;
-using Greenhouse.DataAccess;
-using Greenhouse.DataAccess.Repositories;
 using Greenhouse.Domain;
 using Microsoft.AspNetCore.Identity;
-using Service.TransferModels.Responses;
 
 namespace Greenhouse.Infrastructure.Services;
 
@@ -16,6 +14,10 @@ public class UserService(IPasswordHasher<User> passwordHasher, IJwtManager jwtMa
 {
     public UserSignupResponseDto SignUp(UserSignupDto request)
     {
+        // Check if context is valid
+        var context = new ValidationContext(request);
+        Validator.ValidateObject(request, context, true);
+        
         Guid userId = Guid.NewGuid();
         var user = new User
         {
