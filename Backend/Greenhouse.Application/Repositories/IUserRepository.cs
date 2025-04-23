@@ -7,7 +7,7 @@ public interface IUserRepository
 {
     public User CreateUser(User newUser);
 
-    public AuthorizedUserResponseDTO GetUserByName(string username);
+    public User GetUserByName(string username);
 
-    public AuthorizedUserResponseDTO GetUserById(Guid userId);
+    public User GetUserById(Guid userId);
 }

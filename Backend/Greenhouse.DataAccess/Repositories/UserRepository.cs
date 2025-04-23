@@ -19,7 +19,7 @@ public class UserRepository(AppDbContext context): IUserRepository
         return newUser;
     }
 
-    public AuthorizedUserResponseDTO GetUserByName(string username)
+    public User GetUserByName(string username)
     {
         var user = context.Users.FirstOrDefault(u => u.Name == username);
         if (user == null)
@@ -27,10 +27,10 @@ public class UserRepository(AppDbContext context): IUserRepository
             throw new ErrorException("User", "User does not exist");
         }
         
-        return AuthorizedUserResponseDTO.FromEntity(user);
+        return user;
     }
     
-    public AuthorizedUserResponseDTO GetUserById(Guid userId)
+    public User GetUserById(Guid userId)
     {
         var user = context.Users.FirstOrDefault(u => u.Id == userId);
         if (user == null)
@@ -38,6 +38,6 @@ public class UserRepository(AppDbContext context): IUserRepository
             throw new ErrorException("User", "User does not exist");
         }
         
-        return AuthorizedUserResponseDTO.FromEntity(user);
+        return user;
     }
 }

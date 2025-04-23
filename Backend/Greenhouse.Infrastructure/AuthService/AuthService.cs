@@ -1,4 +1,5 @@
 using API.Exceptions;
+using Greenhouse.Application.Repositories;
 using Greenhouse.Application.Security;
 using Greenhouse.DataAccess;
 using Greenhouse.Domain;
@@ -10,25 +11,20 @@ namespace Greenhouse.Infrastructure.AuthService;
 
 public class AuthService : IAuthService
 {
-    private readonly AppDbContext _repository;
+    private readonly IUserRepository _repository;
     private readonly IJwtManager _jwtManager;
     
-    public AuthService(IPasswordHasher<User> passwordHasher, IJwtManager jwtManager, AppDbContext userRepository)
+    public AuthService(IJwtManager jwtManager, IUserRepository userRepository)
     {
         _repository = userRepository;
         _jwtManager = jwtManager;
     }
     
-    public async Task<AuthorizedUserResponseDTO> GetAuthorizedUser(string jwtToken)
+    public AuthorizedUserResponseDTO GetAuthorizedUser(string jwtToken)
     {
         var jwtData = _jwtManager.IsJwtValid(jwtToken);
         var uuidClaim = jwtData.Claims.FirstOrDefault(claim => claim.Type == "uuid");
-        var userData = await _repository.Users.FindAsync(Guid.Parse(uuidClaim.Value));
-        
-        if (userData == null)
-        {
-            throw new ErrorException("User", "User does not exist");
-        }
+        var userData = _repository.GetUserById(Guid.Parse(uuidClaim.Value));
         
         return AuthorizedUserResponseDTO.FromEntity(userData);
     }
@@ -45,9 +41,9 @@ public class AuthService : IAuthService
     }
 
     
-    public async void IsUserAuthorized(string[] roles, string jwtToken)
+    public void IsUserAuthorized(string[] roles, string jwtToken)
     {
-        var userData = await GetAuthorizedUser(jwtToken);
+        var userData = GetAuthorizedUser(jwtToken);
 
         if (!roles.Contains(userData.Role.ToString()))
         {

@@ -15,19 +15,15 @@ public class AuthController(IUserService userService) : ControllerBase
     [Authenticated]
     public ActionResult<AuthorizedUserResponseDTO> GetUser()
     {
-        if (!ModelState.IsValid)
-        {
-            return new BadRequestObjectResult(ModelState);
-        }
-        
-        return new OkObjectResult("Ok");
+        var authUser = HttpContext.Items["AuthenticatedUser"] as AuthorizedUserResponseDTO;
+        return Ok(authUser);
     }
     
     [HttpPost]
     [Route("login")]
     public ActionResult<UserLoginResponseDto> PLogin([FromBody] UserLoginDto request)
     {
-        return Ok(userService.Login());
+        return Ok(userService.Login(request));
     }
     
     [HttpPost]

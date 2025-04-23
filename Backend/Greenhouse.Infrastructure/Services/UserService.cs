@@ -29,18 +29,16 @@ public class UserService(IPasswordHasher<User> passwordHasher, IJwtManager jwtMa
         return UserSignupResponseDto.FromEntity(user, jwtManager);
     }
 
-    public UserLoginResponseDto Login()
+    public UserLoginResponseDto Login(UserLoginDto request)
     {
-        Guid userId = Guid.NewGuid();
+        var userFromDb =  userRepository.GetUserByName(request.Name);
         
-        var user = new User
+        if (passwordHasher.VerifyHashedPassword(userFromDb, userFromDb.Passwordhash, request.Password) ==
+            PasswordVerificationResult.Failed)
         {
-            Id = userId,
-            Name = "John Doe",
-            Passwordhash = "password",
-            Role = UserRole.USER
-        };
+            throw new ErrorException("Password", "Password does not match");
+        }
         
-        return UserLoginResponseDto.FromEntity(user, jwtManager);
+        return UserLoginResponseDto.FromEntity(userFromDb, jwtManager);
     }
 }
