@@ -4,7 +4,7 @@ using Fleck;
 using Greenhouse.Application.Websocket.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Greenhouse.Application.Websocket;
+namespace Greenhouse.Infrastructure.WebsocketServices;
 
 public sealed class WebSocketConnectionManager : IConnectionManager
 {

@@ -9,7 +9,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="" />
+    <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Greenhouse.Application/Services/WebsocketSubscriptionService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/WebsocketServices/WebsocketSubscriptionService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.Application/Websocket/ConnectionManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/WebsocketServices/ConnectionManager.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -117,6 +120,7 @@
       <workItem from="1745354403110" duration="4384000" />
       <workItem from="1745428365369" duration="979000" />
       <workItem from="1745429437759" duration="3055000" />
+      <workItem from="1745440728485" duration="6639000" />
     </task>
     <servers />
   </component>
