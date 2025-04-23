@@ -1,8 +1,7 @@
-using Greenhouse.Application.Security;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Greenhouse.Domain;
+namespace Greenhouse.Domain.DatabaseDtos;
 
 public class User
 {

@@ -1,4 +1,4 @@
-namespace Greenhouse.Application.Security;
+namespace Greenhouse.Domain;
 
 public enum UserRole
 {

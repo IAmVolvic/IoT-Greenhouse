@@ -1,4 +1,4 @@
-namespace API.Exceptions
+namespace Greenhouse.Application.Exceptions
 {
     public class ErrorException : Exception
     {

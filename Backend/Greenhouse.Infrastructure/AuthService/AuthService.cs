@@ -1,11 +1,7 @@
-using API.Exceptions;
+using Greenhouse.Application.Exceptions;
 using Greenhouse.Application.Repositories;
 using Greenhouse.Application.Security;
-using Greenhouse.DataAccess;
-using Greenhouse.Domain;
-using Microsoft.AspNetCore.Identity;
-using Service.Services.Interfaces;
-using Service.TransferModels.Responses;
+using Greenhouse.Application.Security.Requests;
 
 namespace Greenhouse.Infrastructure.AuthService;
 
@@ -20,13 +16,13 @@ public class AuthService : IAuthService
         _jwtManager = jwtManager;
     }
     
-    public AuthorizedUserResponseDTO GetAuthorizedUser(string jwtToken)
+    public AuthorizedUserResponseDto GetAuthorizedUser(string jwtToken)
     {
         var jwtData = _jwtManager.IsJwtValid(jwtToken);
         var uuidClaim = jwtData.Claims.FirstOrDefault(claim => claim.Type == "uuid");
         var userData = _repository.GetUserById(Guid.Parse(uuidClaim.Value));
         
-        return AuthorizedUserResponseDTO.FromEntity(userData);
+        return AuthorizedUserResponseDto.FromEntity(userData);
     }
     
 

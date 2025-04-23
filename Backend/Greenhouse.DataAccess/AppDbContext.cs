@@ -1,5 +1,5 @@
-using Greenhouse.Application.Security;
 using Greenhouse.Domain;
+using Greenhouse.Domain.DatabaseDtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Greenhouse.DataAccess;

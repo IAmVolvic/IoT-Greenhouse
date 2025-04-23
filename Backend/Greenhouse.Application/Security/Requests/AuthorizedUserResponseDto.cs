@@ -1,11 +1,10 @@
 using System.Text.Json.Serialization;
-using Greenhouse.Application;
-using Greenhouse.Application.Security;
 using Greenhouse.Domain;
+using Greenhouse.Domain.DatabaseDtos;
 
-namespace Service.TransferModels.Responses;
+namespace Greenhouse.Application.Security.Requests;
 
-public class AuthorizedUserResponseDTO
+public class AuthorizedUserResponseDto
 {
     public Guid Id { get; set; }
     
@@ -15,9 +14,9 @@ public class AuthorizedUserResponseDTO
     public UserRole Role { get; set; }
     
     
-    public static AuthorizedUserResponseDTO FromEntity(User user)
+    public static AuthorizedUserResponseDto FromEntity(User user)
     {
-        return new AuthorizedUserResponseDTO
+        return new AuthorizedUserResponseDto
         {
             Id = user.Id,
             Name = user.Name,

@@ -1,7 +1,7 @@
-using API.Attributes;
-using API.Exceptions;
+using Greenhouse.API.Attributes;
+using Greenhouse.Application.Exceptions;
+using Greenhouse.Application.Security;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Service.Services.Interfaces;
 
 namespace Greenhouse.API.ActionFilters;
 

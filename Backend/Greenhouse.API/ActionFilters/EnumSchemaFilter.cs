@@ -1,9 +1,8 @@
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.OpenApi.Any;
-using System.Linq;
 
-namespace API.ActionFilters
+namespace Greenhouse.API.ActionFilters
 {
     public class EnumSchemaFilter : ISchemaFilter
     {

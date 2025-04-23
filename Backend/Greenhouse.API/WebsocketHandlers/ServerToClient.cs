@@ -1,5 +1,5 @@
 using Fleck;
-using Greenhouse.Application.Websocket;
+using Greenhouse.Application.Websocket.DTOs;
 using Greenhouse.Application.Websocket.Interfaces;
 using WebSocketBoilerplate;
 

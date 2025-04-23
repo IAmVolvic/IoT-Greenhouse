@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
-using API.Exceptions;
+using Greenhouse.Application.Exceptions;
 using Greenhouse.Application.Repositories;
 using Greenhouse.Application.Security;
 using Greenhouse.Application.Security.Requests;
 using Greenhouse.Application.Services.User;
 using Greenhouse.Domain;
+using Greenhouse.Domain.DatabaseDtos;
 using Microsoft.AspNetCore.Identity;
 
 namespace Greenhouse.Infrastructure.Services;

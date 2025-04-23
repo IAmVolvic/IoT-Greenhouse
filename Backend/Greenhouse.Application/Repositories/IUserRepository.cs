@@ -1,5 +1,4 @@
-using Greenhouse.Domain;
-using Service.TransferModels.Responses;
+using Greenhouse.Domain.DatabaseDtos;
 
 namespace Greenhouse.Application.Repositories;
 

@@ -1,9 +1,10 @@
 using Greenhouse.Application;
 using Greenhouse.DataAccess;
 using Greenhouse.Domain;
+using Greenhouse.Domain.DatabaseDtos;
 using Microsoft.EntityFrameworkCore;
 
-namespace Greenhouse.Infrastructure;
+namespace Greenhouse.Infrastructure.Services;
 
 public class HelloService : IHelloService
 {

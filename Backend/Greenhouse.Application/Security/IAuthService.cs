@@ -1,10 +1,10 @@
-using Service.TransferModels.Responses;
+using Greenhouse.Application.Security.Requests;
 
-namespace Service.Services.Interfaces;
+namespace Greenhouse.Application.Security;
 
 public interface IAuthService
 {
-    public AuthorizedUserResponseDTO GetAuthorizedUser(string jwtToken);
+    public AuthorizedUserResponseDto GetAuthorizedUser(string jwtToken);
     public void IsUserAuthenticated(string jwtToken);
     public void IsUserAuthorized(string[] roles, string jwtToken);
 }

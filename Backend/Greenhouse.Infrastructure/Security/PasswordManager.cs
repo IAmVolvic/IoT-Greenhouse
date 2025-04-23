@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Greenhouse.Application.Environment;
 using Greenhouse.Domain;
+using Greenhouse.Domain.DatabaseDtos;
 using Konscious.Security.Cryptography;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;

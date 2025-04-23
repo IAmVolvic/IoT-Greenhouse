@@ -1,6 +1,6 @@
 using WebSocketBoilerplate;
 
-namespace Greenhouse.Application.Websocket;
+namespace Greenhouse.Application.Websocket.DTOs;
 
 public class FromClientDto : BaseDto
 {

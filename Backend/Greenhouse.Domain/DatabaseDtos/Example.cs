@@ -1,4 +1,4 @@
-namespace Greenhouse.Domain;
+namespace Greenhouse.Domain.DatabaseDtos;
 
 public class Example
 {

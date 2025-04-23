@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+namespace Greenhouse.Application.Exceptions;
 
-public class ErrorResponseDTO
+public class ErrorResponseDto
 {
     public Dictionary<string, List<string>> Errors { get; set; }
 
-    public ErrorResponseDTO()
+    public ErrorResponseDto()
     {
         Errors = new Dictionary<string, List<string>>();
     }

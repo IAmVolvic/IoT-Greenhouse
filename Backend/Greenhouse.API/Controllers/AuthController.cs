@@ -1,8 +1,7 @@
-using API.Attributes;
+using Greenhouse.API.Attributes;
 using Greenhouse.Application.Security.Requests;
 using Greenhouse.Application.Services.User;
 using Microsoft.AspNetCore.Mvc;
-using Service.TransferModels.Responses;
 
 namespace Greenhouse.API.Controllers;
 
@@ -13,9 +12,9 @@ public class AuthController(IUserService userService) : ControllerBase
     [HttpGet]
     [Route("")]
     [Authenticated]
-    public ActionResult<AuthorizedUserResponseDTO> GetUser()
+    public ActionResult<AuthorizedUserResponseDto> GetUser()
     {
-        var authUser = HttpContext.Items["AuthenticatedUser"] as AuthorizedUserResponseDTO;
+        var authUser = HttpContext.Items["AuthenticatedUser"] as AuthorizedUserResponseDto;
         return Ok(authUser);
     }
     

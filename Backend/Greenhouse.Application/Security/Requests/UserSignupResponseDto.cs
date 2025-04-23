@@ -1,4 +1,4 @@
-using Greenhouse.Domain;
+using Greenhouse.Domain.DatabaseDtos;
 
 namespace Greenhouse.Application.Security.Requests;
 

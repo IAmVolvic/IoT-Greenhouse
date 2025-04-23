@@ -1,7 +1,6 @@
-using API.Exceptions;
+using Greenhouse.Application.Exceptions;
 using Greenhouse.Application.Repositories;
-using Greenhouse.Domain;
-using Service.TransferModels.Responses;
+using Greenhouse.Domain.DatabaseDtos;
 
 namespace Greenhouse.DataAccess.Repositories;
 

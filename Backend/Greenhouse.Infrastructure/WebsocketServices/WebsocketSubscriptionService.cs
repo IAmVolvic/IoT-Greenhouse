@@ -1,6 +1,6 @@
 ﻿using Greenhouse.Application.Websocket.Interfaces;
 
-namespace Application.Services;
+namespace Greenhouse.Infrastructure.WebsocketServices;
 
 public class WebsocketSubscriptionService(IConnectionManager connectionManager) : IWebsocketSubscriptionService
 {
