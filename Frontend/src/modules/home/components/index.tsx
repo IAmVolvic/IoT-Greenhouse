@@ -1,8 +1,130 @@
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { FBXLoader } from "three-stdlib";
+
 export const Home = () => {
-    return (
-        <>
-            <h1>Home</h1>
-            <p>Welcome to the home page!</p>
-        </>
-    )
-}
+    const mountRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color('#7fffd4');
+        scene.fog = new THREE.Fog( '#7fffd4', 15, 35 );
+
+        const camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+        );
+        camera.position.set(0, 5, 7);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true; // Enable shadow maps in renderer
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Optional: soft shadows
+        if (mountRef.current) {
+            mountRef.current.appendChild(renderer.domElement);
+        }
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        
+        // Disable panning, allow zoom and rotation
+        controls.screenSpacePanning = false;  // Disable screen-space panning (this also affects drag)
+        controls.enablePan = false;           // Disable panning completely
+        controls.enableZoom = true;           // Enable zoom
+        controls.enableRotate = true;         // Enable rotation
+        
+        controls.minDistance = 5;             // Minimum zoom distance
+        controls.maxDistance = 10;            // Maximum zoom distance
+
+        // Add a basic ambient light
+        const ambient = new THREE.HemisphereLight( 0xffffff, 0xbfd4d2, 3 );
+        scene.add( ambient );
+
+        // Add directional light with shadows
+        const directionalLight = new THREE.DirectionalLight( 0xffffff, 2 );
+        directionalLight.position.set( 3, 5, 3 ).multiplyScalar( 3 );
+        directionalLight.castShadow = true;
+        directionalLight.shadow.mapSize.set(2048, 2048); // Increase shadow resolution
+        directionalLight.shadow.camera.near = 0.5; // Near plane of the shadow camera
+        directionalLight.shadow.camera.far = 50; // Far plane of the shadow camera
+        directionalLight.shadow.bias = -0.005; // Adjust bias to avoid shadow acne
+        scene.add( directionalLight );
+
+        // Load the FBX model
+        const loader = new FBXLoader();
+        loader.load('/assets/OBJ/Floorplan.fbx', (object) => {
+            object.scale.set(0.001, 0.001, 0.001);
+
+            object.traverse((child) => {
+                if ((child as THREE.Mesh).isMesh) {
+                    const mesh = child as THREE.Mesh;
+                    mesh.material.side = THREE.DoubleSide;
+                    mesh.castShadow = true;  // Enable shadow casting for the mesh
+                    mesh.receiveShadow = true;  // Enable receiving shadows
+                }
+            });
+
+            scene.add(object);
+        });
+
+
+        const ground = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), new THREE.MeshPhongMaterial( { color: '#7fffd4', depthWrite: false } ) );
+        ground.rotation.x = - Math.PI / 2;
+        ground.receiveShadow = true;
+        ground.position.y = -0.01;
+        scene.add( ground );
+
+        const grid = new THREE.GridHelper( 100, 50, "#000000", "#000000" );
+        grid.material.opacity = 0.2;
+        grid.material.transparent = true;
+        grid.position.y = -0.01;
+        scene.add( grid );
+
+
+        // Add a plane to receive shadows
+        const plane = new THREE.Mesh(
+            new THREE.PlaneGeometry(),
+            new THREE.ShadowMaterial({
+                color: 0xd81b60,
+                transparent: true,
+                opacity: 0.075,
+                side: THREE.DoubleSide,
+            })
+        );
+        plane.rotation.x = -Math.PI / 2;
+        plane.position.y = -0.01;
+        plane.scale.setScalar(1000);
+        plane.receiveShadow = true;
+        scene.add(plane);
+
+
+        // Animation loop
+        const animate = () => {
+            requestAnimationFrame(animate);
+            controls.update(); // update controls every frame
+            renderer.render(scene, camera);
+        };
+        animate();
+
+        const handleResize = () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        };
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            if (mountRef.current) {
+                mountRef.current.removeChild(renderer.domElement);
+            }
+            renderer.dispose();
+        };
+    }, []);
+
+    return <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />;
+};
