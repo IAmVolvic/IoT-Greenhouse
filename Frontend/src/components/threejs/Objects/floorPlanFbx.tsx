@@ -14,6 +14,16 @@ export const floorPlanFbx = (): Promise<THREE.Group> => {
             object.traverse((child) => {
                 if ((child as THREE.Mesh).isMesh) {
                     const mesh = child as THREE.Mesh;
+
+                    if (mesh.name === "window") {
+                        mesh.material = new THREE.MeshStandardMaterial({
+                            color: 0x000000,
+                            transparent: true,
+                            opacity: 0.5,
+                        });
+                    }
+
+                    
                     mesh.material.side = THREE.DoubleSide;
                     mesh.castShadow = true;
                     mesh.receiveShadow = true;

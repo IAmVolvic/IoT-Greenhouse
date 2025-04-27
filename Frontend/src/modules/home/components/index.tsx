@@ -10,11 +10,15 @@ import { floorPlanFbx } from "@components/threejs/Objects/floorPlanFbx";
 import { LeafyGreen } from "lucide-react";
 import { sceneGrid } from "@components/threejs/Objects/sceneGrid";
 import { sceneFloor } from "@components/threejs/Objects/sceneFloor";
+import useLoadingStore from "@store/Loader/loader.store";
+
 
 export const Home = () => {
+    const { setIsLoading } = useLoadingStore((state) => state);
+    
     const mountRef = useRef<HTMLDivElement>(null);
-    const labelRef = useRef<HTMLDivElement>(null);
-
+    const labelRef = useRef<HTMLButtonElement>(null);
+    
     // Three.js scene setup
     const scene = baseScene();
     const camera = sceneCamera();
@@ -35,6 +39,7 @@ export const Home = () => {
     }
 
     useEffect(() => {
+
         let animationId: number;
 
         if (mountRef.current) {
@@ -45,6 +50,10 @@ export const Home = () => {
         objectGroup.add ( plane );
         floorPlanFbx().then((object) => {
             objectGroup.add ( object );
+
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 1000);
         });
 
         worldGroup.add ( ambient );
@@ -101,21 +110,25 @@ export const Home = () => {
             renderer.dispose();
         };
     }, []);
-
+    
     return (
-        <div ref={mountRef} className="w-full h-full relative overflow-hidden">
-            {/* HTML Billboard */}
-            <div 
-                ref={labelRef} 
-                className="absolute pointer-events-auto cursor-pointer" 
-                style={{ top: 0, left: 0 }}
-                onClick={handleClick}
-            >
-                <div className="bg-light100 p-2 rounded-lg shadow-md flex items-center space-x-2">
-                    <LeafyGreen className="w-6 h-6 text-green-600" />
-                    <span>Room 1</span>
-                </div>
+        <>
+
+            <div ref={mountRef} className="w-full h-full relative overflow-hidden">
+                {/* HTML Billboard */}
+                <button 
+                    ref={labelRef} 
+                    className="absolute pointer-events-auto cursor-pointer" 
+                    style={{ top: 0, left: 0 }}
+                    onClick={handleClick}
+                >
+                    <div className="bg-light100 p-2 rounded-lg shadow-md flex items-center space-x-2">
+                        <LeafyGreen className="w-6 h-6 text-green-600" />
+                        <span>Room 1</span>
+                    </div>
+                </button>
             </div>
-        </div>
+        </>
+        
     );
 };
