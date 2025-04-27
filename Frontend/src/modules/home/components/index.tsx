@@ -39,7 +39,6 @@ export const Home = () => {
     }
 
     useEffect(() => {
-
         let animationId: number;
 
         if (mountRef.current) {
@@ -61,7 +60,6 @@ export const Home = () => {
 
         scene.add(objectGroup);
         scene.add(worldGroup);
-
 
         // Main animation loop
         const animate = () => {
@@ -109,6 +107,7 @@ export const Home = () => {
 
             renderer.dispose();
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     
     return (
