@@ -75,16 +75,10 @@ export const Home = () => {
         });
 
 
-        const ground = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), new THREE.MeshPhongMaterial( { color: '#171a26', depthWrite: false } ) );
-        ground.rotation.x = - Math.PI / 2;
-        ground.receiveShadow = true;
-        ground.position.y = -0.01;
-        scene.add( ground );
-
-        const grid = new THREE.GridHelper( 100, 50, "#000000", "#000000" );
+        const grid = new THREE.GridHelper( 100, 50, "#5d678c", "#383f59" );
         grid.material.opacity = 0.2;
         grid.material.transparent = true;
-        grid.position.y = -0.01;
+        grid.position.y = -0.015;
         scene.add( grid );
 
 
@@ -94,7 +88,7 @@ export const Home = () => {
             new THREE.ShadowMaterial({
                 color: "0xd81b60",
                 transparent: true,
-                opacity: 0.075,
+                opacity: 0.3,
                 side: THREE.DoubleSide,
             })
         );
