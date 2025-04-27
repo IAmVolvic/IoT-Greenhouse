@@ -15,11 +15,11 @@ export const floorPlanFbx = (): Promise<THREE.Group> => {
                 if ((child as THREE.Mesh).isMesh) {
                     const mesh = child as THREE.Mesh;
 
-                    if (mesh.name === "window") {
+                    if (mesh.name === "Wwindow") {
                         mesh.material = new THREE.MeshStandardMaterial({
-                            color: 0x000000,
+                            color: "#fff",
                             transparent: true,
-                            opacity: 0.5,
+                            opacity: 0.2,
                         });
                     }
 
