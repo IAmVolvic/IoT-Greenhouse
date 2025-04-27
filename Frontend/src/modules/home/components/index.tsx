@@ -8,8 +8,8 @@ export const Home = () => {
 
     useEffect(() => {
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color('#7fffd4');
-        scene.fog = new THREE.Fog( '#7fffd4', 15, 35 );
+        scene.background = new THREE.Color('#171a26');
+        scene.fog = new THREE.Fog( '#171a26', 15, 35 );
 
         const camera = new THREE.PerspectiveCamera(
             75,
@@ -58,6 +58,9 @@ export const Home = () => {
         const loader = new FBXLoader();
         loader.load('/assets/OBJ/Floorplan.fbx', (object) => {
             object.scale.set(0.001, 0.001, 0.001);
+            object.rotation.x = 0;
+            object.rotation.y = 0;
+            object.position.z = -1.5;
 
             object.traverse((child) => {
                 if ((child as THREE.Mesh).isMesh) {
@@ -72,7 +75,7 @@ export const Home = () => {
         });
 
 
-        const ground = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), new THREE.MeshPhongMaterial( { color: '#7fffd4', depthWrite: false } ) );
+        const ground = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), new THREE.MeshPhongMaterial( { color: '#171a26', depthWrite: false } ) );
         ground.rotation.x = - Math.PI / 2;
         ground.receiveShadow = true;
         ground.position.y = -0.01;
@@ -89,7 +92,7 @@ export const Home = () => {
         const plane = new THREE.Mesh(
             new THREE.PlaneGeometry(),
             new THREE.ShadowMaterial({
-                color: 0xd81b60,
+                color: "0xd81b60",
                 transparent: true,
                 opacity: 0.075,
                 side: THREE.DoubleSide,
