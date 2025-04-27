@@ -1,62 +1,39 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { FBXLoader } from "three-stdlib";
+import { baseScene } from "@components/threejs/baseScene";
+import { sceneCamera } from "@components/threejs/sceneCamera";
+import { sceneRenderer } from "@components/threejs/sceneRenderer";
+import { sceneControls } from "@components/threejs/sceneControls";
+import { sceneAmbient } from "@components/threejs/sceneAmbient";
+import { sceneLight } from "@components/threejs/sceneLight";
+import { LeafyGreen } from "lucide-react"; // Import your Lucide icon
 
 export const Home = () => {
     const mountRef = useRef<HTMLDivElement>(null);
-    const [raycaster] = useState(new THREE.Raycaster()); // Raycaster to detect clicks
-    const [mouse] = useState(new THREE.Vector2()); // Mouse position to feed into the raycaster
+    const labelRef = useRef<HTMLDivElement>(null);
+
+    const handleClick = () => {
+        console.log("Clicked the HTML Billboard!");
+    }
 
     useEffect(() => {
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color('#171a26');
-        scene.fog = new THREE.Fog( '#171a26', 15, 35 );
+        const scene = baseScene();
+        const camera = sceneCamera();
+        const renderer = sceneRenderer();
+        const controls = sceneControls(camera, renderer);
+        const ambient = sceneAmbient();
+        const directionalLight = sceneLight();
+        const labelPosition = new THREE.Vector3(0, 2.5, -3);
 
-        const camera = new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            1000
-        );
-        camera.position.set(0, 5, 7);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true; // Enable shadow maps in renderer
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Optional: soft shadows
         if (mountRef.current) {
             mountRef.current.appendChild(renderer.domElement);
         }
 
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        
-        // Disable panning, allow zoom and rotation
-        controls.screenSpacePanning = false;  // Disable screen-space panning (this also affects drag)
-        controls.enablePan = false;           // Disable panning completely
-        controls.enableZoom = true;           // Enable zoom
-        controls.enableRotate = true;         // Enable rotation
-        
-        controls.minDistance = 5;             // Minimum zoom distance
-        controls.maxDistance = 10;            // Maximum zoom distance
+        scene.add(ambient);
+        scene.add(directionalLight);
 
-        // Add a basic ambient light
-        const ambient = new THREE.HemisphereLight( 0xffffff, 0xbfd4d2, 3 );
-        scene.add( ambient );
-
-        // Add directional light with shadows
-        const directionalLight = new THREE.DirectionalLight( 0xffffff, 2 );
-        directionalLight.position.set( 3, 5, 3 ).multiplyScalar( 3 );
-        directionalLight.castShadow = true;
-        directionalLight.shadow.mapSize.set(2048, 2048); // Increase shadow resolution
-        directionalLight.shadow.camera.near = 0.5; // Near plane of the shadow camera
-        directionalLight.shadow.camera.far = 50; // Far plane of the shadow camera
-        directionalLight.shadow.bias = -0.005; // Adjust bias to avoid shadow acne
-        scene.add( directionalLight );
-
-        // Load the FBX model
         const loader = new FBXLoader();
         loader.load('/assets/OBJ/Floorplan.fbx', (object) => {
             object.scale.set(0.001, 0.001, 0.001);
@@ -68,8 +45,8 @@ export const Home = () => {
                 if ((child as THREE.Mesh).isMesh) {
                     const mesh = child as THREE.Mesh;
                     mesh.material.side = THREE.DoubleSide;
-                    mesh.castShadow = true;  // Enable shadow casting for the mesh
-                    mesh.receiveShadow = true;  // Enable receiving shadows
+                    mesh.castShadow = true;
+                    mesh.receiveShadow = true;
                 }
             });
 
@@ -77,69 +54,12 @@ export const Home = () => {
         });
 
 
-        // Function to create a billboard label
-        const createBillboard = (text: string, position: THREE.Vector3) => {
-            // Create a basic canvas to hold the text
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            if (context) {
-                canvas.width = 512;
-                canvas.height = 256;
-                context.font = '40px Arial';
-                context.fillStyle = 'white';
-                context.fillText(text, 50, 100); // Position the text
-
-                // Create texture from canvas
-                const texture = new THREE.CanvasTexture(canvas);
-                texture.needsUpdate = true;
-
-                // Create sprite material with the texture
-                const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
-
-                // Create sprite (billboard)
-                const sprite = new THREE.Sprite(material);
-                sprite.scale.set(2, 1, 1); // Adjust the size of the label
-                sprite.position.copy(position); // Position the label
-
-                return sprite;
-            }
-        };
-
-        // Create a billboard at a specific location
-        const billboard1 = createBillboard('Room 1', new THREE.Vector3(3, 0, -1));
-        scene.add(billboard1);
-
-        // Define the mouse click handler
-        const onMouseClick = (event: MouseEvent) => {
-            // Normalize mouse position to [-1, 1]
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-            // Update the raycaster to use the camera and mouse position
-            raycaster.setFromCamera(mouse, camera);
-
-            // Check for intersections with the billboard
-            const intersects = raycaster.intersectObjects([billboard1]);
-
-            if (intersects.length > 0) {
-                // If clicked on the first billboard, print to console
-                console.log('Hello World');
-            }
-        };
-
-        // Add event listener for mouse clicks only once (on initial mount)
-        const handleClick = (event: MouseEvent) => onMouseClick(event);
-        window.addEventListener('click', handleClick);
-
-
-        const grid = new THREE.GridHelper( 100, 50, "#5d678c", "#383f59" );
+        const grid = new THREE.GridHelper(100, 50, "#5d678c", "#383f59");
         grid.material.opacity = 0.2;
         grid.material.transparent = true;
         grid.position.y = -0.015;
-        scene.add( grid );
+        scene.add(grid);
 
-
-        // Add a plane to receive shadows
         const plane = new THREE.Mesh(
             new THREE.PlaneGeometry(),
             new THREE.ShadowMaterial({
@@ -155,12 +75,18 @@ export const Home = () => {
         plane.receiveShadow = true;
         scene.add(plane);
 
-
-        // Animation loop
         const animate = () => {
             requestAnimationFrame(animate);
-            controls.update(); // update controls every frame
+            controls.update();
             renderer.render(scene, camera);
+
+            // Project label position to 2D screen
+            if (labelRef.current) {
+                const vector = labelPosition.clone().project(camera);
+                const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
+                const y = ( -vector.y * 0.5 + 0.5) * window.innerHeight;
+                labelRef.current.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
+            }
         };
         animate();
 
@@ -180,5 +106,20 @@ export const Home = () => {
         };
     }, []);
 
-    return <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />;
+    return (
+        <div ref={mountRef} className="w-full h-full relative overflow-hidden">
+            {/* HTML Billboard */}
+            <div 
+                ref={labelRef} 
+                className="absolute pointer-events-auto cursor-pointer" 
+                style={{ top: 0, left: 0 }}
+                onClick={handleClick}
+            >
+                <div className="bg-white p-2 rounded-lg shadow-md flex items-center space-x-2">
+                    <LeafyGreen className="w-6 h-6 text-green-600" />
+                    <span>Room 1</span>
+                </div>
+            </div>
+        </div>
+    );
 };
