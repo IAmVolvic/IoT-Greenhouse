@@ -20,6 +20,8 @@ export const floorPlanFbx = (): Promise<THREE.Group> => {
                             color: "#fff",
                             transparent: true,
                             opacity: 0.2,
+                            castShadow: false,
+                            receiveShadow: false,
                         });
                     }
 
