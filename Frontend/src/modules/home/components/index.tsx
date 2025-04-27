@@ -1,10 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { FBXLoader } from "three-stdlib";
 
 export const Home = () => {
     const mountRef = useRef<HTMLDivElement>(null);
+    const [raycaster] = useState(new THREE.Raycaster()); // Raycaster to detect clicks
+    const [mouse] = useState(new THREE.Vector2()); // Mouse position to feed into the raycaster
 
     useEffect(() => {
         const scene = new THREE.Scene();
@@ -73,6 +75,61 @@ export const Home = () => {
 
             scene.add(object);
         });
+
+
+        // Function to create a billboard label
+        const createBillboard = (text: string, position: THREE.Vector3) => {
+            // Create a basic canvas to hold the text
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            if (context) {
+                canvas.width = 512;
+                canvas.height = 256;
+                context.font = '40px Arial';
+                context.fillStyle = 'white';
+                context.fillText(text, 50, 100); // Position the text
+
+                // Create texture from canvas
+                const texture = new THREE.CanvasTexture(canvas);
+                texture.needsUpdate = true;
+
+                // Create sprite material with the texture
+                const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+
+                // Create sprite (billboard)
+                const sprite = new THREE.Sprite(material);
+                sprite.scale.set(2, 1, 1); // Adjust the size of the label
+                sprite.position.copy(position); // Position the label
+
+                return sprite;
+            }
+        };
+
+        // Create a billboard at a specific location
+        const billboard1 = createBillboard('Room 1', new THREE.Vector3(3, 0, -1));
+        scene.add(billboard1);
+
+        // Define the mouse click handler
+        const onMouseClick = (event: MouseEvent) => {
+            // Normalize mouse position to [-1, 1]
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            // Update the raycaster to use the camera and mouse position
+            raycaster.setFromCamera(mouse, camera);
+
+            // Check for intersections with the billboard
+            const intersects = raycaster.intersectObjects([billboard1]);
+
+            if (intersects.length > 0) {
+                // If clicked on the first billboard, print to console
+                console.log('Hello World');
+            }
+        };
+
+        // Add event listener for mouse clicks only once (on initial mount)
+        const handleClick = (event: MouseEvent) => onMouseClick(event);
+        window.addEventListener('click', handleClick);
 
 
         const grid = new THREE.GridHelper( 100, 50, "#5d678c", "#383f59" );
