@@ -28,7 +28,7 @@ export const Home = () => {
     const objectGroup = new THREE.Group();
     const worldGroup = new THREE.Group();
 
-    const labelPosition = new THREE.Vector3(0, 2.5, -3);
+    const labelPosition = new THREE.Vector3(0, 2.5, -2.7);
 
     const handleClick = () => {
         console.log("Clicked the HTML Billboard!");
