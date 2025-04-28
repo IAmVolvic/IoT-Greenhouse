@@ -68,4 +68,54 @@ code {
   }
 }
 
+.svg-filter-green {
+  filter: brightness(0) saturate(100%) invert(45%) sepia(58%) saturate(5713%) hue-rotate(118deg) brightness(109%) contrast(69%);
+}
+
+
 /* TABLE */
+
+/* ThreeJS */
+.Bil {
+  width: 100%;
+  height: 100%;
+  background-color: aqua;
+}
+
+.circle-loader {
+  animation-name: loader-spin;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  box-sizing: content-box;
+}
+
+.circle-loader,
+.circle-loader:after {
+  border-radius: 50%;
+}
+
+@keyframes loader-spin {
+  0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+  }
+}
+
+.loader {
+  opacity: 1;
+  transition: opacity .5s ease-out;
+}
+
+.loader.fade-out {
+  opacity: 0;
+}
+
+select option {
+  @apply bg-dark300;
+}
