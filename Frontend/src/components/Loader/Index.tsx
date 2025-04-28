@@ -18,7 +18,7 @@ export const CustomLoader = () => {
         <>
             {
                 !hasLoaded && (
-                    <div className={`loader absolute inset-0 flex items-center justify-center bg-dark100 z-50 loader ${!isLoading ? 'fade-out' : ''}`}>
+                    <div className={`loader absolute inset-0 flex items-center justify-center bg-dark100 z-50 ${!isLoading ? 'fade-out' : ''}`}>
                         <div className="flex items-center justify-center">
                             <img src={Logo} alt="Logo" className="w-20 h-20 svg-filter-green" />
 

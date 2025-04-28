@@ -115,3 +115,7 @@ code {
 .loader.fade-out {
   opacity: 0;
 }
+
+select option {
+  @apply bg-dark300;
+}

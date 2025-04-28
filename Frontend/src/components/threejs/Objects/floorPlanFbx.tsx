@@ -25,7 +25,6 @@ export const floorPlanFbx = (): Promise<THREE.Group> => {
                         });
                     }
 
-                    
                     mesh.material.side = THREE.DoubleSide;
                     mesh.castShadow = true;
                     mesh.receiveShadow = true;

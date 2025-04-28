@@ -16,7 +16,7 @@ export const SelectInput = (props: TextInputProps) => {
         <div className={props.parentClassName}>     
             <div className={props.titleClassName}>{props.inputTitle}</div>
 
-            <select onChange={props.handleChange} value={props.defaultValue} className="w-full bg-base-300 p-3 rounded-xl">
+            <select onChange={props.handleChange} value={props.defaultValue} className="rounded-xl text-sm bg-transparent outline-none focus:ring-0 border-none bg-dark200 cursor-pointer">
                 {props.defaultValueText && (
                     <option value="default" disabled>{props.defaultValueText}</option>
                 )}
