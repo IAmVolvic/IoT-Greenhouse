@@ -85,7 +85,7 @@ export const Navbar = () => {
                 {/* RIGHT */}
                 {isOpen && (
                     <div className={`flex flex-row items-center justify-end h-full w-52`}>
-                        <NavLink className={(values) => `flex flex-row items-center gap-3 h-full px-5 ${values.isActive  ? 'ActiveNav' : ''}` } to="/">
+                        <NavLink className={(values) => `flex flex-row items-center gap-3 h-full px-2 ${values.isActive  ? 'ActiveNav' : ''}` } to="/">
                             <div className="border-1.5 border-primary w-full h-full rounded-full flex justify-center items-center">
                                 <img src="https://api.dicebear.com/9.x/adventurer/svg?seed=zolvic" alt="UICON" className="h-full aspect-square" />
                             </div>
