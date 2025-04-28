@@ -1,5 +1,6 @@
 import { SelectInput } from "@components/inputs/select";
 import { CirclePlus, House, PencilRuler, Settings } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 // Todo
 // Nav for mobile
@@ -10,19 +11,19 @@ export const Navbar = () => {
             <div className="flex flex-row items-center justify-center w-224 h-full rounded-full bg-dark100 p-2 shadow-md">
                 {/* LEFT */} 
                 <div className="flex flex-row items-center w-52 h-full gap-2">
-                    <div className="flex justify-center items-center bg-dark200 text-light200 rounded-full aspect-square h-full">
+                    <NavLink className="flex justify-center items-center bg-dark200 text-light200 rounded-full aspect-square h-full" to="/">
                         <House size={20} strokeWidth={1.5} />
-                    </div>
+                    </NavLink>
 
                     <div className="w-0.5 h-7 bg-dark200" />
 
-                    <div className="flex flex-row items-center justify-start h-full w-32 bg-dark200 rounded-full gap-2">
+                    <NavLink className="flex flex-row items-center justify-start h-full w-32 bg-dark200 rounded-full gap-2" to="/editor">
                         <div className="flex justify-center items-center bg-primary rounded-full aspect-square h-full">
                             <PencilRuler size={20} strokeWidth={1.5} />
                         </div>
 
                         <div className="text-light200 text-sm"> Room 1 </div>
-                    </div>
+                    </NavLink>
   
                 </div>
 
@@ -54,9 +55,9 @@ export const Navbar = () => {
 
                 {/* RIGHT */}
                 <div className="flex flex-row items-center justify-end w-52 h-full">
-                    <div className="flex justify-center items-center bg-dark200 h-full w-20 rounded-full">
+                    <NavLink className="flex justify-center items-center bg-dark200 h-full w-20 rounded-full" to="/login">
                         <div className="text-light200 text-sm">Login</div>
-                    </div>
+                    </NavLink>
                     
                 </div>
             </div>

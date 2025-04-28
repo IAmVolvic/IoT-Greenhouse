@@ -11,6 +11,7 @@ import { LeafyGreen } from "lucide-react";
 import { sceneGrid } from "@components/threejs/Objects/sceneGrid";
 import { sceneFloor } from "@components/threejs/Objects/sceneFloor";
 import useLoadingStore from "@store/Loader/loader.store";
+import { CustomLoader } from "@components/Loader/Index";
 
 
 export const Home = () => {
@@ -112,7 +113,9 @@ export const Home = () => {
     
     return (
         <>
-
+			{/* Loader */}
+			<CustomLoader />
+            
             <div ref={mountRef} className="w-full h-full relative overflow-hidden">
                 {/* HTML Billboard */}
                 <button 
