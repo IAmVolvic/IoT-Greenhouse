@@ -78,17 +78,13 @@ export const Home = () => {
             <div ref={mountRef} className="w-full h-full overflow-hidden" />
 
             <div className="absolute w-full h-full flex items-center justify-center z[5]">
-
-                <SimpleContainer className="flex flex-col items-center bg-dark100 max-w-md rounded-3xl pb-10 shadow-md">
-                    {/* Signature Logo Design */}
-                    <div className="flex items-center justify-center h-0">
-                        <div className="flex justify-center items-center w-20 bg-dark100 rounded-2xl aspect-square absolute">
-                            <img src={Logo} alt="Logo" className="h-10 aspect-square svg-filter-green" />
-                        </div>
+                <SimpleContainer className="flex flex-col items-center bg-dark100 max-w-md rounded-3xl pb-10 shadow-md mt-16 lg:mt-0">
+                    <div className="flex justify-center items-center w-20 aspect-square">
+                        <img src={Logo} alt="Logo" className="h-10 aspect-square svg-filter-green" />
                     </div>
 
-                    <div className="flex flex-col items-center gap-8 mt-16 w-full px-12">
-                        <div className="text-light200 mb-5"> Sign in to Greenhouse</div>
+                    <div className="flex flex-col items-center gap-8 w-full px-5 lg:px-12">
+                        <div className="text-light200"> Sign in to Greenhouse</div>
 
                         <Tabs defaultValue="login" className="w-full">
                             <TabsList className="flex flex-row justify-center items-center bg-dark300 p-2 rounded-full mb-8">
