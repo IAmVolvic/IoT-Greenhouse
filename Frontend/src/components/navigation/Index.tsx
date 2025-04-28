@@ -24,14 +24,16 @@ export const Navbar = () => {
             >
                 {/* LEFT */} 
                 <div className={`flex flex-row items-center h-full gap-2 ${isOpen ? 'w-52' : 'w-24'}`}>
-                    <NavLink className={(values) => `h-full ${values.isActive  ? 'ActiveNav' : ''}` } to="/">
-                        <div className="flex justify-center items-center bg-dark300 text-light200 rounded-full aspect-square h-full">
-                            <House size={20} strokeWidth={1.5} />
-                        </div>
-                    </NavLink>
-
-
-                    <div className="w-0.5 h-7 bg-dark300" />
+                    {!isOpen && (
+                        <>
+                            <NavLink className={(values) => `h-full ${values.isActive  ? 'ActiveNav' : ''}` } to="/">
+                                <div className="flex justify-center items-center bg-dark300 text-light200 rounded-full aspect-square h-full">
+                                    <House size={20} strokeWidth={1.5} />
+                                </div>
+                            </NavLink>
+                            <div className="w-0.5 h-7 bg-dark300" />
+                        </>
+                    )}
 
                     {isOpen && (
                         <NavLink className="flex flex-row items-center justify-start h-full w-32 bg-dark300 rounded-full gap-2" to="/editor">
@@ -81,13 +83,20 @@ export const Navbar = () => {
                 
 
                 {/* RIGHT */}
-                <div className={`flex flex-row items-center justify-end h-full ${isOpen ? 'w-52' : 'w-24'}`}>
-                    <NavLink className={(values) => `h-full ${values.isActive  ? 'ActiveNav' : ''}` } to="/login">
-                        <div className="flex justify-center items-center bg-dark300 text-light200 h-full w-20 rounded-full">
-                            <div className="text-sm">Login</div>
-                        </div>
-                    </NavLink>
-                </div>
+                {isOpen && (
+                    <div className={`flex flex-row items-center justify-end h-full w-52`}>
+                        <NavLink className={(values) => `flex flex-row items-center gap-3 h-full px-5 ${values.isActive  ? 'ActiveNav' : ''}` } to="/">
+                            <div className="border-1.5 border-primary w-full h-full rounded-full flex justify-center items-center">
+                                <img src="https://api.dicebear.com/9.x/adventurer/svg?seed=zolvic" alt="UICON" className="h-full aspect-square" />
+                            </div>
+
+                            <div className="flex flex-col items-start justify-center">
+                                <div className="text-light200 text-sm"> Username </div>
+                                <div className="text-light200 text-xs"> Admin </div>
+                            </div>
+                        </NavLink>
+                    </div>
+                )}
             </motion.div>
         </div>
 	)
