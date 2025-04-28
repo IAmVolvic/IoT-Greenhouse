@@ -23,7 +23,7 @@ export const Navbar = () => {
                 }}
             >
                 {/* LEFT */} 
-                <div className={`flex flex-row items-center h-full gap-2 ${isOpen ? 'w-52' : 'w-24'}`}>
+                <div className={`flex flex-row items-center h-full gap-2 ${isOpen ? 'w-52' : ''}`}>
                     {!isOpen && (
                         <>
                             <NavLink className={(values) => `h-full ${values.isActive  ? 'ActiveNav' : ''}` } to="/">
@@ -31,6 +31,7 @@ export const Navbar = () => {
                                     <House size={20} strokeWidth={1.5} />
                                 </div>
                             </NavLink>
+                            
                             <div className="w-0.5 h-7 bg-dark300" />
                         </>
                     )}
