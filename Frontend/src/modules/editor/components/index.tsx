@@ -20,32 +20,33 @@ export const EditorPage = () => {
 
     const mountRef = useRef<HTMLDivElement>(null);
     const labelRef = useRef<HTMLButtonElement>(null);
-    
-    // Three.js scene setup
-    const scene = baseScene();
-    const camera = sceneCamera();
-    const renderer = sceneRenderer();
-    const controls = sceneControls(camera, renderer);
-    const ambient = sceneAmbient();
-    const directionalLight = sceneLight();
-    const grid = sceneGrid();
-    const plane = sceneFloor();
-
-    const objectGroup = new THREE.Group();
-    const worldGroup = new THREE.Group();
-
-    const labelPosition = new THREE.Vector3(0, 2.5, -2.7);
 
     const handleClick = () => {
         console.log("Clicked the HTML Billboard!");
     }
 
+    // Three.js scene setup
     useEffect(() => {
+        const scene = baseScene();
+        const camera = sceneCamera();
+        const renderer = sceneRenderer();
+        const controls = sceneControls(camera, renderer);
+        const ambient = sceneAmbient();
+        const directionalLight = sceneLight();
+        const grid = sceneGrid();
+        const plane = sceneFloor();
+        const currentMount = mountRef.current;
+
+        const objectGroup = new THREE.Group();
+        const worldGroup = new THREE.Group();
+
+        const labelPosition = new THREE.Vector3(0, 2.5, -2.7);
+        
         setIsOpen(true);
         let animationId: number;
 
-        if (mountRef.current) {
-            mountRef.current.appendChild(renderer.domElement);
+        if (currentMount) {
+            currentMount.appendChild(renderer.domElement);
         }
 
         objectGroup.add ( grid );
@@ -86,8 +87,8 @@ export const EditorPage = () => {
         return () => {
            window.removeEventListener("resize", () => resizerListener(camera, renderer));
 
-            if (mountRef.current) {
-                mountRef.current.removeChild(renderer.domElement);
+            if (currentMount) {
+                currentMount.removeChild(renderer.domElement);
             }
 
             // Cancel animation loop
@@ -109,7 +110,6 @@ export const EditorPage = () => {
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
 
     return (
         <>
