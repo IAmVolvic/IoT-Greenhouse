@@ -4,7 +4,7 @@ import { RootOutlet } from "@app/components/outlet";
 
 const ROUTES: RouteObject[] = [
 	{
-		element: <RootOutlet />,
+		element: <RootOutlet isProtected={false} />,
 		children: [
 			{
 				path: '*',

@@ -1,3 +1,1 @@
-declare module '*.jpg';
-declare module '*.jpeg';
-declare module '*.png';
+/// <reference types="vite/client" />

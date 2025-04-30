@@ -58,6 +58,19 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// ===================== * CORS CONFIGURATION * ===================== //
+string[] allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowedOriginsPolicy", builder =>
+    {
+        builder.WithOrigins(allowedOrigins)
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 // ===================== * BUILD & MIDDLEWARE PIPELINE * ===================== //
 var clientEventHandlers = builder.FindAndInjectClientEventHandlers(Assembly.GetExecutingAssembly());
 var app = builder.Build();
@@ -67,10 +80,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 // ===================== * CORS SETUP * ===================== //
-app.UseCors(config => config
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowAnyOrigin());
+app.UseCors("AllowedOriginsPolicy");
 
 // ===================== * ROUTES & ENDPOINTS * ===================== //
 app.MapControllers();

@@ -67,9 +67,9 @@
     ".NET Launch Settings Profile.Greenhouse.API: IIS Express.executor": "Run",
     ".NET Launch Settings Profile.Greenhouse.API: http.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
     "deletionFromPopupRequiresConfirmation": "false",
-    "git-widget-placeholder": "DevOpsSetup",
+    "git-widget-placeholder": "feature/frontend/routes",
+    "RunOnceActivity.git.unshallow": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -134,7 +134,8 @@
       <workItem from="1745429437759" duration="3055000" />
       <workItem from="1745440728485" duration="6639000" />
       <workItem from="1745447496872" duration="558000" />
-      <workItem from="1745759067953" duration="1207000" />
+      <workItem from="1745501237042" duration="2447000" />
+
     </task>
     <servers />
   </component>
