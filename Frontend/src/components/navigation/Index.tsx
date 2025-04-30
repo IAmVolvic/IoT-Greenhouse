@@ -96,7 +96,7 @@ export const Navbar = () => {
                             </div>
 
                             <div className="flex flex-col items-start justify-center">
-                                <div className="text-light200 text-sm"> {user?.name} </div>
+                                <div className="text-light200 text-sm capitalize"> {user?.name} </div>
                                 <div className="text-light200 text-xs capitalize"> {user?.role?.toString().toLowerCase()} </div>
                             </div>
                         </button>
