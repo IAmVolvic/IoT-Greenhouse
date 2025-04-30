@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "scaffold": "npx swagger-typescript-api -p http://localhost:5001/swagger/v1/swagger.json -o ./src/ -n Api.ts --axios"
+    "scaffold": "npx swagger-typescript-api generate -p http://localhost:4000/swagger/v1/swagger.json -o ./src/ -n Api.ts --axios"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
