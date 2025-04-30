@@ -1,25 +1,24 @@
-import { Navigate, To } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useAuthStore from "@store/Authentication/auth.store";
 
 interface ProtectedComponentProps {
 	showWhileAuthenticated: boolean;
-	redirect: To;
+	redirect: string;
 	children: React.ReactNode;
 }
 
-export const ProtectedComponent = (props: ProtectedComponentProps) => {
-	const { showWhileAuthenticated, redirect, children } = props;
+export const ProtectedComponent = ({ showWhileAuthenticated, redirect, children }: ProtectedComponentProps) => {
 	const { isLoggedIn, user } = useAuthStore();
+	const navigate = useNavigate();
 
-	if (showWhileAuthenticated) {
-		if (!isLoggedIn) {
-			return <Navigate to={redirect} replace={true} />
+	const unauthorized = showWhileAuthenticated ? !isLoggedIn : !!user;
+
+	useEffect(() => {
+		if (unauthorized) {
+			navigate(redirect, { replace: true });
 		}
-	} else {
-		if (user) {
-			return <Navigate to={redirect} replace={true} />
-		}
-	}
+	}, [unauthorized, navigate, redirect]);
 
 	return children;
-}
+};
