@@ -12,7 +12,6 @@ import { InputTypeEnum, TextInput } from "@components/inputs/textInput";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import useNavStore from "@store/Nav/nav.store";
 import { useLogin } from "@hooks/authentication/useLogin";
-import { ProtectedComponent } from "@components/authProtected/ProtectedComponent";
 import { Toaster } from "react-hot-toast";
 import { useSignup } from "@hooks/authentication/useSignup";
 
@@ -84,7 +83,7 @@ export const Home = () => {
     }, []);
 
     return (
-        <ProtectedComponent showWhileAuthenticated={false} redirect={"/editor"}>
+        <>
             <Toaster position="top-center"/>
 
             <div className="flex items-center justify-center w-full h-full relative">
@@ -97,7 +96,7 @@ export const Home = () => {
                         </div>
 
                         <div className="flex flex-col items-center gap-8 w-full px-5 lg:px-12">
-                            <div className="text-light200"> Sign in to Greenhouse</div>
+                            <div className="text-light200"> Sign in to Greenhouse </div>
 
                             <Tabs defaultValue="login" className="w-full">
                                 <TabsList className="flex flex-row justify-center items-center bg-dark300 p-2 rounded-full mb-8">
@@ -122,6 +121,6 @@ export const Home = () => {
                     </SimpleContainer>
                 </div>
             </div>
-        </ProtectedComponent>
+        </>
     );
 };

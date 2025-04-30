@@ -5,8 +5,9 @@ import { Watermark } from "@components/watermark";
 import { ProtectedComponent } from "@components/authProtected/ProtectedComponent";
 
 interface RouteOutletProps {
-	isProtected: boolean;
+	isRootContent: boolean;
 	failedAuthPath?: string;
+	showWhileAuthenticated?: boolean;
 }
 
 const RootContent = () => {
@@ -26,8 +27,8 @@ const RootContent = () => {
 
 
 export const RootOutlet = (props: RouteOutletProps) => {
-	return props.isProtected ? (
-		<ProtectedComponent showWhileAuthenticated={true} redirect={props.failedAuthPath!}>
+	return !props.isRootContent ? (
+		<ProtectedComponent showWhileAuthenticated={props.showWhileAuthenticated!} redirect={props.failedAuthPath!}>
 			<RootContent />
 		</ProtectedComponent>
 	) : (
