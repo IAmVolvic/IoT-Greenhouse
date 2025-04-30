@@ -5,7 +5,7 @@ import { RootOutlet } from "@app/components/outlet";
 const ROUTES: RouteObject[] = [
 	{
 		path: '/editor',
-		element: <RootOutlet isProtected={true} failedAuthPath={"/"}/>,
+		element: <RootOutlet isRootContent={false} showWhileAuthenticated={true} failedAuthPath={"/"}/>,
 		children: [
 			{ index: true, element: <EditorPage /> },
 		]

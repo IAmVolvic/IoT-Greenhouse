@@ -70,6 +70,7 @@ export const EditorPage = () => {
             animationId = requestAnimationFrame(animate);
             controls.update()
             renderer.render(scene, camera);
+            renderer.antialias = true;
 
             if (labelRef.current) {
                 const vector = labelPosition.clone().project(camera);
