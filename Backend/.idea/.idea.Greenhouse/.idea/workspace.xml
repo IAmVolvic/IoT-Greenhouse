@@ -10,7 +10,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Greenhouse.Application/Mqtt/Dtos/DeviceLogDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Greenhouse.Application/Mqtt/Interfaces/IMqttPublisher.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/Environment/MqttSettings.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/MqttServices/MqttExtensions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/MqttServices/MqttPublisher.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/MqttServices/MqttSubscriptionEventHandlers/GasEventHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/MqttServices/MqttSubscriptionEventHandlers/IMqttMessageHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.API/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.API/appsettings.EXAMPLE.json" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.API/appsettings.EXAMPLE.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.Infrastructure/Greenhouse.Infrastructure.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/Greenhouse.Infrastructure.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.sln.DotSettings.user" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,22 +41,22 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Kimi310"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Kimi310&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/IAmVolvic/IoT-Greenhouse.git",
-    "accountId": "7272d115-a3ca-4dfa-bcd3-8c715bb34812"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/IAmVolvic/IoT-Greenhouse.git&quot;,
+    &quot;accountId&quot;: &quot;7272d115-a3ca-4dfa-bcd3-8c715bb34812&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/24372012c6c94138bf3f496e104366ffc8f918/dc/818f9685/Exception.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/28e19b25dca715c06ccfbb305bae9ac7b96f53241e11ae50651aa2425e0/ExtensionMethods.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7e41822e41658e4cf818f44f3e7ff221c3e2f07314cace41789ecc545ee7d426/BaseEventHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bbcfe7ab04c9c5e854e8084459eb29d1ba45cca1ecfec1ad876fafa1267/ConfigurationManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../IoT/IoT_Project_Gas/IoT_Project_Gas.ino" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -67,9 +78,9 @@
     ".NET Launch Settings Profile.Greenhouse.API: IIS Express.executor": "Run",
     ".NET Launch Settings Profile.Greenhouse.API: http.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "deletionFromPopupRequiresConfirmation": "false",
-    "git-widget-placeholder": "feature/frontend/routes",
     "RunOnceActivity.git.unshallow": "true",
+    "deletionFromPopupRequiresConfirmation": "false",
+    "git-widget-placeholder": "DevOpsSetup",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -135,7 +146,7 @@
       <workItem from="1745440728485" duration="6639000" />
       <workItem from="1745447496872" duration="558000" />
       <workItem from="1745501237042" duration="2447000" />
-
+      <workItem from="1746019195515" duration="6274000" />
     </task>
     <servers />
   </component>
