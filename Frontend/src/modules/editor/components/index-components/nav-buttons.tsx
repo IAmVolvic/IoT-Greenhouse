@@ -2,30 +2,18 @@ import { useEffect, useState } from "react";
 import { SelectInput } from "@components/inputs/select";
 import { CirclePlus, Settings } from "lucide-react";
 import useEditorStore from "@store/Editor/editor.store";
+import { greenHouseTable } from "@modules/editor/data/GreenhouseData";
 
-// Use the same structure as in the main component
-interface GreenHouseData {
-    id: string;
-    name: string;
-}
 
 export const EditorNavButtons = () => {
-    // Matching the greenhouse table structure from the main component
-    const GreenTable: GreenHouseData[] = [
-        { id: "gh1", name: "Greenhouse 1" },
-        { id: "gh2", name: "Greenhouse 2" },
-        { id: "gh3", name: "Greenhouse 3" },
-        { id: "gh4", name: "Greenhouse 4" }
-    ];
-
     const { selectedGH, setSelectedGH } = useEditorStore();
 
     // Create a dropdown-friendly array of greenhouse IDs for the select input
-    const greenhouseSelectOptions = GreenTable.map(gh => gh.id);
+    const greenhouseSelectOptions = greenHouseTable.map(gh => gh.id);
 
     useEffect(() => {
         // Set the first greenhouse ID as the default selection
-        setSelectedGH(GreenTable[0].id);
+        setSelectedGH(greenHouseTable[0].id);
 
         return () => {
             setSelectedGH(null);
