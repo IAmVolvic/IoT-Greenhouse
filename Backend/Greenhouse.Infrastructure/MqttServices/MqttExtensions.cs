@@ -22,6 +22,7 @@ public static class MqttExtensions
         foreach (var handlerType in subscribeHandlers)
         {
             services.AddScoped(typeof(IMqttMessageHandler), handlerType);
+            services.AddScoped(handlerType);
         }
 
         services.AddSingleton<HiveMQClient>(sp =>

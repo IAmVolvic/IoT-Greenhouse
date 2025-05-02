@@ -12,6 +12,7 @@ using Greenhouse.DataAccess.Repositories;
 using Greenhouse.Domain.DatabaseDtos;
 using Greenhouse.Infrastructure.AuthService;
 using Greenhouse.Infrastructure.Environment;
+using Greenhouse.Infrastructure.MqttServices.MqttSubscriptionEventHandlers;
 using Greenhouse.Infrastructure.Security;
 using Greenhouse.Infrastructure.Services;
 using Greenhouse.Infrastructure.WebsocketServices;
