@@ -10,10 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Greenhouse.Domain/DatabaseDtos/Device.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Greenhouse.Domain/DatabaseDtos/Logs.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Greenhouse.Domain/DatabaseDtos/Preferences.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.DataAccess/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.DataAccess/AppDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.Domain/DatabaseDtos/Example.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.Domain/DatabaseDtos/Logs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Domain/DatabaseDtos/Logs.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,7 +139,7 @@
       <workItem from="1745447496872" duration="558000" />
       <workItem from="1745501237042" duration="2447000" />
       <workItem from="1746019195515" duration="6274000" />
-      <workItem from="1746169868033" duration="1555000" />
+      <workItem from="1746169868033" duration="1908000" />
     </task>
     <servers />
   </component>
