@@ -11,6 +11,8 @@ using Greenhouse.DataAccess;
 using Greenhouse.DataAccess.Repositories;
 using Greenhouse.Domain.DatabaseDtos;
 using Greenhouse.Infrastructure.AuthService;
+using Greenhouse.Infrastructure.Environment;
+using Greenhouse.Infrastructure.MqttServices.MqttSubscriptionEventHandlers;
 using Greenhouse.Infrastructure.Security;
 using Greenhouse.Infrastructure.Services;
 using Greenhouse.Infrastructure.WebsocketServices;
@@ -28,6 +30,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.Configure<PasswordSettings>(builder.Configuration.GetSection("PasswordSettings"));
+builder.Services.Configure<MqttSettings>(builder.Configuration.GetSection("MqttSettings"));
 
 // ===================== * DEPENDENCY INJECTION * ===================== //
 // Filters
@@ -52,6 +55,7 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtManager, JwtManager>();
+builder.Services.RegisterMqttInfrastructure();
 
 // ===================== * CONTROLLERS & MVC * ===================== //
 builder.Services.AddControllers();
@@ -84,7 +88,7 @@ app.UseCors("AllowedOriginsPolicy");
 
 // ===================== * ROUTES & ENDPOINTS * ===================== //
 app.MapControllers();
-
+await app.ConfigureMqtt();
 // ===================== * WEB SOCKET SERVER SETUP * ===================== //
 var webSocketHandler = new WebSocketHandler(app, clientEventHandlers);
 webSocketHandler.StartServer();
