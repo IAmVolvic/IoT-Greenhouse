@@ -5,6 +5,8 @@ using Greenhouse.Infrastructure.MqttServices;
 using Greenhouse.Infrastructure.MqttServices.MqttSubscriptionEventHandlers;
 using HiveMQtt.Client;
 using HiveMQtt.Client.Exceptions;
+using HiveMQtt.MQTT5.Types;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -13,7 +15,6 @@ public static class MqttExtensions
 {
     public static IServiceCollection RegisterMqttInfrastructure(this IServiceCollection services)
     {
-        // Register all handlers implementing IMqttMessageHandler as the interface
         var subscribeHandlers = typeof(IMqttMessageHandler).Assembly
             .GetTypes()
             .Where(t => !t.IsAbstract && typeof(IMqttMessageHandler).IsAssignableFrom(t));
@@ -82,35 +83,46 @@ public static class MqttExtensions
                     Thread.Sleep(TimeSpan.FromSeconds(Math.Pow(2, attempt)));
                 }
             }
-
-            // Subscribe to handlers' topics and attach message routing
-            using (var scope = sp.CreateScope())
-            {
-                var handlers = scope.ServiceProvider.GetServices<IMqttMessageHandler>();
-
-                foreach (var handler in handlers)
-                {
-                    logger.LogInformation("Subscribing to topic {Topic}", handler.TopicFilter);
-
-                    client.SubscribeAsync(handler.TopicFilter, handler.QoS).GetAwaiter().GetResult();
-
-                    client.OnMessageReceived += (sender, args) =>
-                    {
-                        foreach (var handler in handlers)
-                        {
-                            if (args.PublishMessage.Topic == handler.TopicFilter)
-                            {
-                                handler.Handle(sender, args);
-                            }
-                        }
-                    };
-                }
-            }
-
             return client;
         });
 
         services.AddSingleton<IMqttPublisher, MqttPublisher>();
         return services;
+    }
+    
+    
+    public static async Task<WebApplication> ConfigureMqtt(this WebApplication app)
+    {
+        var mqttClient = app.Services.GetRequiredService<HiveMQClient>();
+        var builder = new SubscribeOptionsBuilder();
+        var logger = app.Services.GetRequiredService<ILogger<HiveMQClient>>();
+
+        var handlerTypes = typeof(IMqttMessageHandler).Assembly
+            .GetTypes()
+            .Where(t => !t.IsAbstract && typeof(IMqttMessageHandler).IsAssignableFrom(t));
+
+        //here we're subscribing to each handler
+        foreach (var handlerType in handlerTypes)
+            using (var scope = app.Services.CreateScope())
+            {
+                var handler = (IMqttMessageHandler)scope.ServiceProvider
+                    .GetRequiredService(handlerType);
+
+                logger.LogInformation("Subscribing to topic: {topic} with QoS: {qos}",
+                    handler.TopicFilter, handler.QoS);
+
+                builder.WithSubscription(
+                    new TopicFilter(handler.TopicFilter, handler.QoS),
+                    (sender, args) =>
+                    {
+                        using var messageScope = app.Services.CreateScope();
+                        var messageHandler = (IMqttMessageHandler)messageScope.ServiceProvider
+                            .GetRequiredService(handlerType);
+                        messageHandler.Handle(sender, args);
+                    });
+            }
+
+        await mqttClient.SubscribeAsync(builder.Build());
+        return app;
     }
 }

@@ -87,7 +87,7 @@ app.UseCors("AllowedOriginsPolicy");
 
 // ===================== * ROUTES & ENDPOINTS * ===================== //
 app.MapControllers();
-
+await app.ConfigureMqtt();
 // ===================== * WEB SOCKET SERVER SETUP * ===================== //
 var webSocketHandler = new WebSocketHandler(app, clientEventHandlers);
 webSocketHandler.StartServer();
