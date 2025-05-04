@@ -5,24 +5,19 @@ import useAuthStore from '@store/Authentication/auth.store';
 
 export const useSignup = (data: UserSignupDto) => {
 	const api = new Api();
-	const [, setCookie] = useCookies(['Authentication']);
 	const { setUser, setIsLoggedIn } = useAuthStore();
 
 	const signup = () => {
-		api.auth.userSignupCreate(data).then((res) => { 
-			setCookie('Authentication', res.data.jwtToken, { path: '/', expires: new Date(Date.now() + 1000*60*60*24*7) });
-
-			api.auth.userList({
-				withCredentials: true
-			}).then((res) => {
-				setUser(res.data);
-				setIsLoggedIn(true);
-				window.localStorage.setItem('user', JSON.stringify(res.data));
-			}
-			).catch((err) => {
-				ErrorToast(err);
-			});
-		}).catch((err) => {
+		api.auth.userSignupCreate(data, { withCredentials: true })
+		.then(() => {
+			return api.auth.userList({ withCredentials: true });
+		})
+		.then((res) => {
+			setUser(res.data);
+			setIsLoggedIn(true);
+			window.localStorage.setItem('user', JSON.stringify(res.data));
+		})
+		.catch((err) => {
 			ErrorToast(err);
 		});
 	};

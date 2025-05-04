@@ -22,13 +22,33 @@ public class AuthController(IUserService userService) : ControllerBase
     [Route("login")]
     public ActionResult<UserLoginResponseDto> PLogin([FromBody] UserLoginDto request)
     {
-        return Ok(userService.Login(request));
+        var loginResponse = userService.Login(request);
+
+        Response.Cookies.Append("Authentication", loginResponse.JwtToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.None,
+            Expires = DateTimeOffset.UtcNow.AddDays(7)
+        });
+
+        return Ok(new { message = "Login successful" });
     }
     
     [HttpPost]
     [Route("signup")]
     public ActionResult<UserSignupResponseDto> PSignup([FromBody] UserSignupDto request)
     {
-        return Ok(userService.SignUp(request));
+        var signupResponse = userService.SignUp(request);
+
+        Response.Cookies.Append("Authentication", signupResponse.JwtToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.None,
+            Expires = DateTimeOffset.UtcNow.AddDays(7)
+        });
+
+        return Ok(new { message = "Signup successful" });
     }
 }
