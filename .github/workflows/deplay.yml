@@ -53,7 +53,7 @@ jobs:
             sed -i "s|__MQTT_PASS__|${{ secrets.MQTT_PASSWORD }}|g" appsettings.json
 
             echo "Running EF Core migrations..."
-            dotnet ef database update -p Greenhouse.Infrastructure -s Greenhouse.API
+            dotnet ef database update -p Greenhouse.DataAccess -s Greenhouse.API
 
             echo "Restarting screen session..."
             screen -S just2play -X quit || true
