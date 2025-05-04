@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { SelectInput } from "@components/inputs/select";
 import { CirclePlus, Settings } from "lucide-react";
 import useEditorStore from "@store/Editor/editor.store";
