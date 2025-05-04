@@ -23,3 +23,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_GREENHOUSE_74FD1 }}
           channelId: live
           projectId: greenhouse-74fd1
+          entryPoint: Frontend

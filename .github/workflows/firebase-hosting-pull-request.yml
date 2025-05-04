@@ -25,3 +25,4 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_GREENHOUSE_74FD1 }}
           projectId: greenhouse-74fd1
+          entryPoint: Frontend
