@@ -9,11 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Greenhouse.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.API/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Greenhouse.Infrastructure/MqttServices/MqttExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/MqttServices/MqttExtensions.cs" afterDir="false" />
-    </list>
+    <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
