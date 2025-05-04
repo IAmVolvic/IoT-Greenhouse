@@ -10,7 +10,12 @@ export const useLogin = (data: UserLoginDto) => {
 
 	const login = () => {
 		api.auth.userLoginCreate(data).then((res) => { 
-			setCookie('Authentication', res.data.jwtToken, { path: '/', expires: new Date(Date.now() + 1000*60*60*24*7) });
+			setCookie('Authentication', res.data.jwtToken, { 
+				path: '/', 
+				expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), 
+				sameSite: 'none',
+				secure: true
+			});
 
 			api.auth.userList({
 				withCredentials: true
