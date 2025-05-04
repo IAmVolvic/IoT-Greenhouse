@@ -1,0 +1,58 @@
+name: Deploy Backend to Pebble
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.x' 
+
+      - name: Publish .NET API
+        run: dotnet publish ./Backend/Greenhouse.API/Greenhouse.API.csproj -c Release -o publish
+
+      - name: Create SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Copy files to server
+        run: |
+          scp -o StrictHostKeyChecking=no -r ./publish/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}
+
+      - name: Inject secrets and restart API
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
+            cd $DEPLOY_PATH
+
+            # Replace placeholders with secret values
+            sed -i "s|__PSDB__|${{ secrets.DB_CONNECTION }}|g" appsettings.json
+
+            sed -i "s|__JWT_TOKEN__|${{ secrets.JWT_TOKEN }}|g" appsettings.json
+            sed -i "s|__JWT_ISSUER__|${{ secrets.JWT_ISSUER }}|g" appsettings.json
+            sed -i "s|__JWT_AUDIENCE__|${{ secrets.JWT_AUDIENCE }}|g" appsettings.json
+
+            sed -i "s|__PASSWORD_SALT__|${{ secrets.PASSWORD_SALT }}|g" appsettings.json
+
+            sed -i "s|__MQTT_BROKER__|${{ secrets.MQTT_BROKER }}|g" appsettings.json
+            sed -i "s|__MQTT_USER__|${{ secrets.MQTT_USERNAME }}|g" appsettings.json
+            sed -i "s|__MQTT_PASS__|${{ secrets.MQTT_PASSWORD }}|g" appsettings.json
+
+            # Restart screen session
+            screen -S just2play -X quit || true
+            screen -dmS just2play dotnet Greenhouse.API.dll
+          EOF
