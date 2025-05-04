@@ -1,4 +1,3 @@
-// store/loadingStore.ts
 import { AuthorizedUserResponseDto } from '@Api';
 import {create} from 'zustand';
 

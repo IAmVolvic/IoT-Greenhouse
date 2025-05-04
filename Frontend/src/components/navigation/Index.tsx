@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useLogout } from "@hooks/authentication/useLogout";
 import { useAuth } from "@hooks/authentication/useAuthentication";
+import { EditorNavButtons } from "@modules/editor/components/index-components/nav-buttons";
 
 // Todo
 // Nav for mobile
@@ -61,32 +62,9 @@ export const Navbar = () => {
 
                 {/* CENTER */}
                 {isOpen && (
-                    <div className="flex flex-row items-center justify-center flex-1 h-full">
-                        <div className="flex flex-row items-center justify-center h-full bg-dark300 rounded-full gap-2">
-                            <div className="flex justify-center items-center bg-dark300 text-light200 rounded-full aspect-square h-full hover:bg-light100 hover:text-dark100">
-                                <CirclePlus size={20} strokeWidth={1.5} />
-                            </div>
-
-                            <div className="flex justify-center items-center bg-dark300 text-light200 rounded-full aspect-square h-full">
-                                <SelectInput
-                                    inputTitle="Select a project"
-                                    handleChange={() => {}}
-                                    selectArray={["Room 1", "Room 2"]}
-                                    defaultValue="default"
-                                    defaultValueText="Select a project"
-                                    parentClassName="flex justify-center items-center h-full"
-                                    titleClassName="hidden"
-                                />
-                            </div>
-
-                            <div className="flex justify-center items-center bg-dark300 text-light200 rounded-full aspect-square h-full hover:bg-light100 hover:text-dark100">
-                                <Settings size={20} strokeWidth={1.5} />
-                            </div>
-                        </div>
-                    </div>
+                    <EditorNavButtons />
                 )}
                 
-
                 {/* RIGHT */}
                 {isOpen && (
                     <div className={`flex flex-row items-center justify-end h-full w-52`}>
