@@ -27,6 +27,5 @@ public class GasEventHandler(ILogService logService) : IMqttMessageHandler
         Validator.ValidateObject(dto, context);
 
         logService.AddToDbAndBroadcast(dto);
-        Console.WriteLine("Received gas data: {@Dto}", dto);
     }
 }
