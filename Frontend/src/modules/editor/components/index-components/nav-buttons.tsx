@@ -8,8 +8,11 @@ import { greenHouseTable } from "@modules/editor/data/GreenhouseData";
 export const EditorNavButtons = () => {
     const { selectedGH, setSelectedGH } = useEditorStore();
 
-    // Create a dropdown-friendly array of greenhouse IDs for the select input
-    const greenhouseSelectOptions = greenHouseTable.map(gh => gh.id);
+    // Create a dropdown-friendly array of greenhouse objects with id as value and name for display
+    const greenhouseSelectOptions = greenHouseTable.map(gh => ({
+        value: gh.id,
+        label: gh.name
+    }));
 
     useEffect(() => {
         // Set the first greenhouse ID as the default selection
@@ -34,7 +37,7 @@ export const EditorNavButtons = () => {
                         selectArray={greenhouseSelectOptions}
                         defaultValue={selectedGH || ""}
                         defaultValueText="Select a project"
-                        parentClassName="flex justify-center items-center h-full"
+                        parentClassName="flex items-center justify-start h-full overflow-hidden text-nowrap text-ellipsis"
                         titleClassName="hidden"
                     />
                 </div>
