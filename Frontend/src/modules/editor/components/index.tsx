@@ -13,13 +13,9 @@ import { sceneFloor } from "@components/threejs/Objects/sceneFloor";
 import useLoadingStore from "@store/Loader/loader.store";
 import { CustomLoader } from "@components/Loader/Index";
 import useNavStore from "@store/Nav/nav.store";
-<<<<<<< Updated upstream
 import useEditorStore from "@store/Editor/editor.store";
 import { greenHouseTable } from "../data/GreenhouseData";
 
-=======
-import { EditSheet } from "./index-components/EditSheet";
->>>>>>> Stashed changes
 
 export const EditorPage = () => {
     const { setIsLoading } = useLoadingStore((state) => state);
@@ -30,7 +26,7 @@ export const EditorPage = () => {
     const labelRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
     const [sceneObjects, setSceneObjects] = useState<{ 
         camera?: THREE.PerspectiveCamera, 
-        controls?: any,
+        controls?: THREE.OrbitControls,
         objectGroups?: Record<string, THREE.Group>
     }>({});
 
@@ -211,7 +207,6 @@ export const EditorPage = () => {
             <CustomLoader />
             
             <div ref={mountRef} className="w-full h-full relative overflow-hidden">
-<<<<<<< Updated upstream
                 {/* HTML Billboards */}
                 {greenHouseTable.map((greenhouse) => (
                     <button 
@@ -231,22 +226,6 @@ export const EditorPage = () => {
                         </div>
                     </button>
                 ))}
-=======
-                {/* HTML Billboard */}
-                <button 
-                    ref={labelRef} 
-                    className="absolute pointer-events-auto cursor-pointer" 
-                    style={{ top: 0, left: 0 }}
-                    onClick={handleClick}
-                >
-                    <div className="bg-light100 p-2 rounded-lg shadow-md flex items-center space-x-2">
-                        <LeafyGreen className="w-6 h-6 text-green-600" />
-                        <span>Room 1</span>
-                    </div>
-                </button>
-
-                <EditSheet />
->>>>>>> Stashed changes
             </div>
         </>
     );
