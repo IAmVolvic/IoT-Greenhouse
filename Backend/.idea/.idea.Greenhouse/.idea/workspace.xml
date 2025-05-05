@@ -11,15 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Greenhouse.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/Api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/Api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/components/Sheets/components/sheetContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/components/Sheets/components/sheetContent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/components/inputs/select.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/components/inputs/select.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/components/navigation/Index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/components/navigation/Index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index-components/EditSheet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index-components/EditSheet.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index-components/nav-buttons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index-components/nav-buttons.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
