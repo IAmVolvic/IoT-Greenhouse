@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Greenhouse.Domain.DatabaseDtos;
 
-public class Logs
+public class Log
 {
     public Guid Id { get; set; }
     [Required]

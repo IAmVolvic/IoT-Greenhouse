@@ -5,6 +5,7 @@ using Greenhouse.Application;
 using Greenhouse.Application.Environment;
 using Greenhouse.Application.Repositories;
 using Greenhouse.Application.Security;
+using Greenhouse.Application.Services.Logs;
 using Greenhouse.Application.Services.User;
 using Greenhouse.Application.Websocket.Interfaces;
 using Greenhouse.DataAccess;
@@ -32,7 +33,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
+builder.Services.AddScoped<ILogRepository, LogRepository>();
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.Configure<PasswordSettings>(builder.Configuration.GetSection("PasswordSettings"));
 builder.Services.Configure<MqttSettings>(builder.Configuration.GetSection("MqttSettings"));
@@ -55,13 +56,13 @@ builder.Services.AddScoped<IWebsocketSubscriptionService, WebsocketSubscriptionS
 builder.Services.AddSingleton<IConnectionManager, WebSocketConnectionManager>();
 
 // Services and Security
+builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<IHelloService, HelloService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtManager, JwtManager>();
 builder.Services.RegisterMqttInfrastructure();
-
 // ===================== * CONTROLLERS & MVC * ===================== //
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

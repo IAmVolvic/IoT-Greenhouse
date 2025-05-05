@@ -9,7 +9,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<RequestCount> RequestCounts { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Device> Devices { get; set; }
-    public DbSet<Logs> Logs { get; set; }
+    public DbSet<Log> Logs { get; set; }
     public DbSet<Preferences> Preferences { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -47,7 +47,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         });
 
         // Logs table
-        modelBuilder.Entity<Logs>(entity =>
+        modelBuilder.Entity<Log>(entity =>
         {
             entity.ToTable("logs");
             entity.HasKey(e => e.Id);
