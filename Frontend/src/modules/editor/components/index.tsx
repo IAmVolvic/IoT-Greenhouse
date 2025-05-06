@@ -67,7 +67,7 @@ export const EditorPage = () => {
             </div>
 
             {/* Panel / Main Content */}
-            <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-50">
+            <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-10">
 
                 {/* SIDE PANEL */}
                 <div className="absolute top-0 left-0 h-full flex items-center pointer-events-none z-20 p-5">
