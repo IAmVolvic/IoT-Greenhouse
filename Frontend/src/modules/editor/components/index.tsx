@@ -70,7 +70,7 @@ export const EditorPage = () => {
             <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-50">
 
                 {/* SIDE PANEL */}
-                <div className="absolute top-0 left-0 h-full flex items-center pointer-events-none z-50 p-5">
+                <div className="absolute top-0 left-0 h-full flex items-center pointer-events-none z-20 p-5">
                     {/* Cool cutout thing I will try */}
                     <motion.div
                         className="w-80 h-full relative"
