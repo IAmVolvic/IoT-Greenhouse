@@ -23,35 +23,44 @@ jobs:
 
       - name: Start SonarQube Analysis
         run: |
+          cd Backend
           dotnet sonarscanner begin \
             /k:"${{ secrets.SONAR_KEY }}" \
             /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.scanner.scanAll=false \
-            /d:sonar.coverageReportPaths="coverage-report/SonarQube.xml" \
+            /d:sonar.coverageReportPaths="../coverage-report/SonarQube.xml" \
             /d:sonar.qualitygate.wait=true \
             /d:sonar.qualitygate.timeout=300 \
             /d:sonar.exclusions="**/Frontend/**"
 
       - name: Restore Dependencies
-        run: dotnet restore
+        run: |
+          cd Backend
+          dotnet restore
 
       - name: Build Solution
-        run: dotnet build --configuration Release
+        run: |
+          cd Backend
+          dotnet build --configuration Release
 
       - name: Run Unit Tests with Coverage
-        run: dotnet test --collect:"XPlat Code Coverage" --results-directory TestResults
+        run: |
+          cd Backend
+          dotnet test --collect:"XPlat Code Coverage" --results-directory ../TestResults
 
       - name: Generate SonarQube Coverage Report
         run: |
           reportgenerator \
-          -reports:TestResults/**/coverage.cobertura.xml \
-          -targetdir:coverage-report \
-          -reporttypes:SonarQube
+            -reports:TestResults/**/coverage.cobertura.xml \
+            -targetdir:coverage-report \
+            -reporttypes:SonarQube
 
       - name: Run Mutation Tests (Stryker)
         if: always()
-        run: dotnet stryker --reporter html --output StrykerOutput || true
+        run: |
+          cd Backend
+          dotnet stryker --reporter html --output ../StrykerOutput || true
 
       - name: Upload Mutation Test Report
         if: always()
@@ -64,4 +73,5 @@ jobs:
       - name: Complete SonarQube Analysis
         if: always()
         run: |
+          cd Backend
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
