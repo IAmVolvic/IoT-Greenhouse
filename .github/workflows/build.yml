@@ -31,7 +31,7 @@ jobs:
             /d:sonar.coverageReportPaths="coverage-report/SonarQube.xml" \
             /d:sonar.qualitygate.wait=true \
             /d:sonar.qualitygate.timeout=300 \
-            /d:sonar.exclusions="**/calculator-frontend/**"
+            /d:sonar.exclusions="**/Frontend/**"
 
       - name: Restore Dependencies
         run: dotnet restore
