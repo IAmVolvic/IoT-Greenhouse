@@ -14,11 +14,11 @@ public class SubscriptionController(IWebsocketSubscriptionService websocketSubsc
     [HttpPost]
     [Route("Subscribe")]
     [Authenticated]
-    public async Task<ActionResult> Subscribe()
+    public async Task<ActionResult> Subscribe([FromBody] int socketId)
     {
         var authUser = HttpContext.Items["AuthenticatedUser"] as AuthorizedUserResponseDto;
         var userDevices = deviceService.GetDevicesForUser(authUser.Id);
-        await websocketSubscriptionService.SubscribeToTopic(authUser.Id.ToString(), userDevices.Select(d => d.Id.ToString()).ToList());
+        await websocketSubscriptionService.SubscribeToTopic(socketId.ToString(), userDevices.Select(d => d.Id.ToString()).ToList());
         return Ok();
     }
 }
