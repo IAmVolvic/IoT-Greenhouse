@@ -133,3 +133,19 @@ select option {
 .ActiveNav > div {
   @apply bg-primary text-dark100;
 }
+
+
+.cornerCut-top-left {
+  mask-image: url('../images/RoundedCutoutV4.svg');
+  mask-repeat: no-repeat;
+  mask-position: top left;
+}
+
+.cut-top-left {
+  background:
+  radial-gradient(
+    circle at 0% 0%,
+    transparent 73px,
+    theme("colors.dark100") 73px
+  );
+}

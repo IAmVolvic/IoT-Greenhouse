@@ -1,0 +1,77 @@
+name: SonarQube Code Analysis & Upload to FTP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install required tools
+        run: |
+          dotnet tool install -g dotnet-sonarscanner
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          dotnet tool install --global dotnet-stryker
+
+      - name: Start SonarQube Analysis
+        run: |
+          cd Backend
+          dotnet sonarscanner begin \
+            /k:"${{ secrets.SONAR_KEY }}" \
+            /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.scanner.scanAll=false \
+            /d:sonar.coverageReportPaths="../coverage-report/SonarQube.xml" \
+            /d:sonar.qualitygate.wait=true \
+            /d:sonar.qualitygate.timeout=300 \
+            /d:sonar.exclusions="**/Frontend/**"
+
+      - name: Restore Dependencies
+        run: |
+          cd Backend
+          dotnet restore
+
+      - name: Build Solution
+        run: |
+          cd Backend
+          dotnet build --configuration Release
+
+      - name: Run Unit Tests with Coverage
+        run: |
+          cd Backend
+          dotnet test --collect:"XPlat Code Coverage" --results-directory ../TestResults
+
+      - name: Generate SonarQube Coverage Report
+        run: |
+          reportgenerator \
+            -reports:TestResults/**/coverage.cobertura.xml \
+            -targetdir:coverage-report \
+            -reporttypes:SonarQube
+
+      - name: Run Mutation Tests (Stryker)
+        if: always()
+        run: |
+          cd Backend
+          dotnet stryker --reporter html --output ../StrykerOutput || true
+
+      - name: Upload Mutation Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mutation-Test-Report
+          path: StrykerOutput/**
+          if-no-files-found: warn
+
+      - name: Complete SonarQube Analysis
+        if: always()
+        run: |
+          cd Backend
+          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

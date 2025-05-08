@@ -1,16 +1,20 @@
-import { SelectInput } from "@components/inputs/select";
 import useNavStore from "@store/Nav/nav.store";
-import { CirclePlus, House, PencilRuler, Settings } from "lucide-react";
+import {House, PencilRuler } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useLogout } from "@hooks/authentication/useLogout";
 import { useAuth } from "@hooks/authentication/useAuthentication";
 import { EditorNavButtons } from "@modules/editor/components/index-components/nav-buttons";
+import useEditorStore from "@store/Editor/editor.store";
+import { greenHouseTable } from "@modules/editor/data/GreenhouseData";
 
 // Todo
 // Nav for mobile
 
 export const Navbar = () => {
+    const { selectedGH } = useEditorStore();
+    const greenHouseMap = Object.fromEntries(greenHouseTable.map(gh => [gh.id, gh]));
+
     const { isOpen } = useNavStore((state) => state);
     const { user } = useAuth();
     const Logout = useLogout();
@@ -42,13 +46,13 @@ export const Navbar = () => {
                     )}
 
                     {isOpen && (
-                        <NavLink className="flex flex-row items-center justify-start h-full w-32 bg-dark300 rounded-full gap-2" to="/editor">
+                        <div className="flex flex-row items-center justify-start h-full min-w-32 max-w-48 bg-dark300 rounded-full gap-2 pr-3">
                             <div className="flex justify-center items-center bg-primary rounded-full aspect-square h-full">
                                 <PencilRuler size={20} strokeWidth={1.5} />
                             </div>
 
-                            <div className="text-light200 text-sm"> Room 1 </div>
-                        </NavLink>
+                            <div className="text-light200 text-sm text-nowrap text-ellipsis overflow-hidden"> {selectedGH ? greenHouseMap[selectedGH]?.name : ''} </div>
+                        </div>
                     )}
                     
                     {!isOpen && (
