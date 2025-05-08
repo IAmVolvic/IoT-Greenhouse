@@ -9,21 +9,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" afterDir="false" />
-
-      <change beforePath="$PROJECT_DIR$/Greenhouse.API/WebSocketHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.API/WebSocketHandler.cs" afterDir="false" />
-
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index.tsx" afterDir="false" />
-
-    </list>
+    <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DpaMonitoringSettings">
-    <option name="autoShow" value="false" />
+    <option name="firstShow" value="false" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -69,7 +62,6 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     ".NET Launch Settings Profile.Greenhouse.API: IIS Express.executor": "Run",
@@ -77,15 +69,15 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "deletionFromPopupRequiresConfirmation": "false",
-    "git-widget-placeholder": "feature/frontend/3DSpace",
+    "git-widget-placeholder": "feature/backend/AddingDevice",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "CodeLensConfigurable",
+    "ts.external.directory.path": "/Users/volvic/Desktop/Github/IoT-Greenhouse/Frontend/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
-
   }
 }]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Greenhouse.API: http">
@@ -148,7 +140,6 @@
       <workItem from="1746169868033" duration="3478000" />
       <workItem from="1746173570639" duration="718000" />
       <workItem from="1746448749390" duration="6331000" />
-      <workItem from="1746707508928" duration="1184000" />
     </task>
     <servers />
   </component>
