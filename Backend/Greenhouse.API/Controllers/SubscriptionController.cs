@@ -21,4 +21,15 @@ public class SubscriptionController(IWebsocketSubscriptionService websocketSubsc
         await websocketSubscriptionService.SubscribeToTopic(socketId.ToString(), userDevices.Select(d => d.Id.ToString()).ToList());
         return Ok();
     }
+    
+    
+    [HttpPost]
+    [Route("SubscribeTest")]
+    [Authenticated]
+    public async Task<ActionResult> SubscribeTest([FromBody] int socketId)
+    {
+        var authUser = HttpContext.Items["AuthenticatedUser"] as AuthorizedUserResponseDto;
+        await websocketSubscriptionService.SubscribeToTopic(socketId.ToString(), new List<string>());
+        return Ok();
+    }
 }
