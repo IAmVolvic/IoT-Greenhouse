@@ -42,6 +42,7 @@
     "three-stdlib": "^2.35.16",
     "vite-plugin-singlefile": "^2.1.0",
     "vite-tsconfig-paths": "^5.1.4",
+    "ws-request-hook": "^1.0.14",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

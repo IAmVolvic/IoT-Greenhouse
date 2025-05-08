@@ -9,24 +9,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Greenhouse.API/Controllers/SubscriptionController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Greenhouse.Application/Repositories/IDeviceRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Greenhouse.DataAccess/Repositories/DeviceRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Greenhouse.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.API/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Greenhouse.Application/Services/Device/IDeviceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Application/Services/Device/IDeviceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Greenhouse.Infrastructure/MqttServices/MqttSubscriptionEventHandlers/GasEventHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/MqttServices/MqttSubscriptionEventHandlers/GasEventHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Greenhouse.Infrastructure/Services/DeviceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/Services/DeviceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Greenhouse.Infrastructure/WebsocketServices/ConnectionManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/WebsocketServices/ConnectionManager.cs" afterDir="false" />
-    </list>
+    <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DpaMonitoringSettings">
-    <option name="autoShow" value="false" />
+    <option name="firstShow" value="false" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -86,6 +76,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "CodeLensConfigurable",
+    "ts.external.directory.path": "/Users/volvic/Desktop/Github/IoT-Greenhouse/Frontend/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>

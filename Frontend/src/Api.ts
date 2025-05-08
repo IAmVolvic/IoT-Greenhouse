@@ -110,7 +110,7 @@ export class HttpClient<SecurityDataType = unknown> {
   }: ApiConfig<SecurityDataType> = {}) {
     this.instance = axios.create({
       ...axiosConfig,
-      baseURL: axiosConfig.baseURL || "https://just2play.gg",
+      baseURL: axiosConfig.baseURL || import.meta.env.VITE_API_URI,
     });
     this.secure = secure;
     this.format = format;
