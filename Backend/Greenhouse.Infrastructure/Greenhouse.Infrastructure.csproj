@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Greenhouse.Application\Greenhouse.Application.csproj" />
-    <ProjectReference Include="..\Greenhouse.DataAccess\Greenhouse.DataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>

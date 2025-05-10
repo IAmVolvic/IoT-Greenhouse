@@ -1,7 +1,6 @@
 using Greenhouse.Application;
-using Greenhouse.DataAccess;
-using Greenhouse.Domain;
 using Greenhouse.Domain.DatabaseDtos;
+using Greenhouse.Infrastructure.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
 namespace Greenhouse.Infrastructure.Services;

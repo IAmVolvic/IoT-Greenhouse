@@ -1,24 +1,12 @@
 using System.Reflection;
 using Greenhouse.API;
 using Greenhouse.API.ActionFilters;
-using Greenhouse.Application;
 using Greenhouse.Application.Environment;
-using Greenhouse.Application.Repositories;
-using Greenhouse.Application.Security;
-using Greenhouse.Application.Services.Device;
-using Greenhouse.Application.Services.Logs;
-using Greenhouse.Application.Services.User;
 using Greenhouse.Application.Websocket.Interfaces;
-using Greenhouse.DataAccess;
-using Greenhouse.DataAccess.Repositories;
-using Greenhouse.Domain.DatabaseDtos;
-using Greenhouse.Infrastructure.AuthService;
+using Greenhouse.Infrastructure;
 using Greenhouse.Infrastructure.Environment;
-using Greenhouse.Infrastructure.MqttServices.MqttSubscriptionEventHandlers;
-using Greenhouse.Infrastructure.Security;
-using Greenhouse.Infrastructure.Services;
+using Greenhouse.Infrastructure.Infrastructure.Dependencies;
 using Greenhouse.Infrastructure.WebsocketServices;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebSocketBoilerplate;
 
@@ -33,9 +21,7 @@ builder.WebHost.ConfigureKestrel((context, options) =>
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<ILogRepository, LogRepository>();
-builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+builder.Services.AddInfrastructure();
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.Configure<PasswordSettings>(builder.Configuration.GetSection("PasswordSettings"));
 builder.Services.Configure<MqttSettings>(builder.Configuration.GetSection("MqttSettings"));
@@ -56,15 +42,6 @@ builder.Services.AddControllers(options =>
 builder.Services.AddScoped<IServerToClient, ServerToClient>();
 builder.Services.AddScoped<IWebsocketSubscriptionService, WebsocketSubscriptionService>();
 builder.Services.AddSingleton<IConnectionManager, WebSocketConnectionManager>();
-
-// Services and Security
-builder.Services.AddScoped<ILogService, LogService>();
-builder.Services.AddScoped<IHelloService, HelloService>();
-builder.Services.AddScoped<IDeviceService, DeviceService>();
-builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IJwtManager, JwtManager>();
 builder.Services.RegisterMqttInfrastructure();
 // ===================== * CONTROLLERS & MVC * ===================== //
 builder.Services.AddControllers();
