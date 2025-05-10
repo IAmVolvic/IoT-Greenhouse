@@ -140,7 +140,6 @@ public sealed class WebSocketConnectionManager : IConnectionManager
 
     public async Task BroadcastToTopic<TMessage>(string topic, TMessage message) where TMessage : class
     {
-        _logger.LogWarning("Now trying to broadcast to topic: {Topic}", topic);
         if (!_topicMembers.TryGetValue(topic, out var members))
         {
             _logger.LogWarning("No topic found: {Topic}", topic);

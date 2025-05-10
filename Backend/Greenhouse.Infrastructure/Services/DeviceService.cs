@@ -13,7 +13,7 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
     {
         return deviceRepository.GetDevicesByUserId(userId);
     }
-
+    
     public void BroadcastUnassignedDeviceInfo(UnassignedDeviceDto unassignedDeviceDto)
     {
         var deviceInfo = new ServerBroadcastsUnassignedDeviceToDashboard()
