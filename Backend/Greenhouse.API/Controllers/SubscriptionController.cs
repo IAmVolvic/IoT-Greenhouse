@@ -1,5 +1,4 @@
 using Greenhouse.API.Attributes;
-using Greenhouse.Application.Repositories;
 using Greenhouse.Application.Security.Requests;
 using Greenhouse.Application.Services.Device;
 using Greenhouse.Application.Websocket.Interfaces;
