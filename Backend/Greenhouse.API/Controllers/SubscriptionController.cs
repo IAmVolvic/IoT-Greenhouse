@@ -1,5 +1,5 @@
 using Greenhouse.API.Attributes;
-using Greenhouse.Application.Repositories;
+using Greenhouse.API.FrontendDtos;
 using Greenhouse.Application.Security.Requests;
 using Greenhouse.Application.Services.Device;
 using Greenhouse.Application.Websocket.Interfaces;
@@ -12,9 +12,9 @@ namespace Greenhouse.API.Controllers;
 public class SubscriptionController(IWebsocketSubscriptionService websocketSubscriptionService, IDeviceService deviceService) : ControllerBase
 {
     [HttpPost]
-    [Route("Subscribe")]
+    [Route("Subscribe/YourDevices")]
     [Authenticated]
-    public async Task<ActionResult> Subscribe([FromBody] int socketId)
+    public async Task<ActionResult> SubscribeToDevices([FromBody] int socketId)
     {
         var authUser = HttpContext.Items["AuthenticatedUser"] as AuthorizedUserResponseDto;
         var userDevices = deviceService.GetDevicesForUser(authUser.Id);
@@ -22,14 +22,12 @@ public class SubscriptionController(IWebsocketSubscriptionService websocketSubsc
         return Ok();
     }
     
-    
     [HttpPost]
-    [Route("SubscribeTest")]
+    [Route("Subscribe/SpecificTopics")]
     [Authenticated]
-    public async Task<ActionResult> SubscribeTest([FromBody] int socketId)
+    public async Task<ActionResult> SubscribeToSpecificTopics([FromBody] SubscirbeToTopicDto topicInfo)
     {
-        var authUser = HttpContext.Items["AuthenticatedUser"] as AuthorizedUserResponseDto;
-        await websocketSubscriptionService.SubscribeToTopic(socketId.ToString(), new List<string>());
+        await websocketSubscriptionService.SubscribeToTopic(topicInfo.userId.ToString(), topicInfo.TopicNames.ToList());
         return Ok();
     }
 }

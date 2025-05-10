@@ -9,7 +9,6 @@ namespace Greenhouse.API;
 
 public class WebSocketHandler(WebApplication app, HashSet<Type> clientEventHandlers)
 {
-    private readonly List<IWebSocketConnection> _wsConnections = new List<IWebSocketConnection>();
 
     public void StartServer()
     {
@@ -33,11 +32,6 @@ public class WebSocketHandler(WebApplication app, HashSet<Type> clientEventHandl
 
             ws.OnMessage = message =>
             {
-                foreach (var clients in _wsConnections)
-                {
-                    clients.Send("Everyone");
-                }
-                
                 try
                 {
                     var eventTask = app.InvokeClientEventHandler(clientEventHandlers, ws, message);
