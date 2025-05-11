@@ -3,11 +3,12 @@ import { ThreeJSUseEffect } from "./index-hooks/ThreeJS.useEffect";
 
 import { ChevronLeft, LeafyGreen } from "lucide-react";
 import { CustomLoader } from "@components/Loader/Index";
-import { EditSheet } from "./index-components/EditSheet";
+/* import { EditSheet } from "./index-components/EditSheet"; */
 import useEditorStore from "@store/Editor/editor.store";
 import useLoadingStore from "@store/Loader/loader.store";
 import { greenHouseTable } from "../data/GreenhouseData";
 import { motion, AnimatePresence } from "framer-motion";
+import { LineChart } from "./index-components/ChartLine";
 
 
 export const EditorPage = () => {
@@ -73,7 +74,7 @@ export const EditorPage = () => {
                 <div className="absolute top-0 left-0 h-full flex items-center pointer-events-none z-20 p-5">
                     {/* Cool cutout thing I will try */}
                     <motion.div
-                        className="w-80 h-full relative"
+                        className="w-128 h-full relative"
                         layout
                         transition={{ 
                             duration: 0.5, 
@@ -94,10 +95,10 @@ export const EditorPage = () => {
                         <AnimatePresence mode="wait">
                             {menuOpen && (
                                 <motion.div 
-                                    className="bg-dark100 cut-top-left w-full h-full rounded-r-3xl rounded-bl-3xl overflow-hidden drop-shadow-md"
-                                    initial={{ opacity: 0, x: -280 }}
+                                    className="bg-dark100 cut-top-left w-92 h-92 rounded-r-3xl rounded-bl-3xl overflow-hidden drop-shadow-md"
+                                    initial={{ opacity: 0, x: -480 }}
                                     animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -280 }}
+                                    exit={{ opacity: 0, x: -480 }}
                                     transition={{
                                         type: "spring",
                                         stiffness: 400,
@@ -106,25 +107,48 @@ export const EditorPage = () => {
                                 >
                                     <div className="cornerCut-top-left absolute top-0 left-0 w-20 aspect-square bg-dark100 -z-10" />
                                     
-                                    <motion.div 
-                                        className="w-full flex items-center ml-14 px-5 py-2"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ delay: 0.2 }}
-                                    >
+                                    <motion.div className="w-full flex items-center ml-14 px-5 py-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
                                         <div className="flex flex-col">
-                                            <div className="text-xl text-light100">Cool Title</div>
-                                            <div className="text-sm text-light200">Something cool goes here</div>
+                                            <div className="text-xl text-light100">{greenHouseTable.find((greenhouse) => selectedGH === greenhouse.id)?.name}</div>
+                                            <div className="text-sm text-light200">Data charts</div>
                                         </div>
                                     </motion.div>
 
-                                    <motion.div 
-                                        className="h-full w-full p-5"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ delay: 0.3 }}
-                                    >
-                                        <EditSheet />
+                                    <motion.div className="flex flex-col gap-5 h-full w-full p-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+                                        {/* <EditSheet /> */}
+
+                                        {/* Placeholder for the chart, needs work / cleanup */}
+                                        <div className="flex flex-col gap-5">
+                                            {/* Icon - Title - Button */}
+                                            <div>
+                                                <div>
+
+                                                </div>
+
+                                                <div className="flex flex-col gap-1">
+                                                    <div className="text-md text-light100">Gas Sensor</div>
+                                                    <div className="text-sm text-light200">Current rate: 1000ms</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <LineChart />
+                                        </div>
+
+                                        <div className="flex flex-col gap-5">
+                                            <div className="flex flex-col gap-1">
+                                                <div className="text-md text-light100">Temp Sensor</div>
+                                                <div className="text-sm text-light200">Current rate: 1000ms</div>
+                                            </div>
+                                            <LineChart />
+                                        </div>
+
+                                        <div className="flex flex-col gap-5">
+                                            <div className="flex flex-col gap-1">
+                                                <div className="text-md text-light100">Light Sensor</div>
+                                                <div className="text-sm text-light200">Current rate: 1000ms</div>
+                                            </div>
+                                            <LineChart />
+                                        </div>
                                     </motion.div>
                                 </motion.div>
                             )}
