@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ThreeJSUseEffect } from "./index-hooks/ThreeJS.useEffect";
 
-import { ChevronLeft, LeafyGreen } from "lucide-react";
+import { AlarmSmoke, ChevronLeft, Droplets, Edit, LeafyGreen, Sun, Thermometer } from "lucide-react";
 import { CustomLoader } from "@components/Loader/Index";
 /* import { EditSheet } from "./index-components/EditSheet"; */
 import useEditorStore from "@store/Editor/editor.store";
@@ -9,6 +9,7 @@ import useLoadingStore from "@store/Loader/loader.store";
 import { greenHouseTable } from "../data/GreenhouseData";
 import { motion, AnimatePresence } from "framer-motion";
 import { LineChart } from "./index-components/ChartLine";
+import { EditSheet } from "./index-components/EditSheet";
 
 
 export const EditorPage = () => {
@@ -114,41 +115,70 @@ export const EditorPage = () => {
                                         </div>
                                     </motion.div>
 
-                                    <motion.div className="flex flex-col gap-5 h-full w-full p-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+                                    <motion.div className="flex flex-col gap-10 h-full w-full p-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
                                         {/* <EditSheet /> */}
 
                                         {/* Placeholder for the chart, needs work / cleanup */}
-                                        <div className="flex flex-col gap-5">
+                                        <div className="flex flex-col gap-3 pointer-events-auto">
                                             {/* Icon - Title - Button */}
-                                            <div>
-                                                <div>
+                                            <div className="flex flex-row items-center justify-between">
+                                                <div className="flex flex-row items-center gap-5">
+                                                    <div className="bg-dark300 w-12 aspect-square rounded-xl flex items-center justify-center">
+                                                        <AlarmSmoke size={20} strokeWidth={1.5} className="text-light200" />
+                                                    </div>
 
+                                                    <div className="flex flex-col gap-1">
+                                                        <div className="text-md text-light100">Gas Sensor</div>
+                                                        <div className="text-sm text-light200">Current rate: 1000ms</div>
+                                                    </div>
                                                 </div>
 
-                                                <div className="flex flex-col gap-1">
-                                                    <div className="text-md text-light100">Gas Sensor</div>
-                                                    <div className="text-sm text-light200">Current rate: 1000ms</div>
-                                                </div>
+                                                <EditSheet />
                                             </div>
                                             
                                             <LineChart />
                                         </div>
 
-                                        <div className="flex flex-col gap-5">
-                                            <div className="flex flex-col gap-1">
-                                                <div className="text-md text-light100">Temp Sensor</div>
-                                                <div className="text-sm text-light200">Current rate: 1000ms</div>
+                                        <div className="flex flex-col gap-3 pointer-events-auto">
+                                            {/* Icon - Title - Button */}
+                                            <div className="flex flex-row items-center justify-between">
+                                                <div className="flex flex-row items-center gap-5">
+                                                    <div className="bg-dark300 w-12 aspect-square rounded-xl flex items-center justify-center">
+                                                        <Thermometer size={20} strokeWidth={1.5} className="text-light200" />
+                                                    </div>
+
+                                                    <div className="flex flex-col gap-1">
+                                                        <div className="text-md text-light100">Temperature Sensor</div>
+                                                        <div className="text-sm text-light200">Current rate: 1000ms</div>
+                                                    </div>
+                                                </div>
+
+                                                <EditSheet />
                                             </div>
+                                            
                                             <LineChart />
                                         </div>
 
-                                        <div className="flex flex-col gap-5">
-                                            <div className="flex flex-col gap-1">
-                                                <div className="text-md text-light100">Light Sensor</div>
-                                                <div className="text-sm text-light200">Current rate: 1000ms</div>
+                                        <div className="flex flex-col gap-3 pointer-events-auto">
+                                            {/* Icon - Title - Button */}
+                                            <div className="flex flex-row items-center justify-between">
+                                                <div className="flex flex-row items-center gap-5">
+                                                    <div className="bg-dark300 w-12 aspect-square rounded-xl flex items-center justify-center">
+                                                        <Sun size={20} strokeWidth={1.5} className="text-light200" />
+                                                    </div>
+
+                                                    <div className="flex flex-col gap-1">
+                                                        <div className="text-md text-light100">Light Sensor</div>
+                                                        <div className="text-sm text-light200">Current rate: 1000ms</div>
+                                                    </div>
+                                                </div>
+
+                                                <EditSheet />
                                             </div>
+                                            
                                             <LineChart />
                                         </div>
+
                                     </motion.div>
                                 </motion.div>
                             )}

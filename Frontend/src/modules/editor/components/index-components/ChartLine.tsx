@@ -19,7 +19,6 @@ ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Tooltip,
 const enableLegendContainer = false;
 const enableToolTips = true;
 
-
 const externalTooltipHandler = (context: { chart: ChartJS, tooltip: TooltipModel<'line'> }) => {
 	const { chart, tooltip } = context;
 	let tooltipEl = document.getElementById('chartjs-tooltip') as HTMLDivElement;
@@ -27,14 +26,13 @@ const externalTooltipHandler = (context: { chart: ChartJS, tooltip: TooltipModel
 	if (!tooltipEl) {
 		tooltipEl = document.createElement('div');
 		tooltipEl.id = 'chartjs-tooltip';
-		tooltipEl.className = 'bg-zinc-800 border border-neutral-700 rounded shadow-sm px-3 py-2 w-56';
-		tooltipEl.style.color = 'white';
-		tooltipEl.style.opacity = '0';
+		tooltipEl.className = 'bg-dark200 text-light100 rounded-xl shadow-sm p-3 w-56 z-[100]';
+		
 		tooltipEl.style.pointerEvents = 'none';
+		tooltipEl.style.opacity = '0';
 		tooltipEl.style.position = 'absolute';
 		tooltipEl.style.transform = 'translate(-50%, 0)';
 		tooltipEl.style.transition = 'all .2s ease';
-		tooltipEl.style.zIndex = '100';
 
 		const table = document.createElement('table');
 		table.className = 'w-full';
@@ -105,11 +103,9 @@ const externalTooltipHandler = (context: { chart: ChartJS, tooltip: TooltipModel
 	tooltipEl.style.fontFamily = 'sans-serif';
 };
 
-// HTML Legend Plugin (Optional, keep if you use it)
 const htmlLegendPlugin: Plugin<'line'> = {
 	id: 'htmlLegend',
 	afterUpdate(chart, args, options) {
-		// Type assertion for custom options
 		const htmlLegendOptions = options as { containerID: string };
 		const legendContainer = document.getElementById(htmlLegendOptions.containerID)!;
 		let list = legendContainer.querySelector('ul');
@@ -161,11 +157,9 @@ const htmlLegendPlugin: Plugin<'line'> = {
 	},
 };
 
-// Utility function to generate random numbers
 const randomData = (min: number, max: number, count: number): number[] =>
 	Array.from({ length: count }, () => Math.floor(Math.random() * (max - min + 1)) + min);
 
-// Define custom options type that includes htmlLegend
 type CustomChartOptions = ChartOptions<'line'> & {
 	plugins: {
 		htmlLegend: {
@@ -174,7 +168,6 @@ type CustomChartOptions = ChartOptions<'line'> & {
 	} & ChartOptions<'line'>['plugins'];
 };
 
-// Chart options
 const options: CustomChartOptions = {
 	responsive: true,
 	maintainAspectRatio: false,
@@ -187,17 +180,18 @@ const options: CustomChartOptions = {
 		legend: {
 			display: false,
 		},
-        tooltip: enableToolTips
-        ? {
-            enabled: false,
-            mode: 'index',
-            intersect: false,
-            external: externalTooltipHandler,
-        }
-        : {
-            enabled: false,
-        },
-	},	scales: {
+		tooltip: enableToolTips
+			? {
+					enabled: false,
+					mode: 'index',
+					intersect: false,
+					external: externalTooltipHandler,
+			  }
+			: {
+					enabled: false,
+			  },
+	},
+	scales: {
 		x: {
 			display: false,
 			border: { display: false },
@@ -224,19 +218,23 @@ export const LineChart = () => {
 		labels: [],
 		datasets: [],
 	});
-
-    useEffect(() => {
-        if (enableLegendContainer) {
-            ChartJS.register(htmlLegendPlugin);
-        }
-    }, []);
+	const [isClient, setIsClient] = useState(false);
 
 	useEffect(() => {
+		setIsClient(true);
+	}, []);
+
+	useEffect(() => {
+		if (enableLegendContainer) {
+			ChartJS.register(htmlLegendPlugin);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (!isClient) return;
+
 		const chart = chartRef.current;
 		if (!chart) return;
-
-		const ctx = chart.ctx;
-		if (!ctx) return;
 
 		setChartData({
 			labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -253,35 +251,27 @@ export const LineChart = () => {
 			],
 		});
 
-        return () => {
-            const tooltipEl = document.getElementById('chartjs-tooltip');
-            if (tooltipEl) {
-                tooltipEl.remove();
-            }
-            const legendContainer = document.getElementById('legend-container');
-            if (legendContainer) {
-                legendContainer.innerHTML = '';
-            }
-            const chartjsTooltip = document.getElementById('chartjs-tooltip');
-            if (chartjsTooltip) {
-                chartjsTooltip.remove();
-            }
-            const legend = document.getElementById('legend-container');
-            if (legend) {
-                legend.innerHTML = '';
-            }
-            setChartData({
-                labels: [],
-                datasets: [],
-            });
-            chart.destroy();
-        }
-	}, []);
+		return () => {
+			const tooltipEl = document.getElementById('chartjs-tooltip');
+			if (tooltipEl) tooltipEl.remove();
+
+			const legendContainer = document.getElementById('legend-container');
+			if (legendContainer) legendContainer.innerHTML = '';
+
+			setChartData({ labels: [], datasets: [] });
+
+			if (chart) chart.destroy();
+		};
+	}, [isClient]);
 
 	return (
-		<div className="pointer-events-auto w-full h-32">
-			<Line ref={chartRef} options={options as ChartOptions<'line'>} data={chartData} />
-			<div id="legend-container" style={{ marginTop: '1rem' }} />
+		<div className="w-full h-32">
+			{isClient && (
+				<>
+					<Line ref={chartRef} options={options as ChartOptions<'line'>} data={chartData} />
+					<div id="legend-container" style={{ marginTop: '1rem' }} />
+				</>
+			)}
 		</div>
 	);
 };

@@ -5,8 +5,8 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 export const EditSheet = () => {
 	return (
 		<Sheet>
-			<SheetTrigger className="bg-dark100 rounded-xl px-5 pointer-events-auto">
-				<Filter size={16} strokeWidth={1.5} className="text-light100" />
+			<SheetTrigger>
+				<button className="bg-primary rounded-full px-3 py-1 text-sm text-dark100">Edit</button>
 			</SheetTrigger>
 
 			<SheetContent>
