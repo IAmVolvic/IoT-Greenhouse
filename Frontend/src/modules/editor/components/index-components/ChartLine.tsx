@@ -10,14 +10,29 @@ import {
 	ChartData,
 	Plugin,
 	TooltipModel,
+	Filler
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { useRef, useEffect, useState } from 'react';
 
-ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend);
+ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend, Filler);
 
 const enableLegendContainer = false;
 const enableToolTips = true;
+
+function createGradient(ctx: CanvasRenderingContext2D): [CanvasGradient, string] {
+    const blueColor = "#89affb";
+    const r = parseInt(blueColor.slice(1, 3), 16);
+    const g = parseInt(blueColor.slice(3, 5), 16);
+    const b = parseInt(blueColor.slice(5, 7), 16);
+
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.5)`);
+    gradient.addColorStop(0.3, `rgba(${r}, ${g}, ${b}, 0)`);
+    gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+
+    return [gradient, blueColor];
+}
 
 const externalTooltipHandler = (context: { chart: ChartJS, tooltip: TooltipModel<'line'> }) => {
 	const { chart, tooltip } = context;
@@ -26,7 +41,7 @@ const externalTooltipHandler = (context: { chart: ChartJS, tooltip: TooltipModel
 	if (!tooltipEl) {
 		tooltipEl = document.createElement('div');
 		tooltipEl.id = 'chartjs-tooltip';
-		tooltipEl.className = 'bg-dark200 text-light100 rounded-xl shadow-sm p-3 w-56 z-[100]';
+		tooltipEl.className = 'bg-dark300 text-light100 rounded-xl shadow-sm p-3 min-w-36 z-[100]';
 		
 		tooltipEl.style.pointerEvents = 'none';
 		tooltipEl.style.opacity = '0';
@@ -52,7 +67,7 @@ const externalTooltipHandler = (context: { chart: ChartJS, tooltip: TooltipModel
 	titleLines.forEach(title => {
 		const tr = document.createElement('tr');
 		const th = document.createElement('th');
-		th.className = 'text-sm font-semibold';
+		th.className = 'text-sm font-semibold text-start';
 		th.appendChild(document.createTextNode(title));
 		tr.appendChild(th);
 		tableHead.appendChild(tr);
@@ -78,7 +93,7 @@ const externalTooltipHandler = (context: { chart: ChartJS, tooltip: TooltipModel
 		td1.appendChild(document.createTextNode(innerData[0]));
 
 		const td2 = document.createElement('td');
-		td2.className = 'text-sm';
+		td2.className = 'text-sm text-end pl-2';
 		td2.appendChild(document.createTextNode(innerData[1]));
 
 		tr.appendChild(td1);
@@ -157,8 +172,8 @@ const htmlLegendPlugin: Plugin<'line'> = {
 	},
 };
 
-const randomData = (min: number, max: number, count: number): number[] =>
-	Array.from({ length: count }, () => Math.floor(Math.random() * (max - min + 1)) + min);
+/* const randomData = (min: number, max: number, count: number): number[] =>
+	Array.from({ length: count }, () => Math.floor(Math.random() * (max - min + 1)) + min); */
 
 type CustomChartOptions = ChartOptions<'line'> & {
 	plugins: {
@@ -171,6 +186,7 @@ type CustomChartOptions = ChartOptions<'line'> & {
 const options: CustomChartOptions = {
 	responsive: true,
 	maintainAspectRatio: false,
+	animation: false,
 	interaction: {
 		mode: 'index',
 		intersect: false,
@@ -236,6 +252,115 @@ export const LineChart = () => {
 		const chart = chartRef.current;
 		if (!chart) return;
 
+		const ctx = chart.ctx;
+		if (!ctx) return;
+
+		const [gradient, borderColor] = createGradient(ctx);
+
+		// Initialize with 20 data points
+		const initialData = Array(50).fill(0).map(() => generateRandomValue(0, 100));
+		const initialLabels = Array(50).fill('').map((_, i) => `T-${49 - i}`);
+
+		setChartData({
+			labels: initialLabels,
+			datasets: [
+				{
+					label: 'Moisture',
+					data: initialData,
+					borderWidth: 2,
+					tension: 0,
+					pointRadius: 2,
+					borderColor,
+					backgroundColor: gradient,
+					fill: false,
+				},
+			],
+		});
+
+		const interval = setInterval(() => {
+			setChartData(prev => {
+				const newValue = generateRandomValue(50, 55);
+				const newData = [...(prev.datasets[0].data as number[]), newValue].slice(-50);
+				const newLabels = [...(prev.labels as string[]), `T+${Date.now()}`].slice(-50);
+
+				return {
+					...prev,
+					labels: newLabels,
+					datasets: [
+						{
+							...prev.datasets[0],
+							data: newData,
+						},
+					],
+				};
+			});
+		}, 1000); // 1 second interval
+
+		return () => {
+			clearInterval(interval);
+			const tooltipEl = document.getElementById('chartjs-tooltip');
+			if (tooltipEl) tooltipEl.remove();
+
+			const legendContainer = document.getElementById('legend-container');
+			if (legendContainer) legendContainer.innerHTML = '';
+
+			setChartData({ labels: [], datasets: [] });
+
+			if (chart) chart.destroy();
+		};
+	}, [isClient]);
+
+	return (
+		<div className="w-full h-32">
+			{isClient && (
+				<>
+					<Line ref={chartRef} options={options as ChartOptions<'line'>} data={chartData} />
+					<div id="legend-container" style={{ marginTop: '1rem' }} />
+				</>
+			)}
+		</div>
+	);
+};
+
+// Utility functions
+const generateRandomValue = (min: number, max: number): number =>
+	Math.floor(Math.random() * (max - min + 1)) + min;
+
+
+
+
+
+
+
+/* export const LineChart = () => {
+	const chartRef = useRef<ChartJS<'line'> | null>(null);
+	const [chartData, setChartData] = useState<ChartData<'line'>>({
+		labels: [],
+		datasets: [],
+	});
+	const [isClient, setIsClient] = useState(false);
+
+	useEffect(() => {
+		setIsClient(true);
+	}, []);
+
+	useEffect(() => {
+		if (enableLegendContainer) {
+			ChartJS.register(htmlLegendPlugin);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (!isClient) return;
+
+		const chart = chartRef.current;
+		if (!chart) return;
+
+		const ctx = chart.ctx;
+        if (!ctx) return;
+
+		const [gradient, borderColor] = createGradient(ctx);
+
 		setChartData({
 			labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 			datasets: [
@@ -244,10 +369,10 @@ export const LineChart = () => {
 					data: randomData(0, 1000, 12),
 					borderWidth: 3,
 					tension: 0,
-					borderColor: '#89affb',
-					backgroundColor: '#89affb',
+					borderColor,
+					backgroundColor: gradient,
 					fill: true,
-				},
+				}
 			],
 		});
 
@@ -274,4 +399,4 @@ export const LineChart = () => {
 			)}
 		</div>
 	);
-};
+}; */
