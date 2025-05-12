@@ -4,7 +4,7 @@
 #include <ArduinoJson.h>
 #include <Preferences.h>
 
-#define AO_PIN 34  // MQ2 analog pin
+#define AO_PIN 34
 
 const char* ssid = "Wifi name";
 const char* password = "Wifi password";
@@ -21,7 +21,7 @@ WiFiClientSecure wifiSecureClient;
 PubSubClient client(wifiSecureClient);
 Preferences preferences;
 
-String user_assigned = "";  
+String user_assigned = "unassigned";  
 unsigned long lastUnassignedPublish = 0;
 
 void callback(char* topic, byte* message, unsigned int length);
@@ -62,7 +62,7 @@ void setup() {
 
   setup_wifi();
 
-  wifiSecureClient.setInsecure(); // Do testów, nie w produkcji
+  wifiSecureClient.setInsecure();
 
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
