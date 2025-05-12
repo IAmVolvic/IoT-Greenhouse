@@ -48,17 +48,17 @@ export const greenHouseTable: GreenHouseData[] = [
         labelIocnPositions: [
             {
                 name: "Gas",
-                position: new THREE.Vector3(10, 1, -1.2),
+                position: new THREE.Vector3(10, 1, -1.5),
                 icon: AlarmSmoke
             },
             {
                 name: "Temperature",
-                position: new THREE.Vector3(0, 2.5, -2.7),
+                position: new THREE.Vector3(10, 1, -0),
                 icon: Thermometer
             },
             {
                 name: "Light",
-                position: new THREE.Vector3(0, 2.5, -2.7),
+                position: new THREE.Vector3(10, 1, 1.5),
                 icon: Sun
             },
         ]
@@ -71,17 +71,17 @@ export const greenHouseTable: GreenHouseData[] = [
         labelIocnPositions: [
             {
                 name: "Gas",
-                position: new THREE.Vector3(20, 1, -1.2),
+                position: new THREE.Vector3(20, 1, -1.5),
                 icon: AlarmSmoke
             },
             {
                 name: "Temperature",
-                position: new THREE.Vector3(0, 2.5, -2.7),
+                position: new THREE.Vector3(20, 1, -0),
                 icon: Thermometer
             },
             {
                 name: "Light",
-                position: new THREE.Vector3(0, 2.5, -2.7),
+                position: new THREE.Vector3(20, 1, 1.5),
                 icon: Sun
             },
         ]
@@ -94,17 +94,17 @@ export const greenHouseTable: GreenHouseData[] = [
         labelIocnPositions: [
             {
                 name: "Gas",
-                position: new THREE.Vector3(30, 1, -1.2),
+                position: new THREE.Vector3(30, 1, -1.5),
                 icon: AlarmSmoke
             },
             {
                 name: "Temperature",
-                position: new THREE.Vector3(0, 2.5, -2.7),
+                position: new THREE.Vector3(30, 1, -0),
                 icon: Thermometer
             },
             {
                 name: "Light",
-                position: new THREE.Vector3(0, 2.5, -2.7),
+                position: new THREE.Vector3(30, 1, 1.5),
                 icon: Sun
             },
         ]
