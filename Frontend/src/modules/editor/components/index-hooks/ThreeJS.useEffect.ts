@@ -95,7 +95,7 @@ export const ThreeJSUseEffect = (props: ThreeJSUseEffectProps) => {
     
                 // Update all billboard positions
                 greenHouseTable.forEach((greenhouse) => {
-                    const labelElement = props.labelRefs.current!.get(greenhouse.id);
+                    const labelElement = props.labelRefs.current?.get(greenhouse.id);
                     if (labelElement) {
                         const vector = greenhouse.labelPosition.clone().project(camera);
                         const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
@@ -131,6 +131,9 @@ export const ThreeJSUseEffect = (props: ThreeJSUseEffectProps) => {
                         if (child.shadow?.map) child.shadow.map.dispose();
                     }
                 });
+
+                controls.dispose?.();
+                scene.clear();
     
                 renderer.dispose();
             };

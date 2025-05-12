@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ThreeJSUseEffect } from "./index-hooks/ThreeJS.useEffect";
 
-import { AlarmSmoke, ChevronLeft, Droplets, Edit, LeafyGreen, Sun, Thermometer } from "lucide-react";
+import { AlarmSmoke, ChevronLeft, LeafyGreen, Sun, Thermometer } from "lucide-react";
 import { CustomLoader } from "@components/Loader/Index";
 /* import { EditSheet } from "./index-components/EditSheet"; */
 import useEditorStore from "@store/Editor/editor.store";
