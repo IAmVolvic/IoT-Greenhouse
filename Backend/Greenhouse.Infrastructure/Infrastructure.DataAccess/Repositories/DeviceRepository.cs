@@ -1,7 +1,7 @@
 using Greenhouse.Application.Repositories;
 using Greenhouse.Domain.DatabaseDtos;
 
-namespace Greenhouse.DataAccess.Repositories;
+namespace Greenhouse.Infrastructure.Infrastructure.DataAccess.Repositories;
 
 public class DeviceRepository(AppDbContext context) : IDeviceRepository
 {

@@ -2,7 +2,7 @@ using Greenhouse.Application.Exceptions;
 using Greenhouse.Application.Repositories;
 using Greenhouse.Domain.DatabaseDtos;
 
-namespace Greenhouse.DataAccess.Repositories;
+namespace Greenhouse.Infrastructure.Infrastructure.DataAccess.Repositories;
 
 public class UserRepository(AppDbContext context): IUserRepository
 {

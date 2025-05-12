@@ -2,7 +2,7 @@ using Greenhouse.Domain;
 using Greenhouse.Domain.DatabaseDtos;
 using Microsoft.EntityFrameworkCore;
 
-namespace Greenhouse.DataAccess;
+namespace Greenhouse.Infrastructure;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
