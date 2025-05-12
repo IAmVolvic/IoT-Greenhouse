@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { createElement, useEffect, useRef, useState } from "react";
 import { ThreeJSUseEffect } from "./index-hooks/ThreeJS.useEffect";
 
 import { AlarmSmoke, ChevronLeft, LeafyGreen, Sun, Thermometer } from "lucide-react";
@@ -10,6 +10,7 @@ import { greenHouseTable } from "../data/GreenhouseData";
 import { motion, AnimatePresence } from "framer-motion";
 import { LineChart } from "./index-components/ChartLine";
 import { EditSheet } from "./index-components/EditSheet";
+import { FloatingLabel } from "@components/threejs/Objects/floatingLabel";
 
 
 export const EditorPage = () => {
@@ -21,12 +22,8 @@ export const EditorPage = () => {
     const mountRef = useRef<HTMLDivElement>(null);
     const labelRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
-    const handleClick = (greenhouseId: string) => {
-        console.log("Clicked on greenhouse:", greenhouseId);
-    }
-
     // Initialize Three.js scene and objects
-    ThreeJSUseEffect({mountRef, labelRefs});
+    const [sceneObjects] = ThreeJSUseEffect({mountRef, labelRefs});
 
     // Set loading state
     useEffect(() => {
@@ -49,23 +46,33 @@ export const EditorPage = () => {
             <div ref={mountRef} className="w-full h-full relative overflow-hidden z-0">
                 {/* HTML Billboards */}
                 {greenHouseTable.map((greenhouse) => (
-                    <button 
-                        key={greenhouse.id}
-                        ref={(element) => {
-                            if (element) {
-                                labelRefs.current.set(greenhouse.id, element);
-                            }
-                        }}
-                        className={`absolute pointer-events-auto transition-opacity duration-300 ${selectedGH === greenhouse.id ? 'opacity-100 cursor-pointer' : 'opacity-0 cursor-default'}`}
-                        style={{ top: 0, left: 0 }}
-                        onClick={() => handleClick(greenhouse.id)}
-                    >
-                        <div className={`bg-light100 p-2 rounded-lg shadow-md flex items-center space-x-2`}>
-                            <LeafyGreen className="w-6 h-6 text-green-600" />
-                            <span> {greenhouse.name} </span>
-                        </div>
-                    </button>
+                    <div className={`pointer-events-auto transition-opacity duration-300 ${selectedGH === greenhouse.id ? 'opacity-100' : 'opacity-0'}`} key={greenhouse.id}>
+                        {/* Name tag */}
+                        <FloatingLabel camera={sceneObjects.camera} position={greenhouse.labelPosition}>
+                            <div className={`bg-light100 p-2 rounded-lg shadow-md flex items-center space-x-2`}>
+                                <LeafyGreen className="w-6 h-6 text-green-600" />
+                                <span> {greenhouse.name} </span>
+                            </div>
+                        </FloatingLabel>
+
+                        {/* Icon with data */}
+
+                        {
+                            greenhouse.labelIocnPositions.map((Icons) => (
+                                <FloatingLabel camera={sceneObjects.camera} position={Icons.position}>
+                                    <div className="bg-dark300 rounded-xl shadow-md p-2">
+                                        <div className="flex flex-row items-center gap-2">
+                                            {createElement(Icons.icon, { className: "w-6 h-6 text-light200" })}
+                                            <div className="text-sm text-light200">200</div>
+                                        </div>
+                                    </div>
+                                </FloatingLabel>
+                            ))
+                        }
+                    </div>
                 ))}
+
+
             </div>
 
             {/* Panel / Main Content */}

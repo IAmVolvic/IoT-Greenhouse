@@ -92,17 +92,6 @@ export const ThreeJSUseEffect = (props: ThreeJSUseEffectProps) => {
                 controls.update();
                 renderer.render(scene, camera);
                 renderer.antialias = true;
-    
-                // Update all billboard positions
-                greenHouseTable.forEach((greenhouse) => {
-                    const labelElement = props.labelRefs.current?.get(greenhouse.id);
-                    if (labelElement) {
-                        const vector = greenhouse.labelPosition.clone().project(camera);
-                        const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
-                        const y = (-vector.y * 0.5 + 0.5) * window.innerHeight;
-                        labelElement.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
-                    }
-                });
             };
             animate();
     
@@ -185,4 +174,7 @@ export const ThreeJSUseEffect = (props: ThreeJSUseEffectProps) => {
             }
         // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [selectedGH]);
+        
+
+    return [sceneObjects];
 }
