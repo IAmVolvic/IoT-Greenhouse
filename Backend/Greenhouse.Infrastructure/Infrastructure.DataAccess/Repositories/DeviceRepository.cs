@@ -11,4 +11,10 @@ public class DeviceRepository(AppDbContext context) : IDeviceRepository
             .Where(d => d.UserId == userId)
             .ToList();
     }
+    public Device AssignDeviceToUser(Device device)
+    {
+        context.Devices.Add(device);
+        context.SaveChanges();
+        return device;
+    }
 }
