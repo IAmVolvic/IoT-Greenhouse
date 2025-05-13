@@ -1,12 +1,11 @@
 import { Sheet, SheetClose, SheetTrigger } from "@components/shadcn-ui/ui/sheet";
-import { Filter } from "lucide-react";
 import { SheetContent } from "@components/Sheets/components/sheetContent";
 import { DialogTitle } from "@radix-ui/react-dialog";
 export const EditSheet = () => {
 	return (
 		<Sheet>
-			<SheetTrigger className="bg-dark100 rounded-xl px-5 pointer-events-auto">
-				<Filter size={16} strokeWidth={1.5} className="text-light100" />
+			<SheetTrigger>
+				<button className="bg-primary rounded-full px-3 py-1 text-sm text-dark100">View</button>
 			</SheetTrigger>
 
 			<SheetContent>

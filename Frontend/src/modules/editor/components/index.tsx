@@ -1,13 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { createElement, useEffect, useRef, useState } from "react";
 import { ThreeJSUseEffect } from "./index-hooks/ThreeJS.useEffect";
 
-import { ChevronLeft, LeafyGreen } from "lucide-react";
+import { AlarmSmoke, ChevronLeft, LeafyGreen, Sun, Thermometer } from "lucide-react";
 import { CustomLoader } from "@components/Loader/Index";
-import { EditSheet } from "./index-components/EditSheet";
+/* import { EditSheet } from "./index-components/EditSheet"; */
 import useEditorStore from "@store/Editor/editor.store";
 import useLoadingStore from "@store/Loader/loader.store";
 import { greenHouseTable } from "../data/GreenhouseData";
 import { motion, AnimatePresence } from "framer-motion";
+import { LineChart } from "./index-components/ChartLine";
+import { EditSheet } from "./index-components/EditSheet";
+import { FloatingLabel } from "@components/threejs/Objects/floatingLabel";
 
 
 export const EditorPage = () => {
@@ -19,12 +22,8 @@ export const EditorPage = () => {
     const mountRef = useRef<HTMLDivElement>(null);
     const labelRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
-    const handleClick = (greenhouseId: string) => {
-        console.log("Clicked on greenhouse:", greenhouseId);
-    }
-
     // Initialize Three.js scene and objects
-    ThreeJSUseEffect({mountRef, labelRefs});
+    const [sceneObjects] = ThreeJSUseEffect({mountRef, labelRefs});
 
     // Set loading state
     useEffect(() => {
@@ -47,23 +46,33 @@ export const EditorPage = () => {
             <div ref={mountRef} className="w-full h-full relative overflow-hidden z-0">
                 {/* HTML Billboards */}
                 {greenHouseTable.map((greenhouse) => (
-                    <button 
-                        key={greenhouse.id}
-                        ref={(element) => {
-                            if (element) {
-                                labelRefs.current.set(greenhouse.id, element);
-                            }
-                        }}
-                        className={`absolute pointer-events-auto transition-opacity duration-300 ${selectedGH === greenhouse.id ? 'opacity-100 cursor-pointer' : 'opacity-0 cursor-default'}`}
-                        style={{ top: 0, left: 0 }}
-                        onClick={() => handleClick(greenhouse.id)}
-                    >
-                        <div className={`bg-light100 p-2 rounded-lg shadow-md flex items-center space-x-2`}>
-                            <LeafyGreen className="w-6 h-6 text-green-600" />
-                            <span> {greenhouse.name} </span>
-                        </div>
-                    </button>
+                    <div className={`pointer-events-auto transition-opacity duration-300 ${selectedGH === greenhouse.id ? 'opacity-100' : 'opacity-0'}`} key={greenhouse.id}>
+                        {/* Name tag */}
+                        <FloatingLabel camera={sceneObjects.camera} position={greenhouse.labelPosition}>
+                            <div className={`bg-light100 p-2 rounded-lg shadow-md flex items-center space-x-2`}>
+                                <LeafyGreen className="w-6 h-6 text-green-600" />
+                                <span> {greenhouse.name} </span>
+                            </div>
+                        </FloatingLabel>
+
+                        {/* Icon with data */}
+
+                        {
+                            greenhouse.labelIocnPositions.map((Icons) => (
+                                <FloatingLabel camera={sceneObjects.camera} position={Icons.position}>
+                                    <div className="bg-dark300 rounded-xl shadow-md p-2">
+                                        <div className="flex flex-row items-center gap-2">
+                                            {createElement(Icons.icon, { className: "w-6 h-6 text-light200" })}
+                                            <div className="text-sm text-light200">200</div>
+                                        </div>
+                                    </div>
+                                </FloatingLabel>
+                            ))
+                        }
+                    </div>
                 ))}
+
+
             </div>
 
             {/* Panel / Main Content */}
@@ -73,7 +82,7 @@ export const EditorPage = () => {
                 <div className="absolute top-0 left-0 h-full flex items-center pointer-events-none z-20 p-5">
                     {/* Cool cutout thing I will try */}
                     <motion.div
-                        className="w-80 h-full relative"
+                        className="w-128 h-full relative"
                         layout
                         transition={{ 
                             duration: 0.5, 
@@ -94,10 +103,10 @@ export const EditorPage = () => {
                         <AnimatePresence mode="wait">
                             {menuOpen && (
                                 <motion.div 
-                                    className="bg-dark100 cut-top-left w-full h-full rounded-r-3xl rounded-bl-3xl overflow-hidden drop-shadow-md"
-                                    initial={{ opacity: 0, x: -280 }}
+                                    className="bg-dark100 cut-top-left w-92 h-92 rounded-r-3xl rounded-bl-3xl overflow-hidden drop-shadow-md"
+                                    initial={{ opacity: 0, x: -480 }}
                                     animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -280 }}
+                                    exit={{ opacity: 0, x: -480 }}
                                     transition={{
                                         type: "spring",
                                         stiffness: 400,
@@ -106,25 +115,77 @@ export const EditorPage = () => {
                                 >
                                     <div className="cornerCut-top-left absolute top-0 left-0 w-20 aspect-square bg-dark100 -z-10" />
                                     
-                                    <motion.div 
-                                        className="w-full flex items-center ml-14 px-5 py-2"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ delay: 0.2 }}
-                                    >
+                                    <motion.div className="w-full flex items-center ml-14 px-5 py-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
                                         <div className="flex flex-col">
-                                            <div className="text-xl text-light100">Cool Title</div>
-                                            <div className="text-sm text-light200">Something cool goes here</div>
+                                            <div className="text-xl text-light100">{greenHouseTable.find((greenhouse) => selectedGH === greenhouse.id)?.name}</div>
+                                            <div className="text-sm text-light200">Data charts</div>
                                         </div>
                                     </motion.div>
 
-                                    <motion.div 
-                                        className="h-full w-full p-5"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ delay: 0.3 }}
-                                    >
-                                        <EditSheet />
+                                    <motion.div className="flex flex-col gap-10 h-full w-full p-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+                                        {/* <EditSheet /> */}
+
+                                        {/* Placeholder for the chart, needs work / cleanup */}
+                                        <div className="flex flex-col gap-3 pointer-events-auto">
+                                            {/* Icon - Title - Button */}
+                                            <div className="flex flex-row items-center justify-between">
+                                                <div className="flex flex-row items-center gap-5">
+                                                    <div className="bg-dark300 w-12 aspect-square rounded-xl flex items-center justify-center">
+                                                        <AlarmSmoke size={20} strokeWidth={1.5} className="text-light200" />
+                                                    </div>
+
+                                                    <div className="flex flex-col gap-1">
+                                                        <div className="text-md text-light100">Gas Sensor</div>
+                                                        <div className="text-sm text-light200">Current rate: 1000ms</div>
+                                                    </div>
+                                                </div>
+
+                                                <EditSheet />
+                                            </div>
+                                            
+                                            <LineChart />
+                                        </div>
+
+                                        <div className="flex flex-col gap-3 pointer-events-auto">
+                                            {/* Icon - Title - Button */}
+                                            <div className="flex flex-row items-center justify-between">
+                                                <div className="flex flex-row items-center gap-5">
+                                                    <div className="bg-dark300 w-12 aspect-square rounded-xl flex items-center justify-center">
+                                                        <Thermometer size={20} strokeWidth={1.5} className="text-light200" />
+                                                    </div>
+
+                                                    <div className="flex flex-col gap-1">
+                                                        <div className="text-md text-light100">Temperature Sensor</div>
+                                                        <div className="text-sm text-light200">Current rate: 1000ms</div>
+                                                    </div>
+                                                </div>
+
+                                                <EditSheet />
+                                            </div>
+                                            
+                                            <LineChart />
+                                        </div>
+
+                                        <div className="flex flex-col gap-3 pointer-events-auto">
+                                            {/* Icon - Title - Button */}
+                                            <div className="flex flex-row items-center justify-between">
+                                                <div className="flex flex-row items-center gap-5">
+                                                    <div className="bg-dark300 w-12 aspect-square rounded-xl flex items-center justify-center">
+                                                        <Sun size={20} strokeWidth={1.5} className="text-light200" />
+                                                    </div>
+
+                                                    <div className="flex flex-col gap-1">
+                                                        <div className="text-md text-light100">Light Sensor</div>
+                                                        <div className="text-sm text-light200">Current rate: 1000ms</div>
+                                                    </div>
+                                                </div>
+
+                                                <EditSheet />
+                                            </div>
+                                            
+                                            <LineChart />
+                                        </div>
+
                                     </motion.div>
                                 </motion.div>
                             )}
