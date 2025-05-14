@@ -1,3 +1,4 @@
+
 using Greenhouse.Application.Mqtt.Dtos;
 using Greenhouse.Application.Mqtt.Interfaces;
 using Greenhouse.Application.Repositories;
@@ -34,6 +35,13 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
             UserId = userId,
         };
 
+        var preferences = new Preferences()
+        {
+            Id = Guid.NewGuid(),
+            DeviceId = deviceId,
+            SensorInterval = 1000
+        };
+
         var topic = $"user/assign/{deviceId}";
 
         try
@@ -44,9 +52,33 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
         {
             throw new ApplicationException("Your device is unresponsive", ex);
         }
-
+        deviceRepository.SetDefaultPreferences(preferences);
         var dbDevice = deviceRepository.AssignDeviceToUser(device);
         return dbDevice;
     }
 
+    public async Task<Preferences> UpdatePreferences(PreferencesChangeDto preferencesDto)
+    {
+        var currentPreferences = deviceRepository.GetCurrentPreferences(preferencesDto.DeviceId);
+        var preferences = new Preferences()
+        {
+            Id = currentPreferences.Id,
+            DeviceId = preferencesDto.DeviceId,
+            SensorInterval = preferencesDto.SensorInterval,
+        };
+        
+        var topic = $"preferences/{preferencesDto.DeviceId}";
+
+        try
+        {
+            await mqttPublisher.Publish(preferences.SensorInterval, topic, QualityOfService.ExactlyOnceDelivery);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException("Your device is unresponsive", ex);
+        }
+
+        var dbPreferences = deviceRepository.ChangePreferences(preferences);
+        return dbPreferences;
+    }
 }
