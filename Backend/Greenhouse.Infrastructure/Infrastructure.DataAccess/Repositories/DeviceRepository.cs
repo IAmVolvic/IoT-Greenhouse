@@ -41,6 +41,7 @@ public class DeviceRepository(AppDbContext context) : IDeviceRepository
     public void RemoveDeviceFromUser(Device device)
     {
         context.Devices.Remove(device);
+        context.SaveChanges();
     }
 
     public Device GetDevicesByDeviceId(Guid deviceId)

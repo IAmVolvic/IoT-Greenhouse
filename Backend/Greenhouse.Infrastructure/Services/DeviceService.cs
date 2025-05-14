@@ -1,4 +1,3 @@
-
 using Greenhouse.Application.Mqtt.Dtos;
 using Greenhouse.Application.Mqtt.Interfaces;
 using Greenhouse.Application.Repositories;
@@ -52,8 +51,8 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
         {
             throw new ApplicationException("Your device is unresponsive", ex);
         }
-        deviceRepository.SetDefaultPreferences(preferences);
         var dbDevice = deviceRepository.AssignDeviceToUser(device);
+        deviceRepository.SetDefaultPreferences(preferences);
         return dbDevice;
     }
 
@@ -95,6 +94,11 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
         }
         var device = deviceRepository.GetDevicesByDeviceId(deviceId);
         deviceRepository.RemoveDeviceFromUser(device);
+        var currentConnections = await connectionManager.GetMembersFromTopicId(deviceId.ToString());
+        foreach (var connection in currentConnections)
+        {
+            await connectionManager.RemoveFromTopic(deviceId.ToString(), connection);
+        }
         return deviceId;
     }
 }
