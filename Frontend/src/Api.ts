@@ -23,6 +23,18 @@ export interface AuthorizedUserResponseDto {
   role?: UserRole;
 }
 
+export interface DeviceAssignDto {
+  /** @format uuid */
+  deviceId?: string;
+  deviceName?: string | null;
+}
+
+export interface SubscirbeToTopicDto {
+  topicNames: string[];
+  /** @format int32 */
+  userId: number;
+}
+
 export interface UserLoginDto {
   /** @minLength 1 */
   name: string;
@@ -278,6 +290,26 @@ export class Api<
         ...params,
       }),
   };
+  device = {
+    /**
+     * No description
+     *
+     * @tags Device
+     * @name AssignDeviceToUserCreate
+     * @request POST:/Device/AssignDeviceToUser
+     */
+    assignDeviceToUserCreate: (
+      data: DeviceAssignDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/Device/AssignDeviceToUser`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+  };
   hello = {
     /**
      * No description
@@ -290,6 +322,42 @@ export class Api<
       this.request<void, any>({
         path: `/Hello/HelloWorld`,
         method: "GET",
+        ...params,
+      }),
+  };
+  subscription = {
+    /**
+     * No description
+     *
+     * @tags Subscription
+     * @name SubscribeYourDevicesCreate
+     * @request POST:/Subscription/Subscribe/YourDevices
+     */
+    subscribeYourDevicesCreate: (data: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/Subscription/Subscribe/YourDevices`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Subscription
+     * @name SubscribeSpecificTopicsCreate
+     * @request POST:/Subscription/Subscribe/SpecificTopics
+     */
+    subscribeSpecificTopicsCreate: (
+      data: SubscirbeToTopicDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/Subscription/Subscribe/SpecificTopics`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

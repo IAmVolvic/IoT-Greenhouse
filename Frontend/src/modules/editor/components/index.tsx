@@ -11,19 +11,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LineChart } from "./index-components/ChartLine";
 import { EditSheet } from "./index-components/EditSheet";
 import { FloatingLabel } from "@components/threejs/Objects/floatingLabel";
-
+import { useWsClient } from "ws-request-hook";
+import { Api } from "@Api";
+import useWebsocketClientStore from "@store/Websocket/clientid.store";
 
 export const EditorPage = () => {
     const { setIsLoading } = useLoadingStore((state) => state);
     const { selectedGH } = useEditorStore();
-
     const [menuOpen, setMenuOpen] = useState(true);
-
     const mountRef = useRef<HTMLDivElement>(null);
     const labelRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
     // Initialize Three.js scene and objects
     const [sceneObjects] = ThreeJSUseEffect({mountRef, labelRefs});
+
+    const {readyState, onMessage} = useWsClient();
+    const { clientId } = useWebsocketClientStore();
+
 
     // Set loading state
     useEffect(() => {
@@ -38,6 +42,20 @@ export const EditorPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        const api = new Api();
+        api.subscription.subscribeYourDevicesCreate(clientId!, { withCredentials: true }).then((res) => {});
+      }, []);
+
+
+    useEffect(() => {
+        if (readyState != 1) return;
+
+        onMessage<any>("ServerBroadcastsLogToDashboard", (Data) => {
+            console.log("Lobby message received:", Data);
+        })
+    }, [readyState]);
+
     return (
         <>
             {/* Loader */}
@@ -46,7 +64,7 @@ export const EditorPage = () => {
             <div ref={mountRef} className="w-full h-full relative overflow-hidden z-0">
                 {/* HTML Billboards */}
                 {greenHouseTable.map((greenhouse) => (
-                    <div className={`pointer-events-auto transition-opacity duration-300 ${selectedGH === greenhouse.id ? 'opacity-100' : 'opacity-0'}`} key={greenhouse.id}>
+                    <div key={greenhouse.id} className={`pointer-events-auto transition-opacity duration-300 ${selectedGH === greenhouse.id ? 'opacity-100' : 'opacity-0'}`}>
                         {/* Name tag */}
                         <FloatingLabel camera={sceneObjects.camera} position={greenhouse.labelPosition}>
                             <div className={`bg-light100 p-2 rounded-lg shadow-md flex items-center space-x-2`}>
@@ -58,8 +76,8 @@ export const EditorPage = () => {
                         {/* Icon with data */}
 
                         {
-                            greenhouse.labelIocnPositions.map((Icons) => (
-                                <FloatingLabel camera={sceneObjects.camera} position={Icons.position}>
+                            greenhouse.labelIocnPositions.map((Icons, i) => (
+                                <FloatingLabel camera={sceneObjects.camera} position={Icons.position} key={`icon-${greenhouse.id}-${i}`}>
                                     <div className="bg-dark300 rounded-xl shadow-md p-2">
                                         <div className="flex flex-row items-center gap-2">
                                             {createElement(Icons.icon, { className: "w-6 h-6 text-light200" })}
@@ -71,8 +89,6 @@ export const EditorPage = () => {
                         }
                     </div>
                 ))}
-
-
             </div>
 
             {/* Panel / Main Content */}

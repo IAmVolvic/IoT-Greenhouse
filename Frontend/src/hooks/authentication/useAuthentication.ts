@@ -6,13 +6,14 @@ import useAuthStore from "@store/Authentication/auth.store";
 
 const API = new Api();
 
-const LOCAL_STORAGE_KEY = "user";
+const LOCAL_STORAGE_KEY_USER = "user";
+const LOCAL_STORAGE_KEY_WS = "WsClientId"
 
 const saveUserToLocalStorage = (user: AuthorizedUserResponseDto | null) => {
     if (user) {
-        window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
+        window.localStorage.setItem(LOCAL_STORAGE_KEY_USER, JSON.stringify(user));
     } else {
-        window.localStorage.removeItem(LOCAL_STORAGE_KEY);
+        window.localStorage.removeItem(LOCAL_STORAGE_KEY_USER);
     }
 };
 
@@ -51,12 +52,13 @@ export const useAuth = () => {
             setUser(null);
             setIsLoggedIn(false);
             saveUserToLocalStorage(null);
+            window.localStorage.removeItem(LOCAL_STORAGE_KEY_WS);
         }
     }, [isError, setUser, setIsLoggedIn, isFetching]);
 
     useEffect(() => {
         // Keep Zustand store in sync with localStorage at mount
-        const localUser = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+        const localUser = window.localStorage.getItem(LOCAL_STORAGE_KEY_USER);
         if (localUser) {
             try {
                 const parsedUser = JSON.parse(localUser);
@@ -67,6 +69,7 @@ export const useAuth = () => {
                 setUser(null);
                 setIsLoggedIn(false);
                 saveUserToLocalStorage(null);
+                window.localStorage.removeItem(LOCAL_STORAGE_KEY_WS);
             }
         }
     }, [setUser, setIsLoggedIn]);
