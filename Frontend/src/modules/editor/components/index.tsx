@@ -1,19 +1,32 @@
 import { createElement, useEffect, useRef, useState } from "react";
 import { ThreeJSUseEffect } from "./index-hooks/ThreeJS.useEffect";
 
-import { AlarmSmoke, ChevronLeft, LeafyGreen, Sun, Thermometer } from "lucide-react";
+import { AlarmSmoke, ChevronLeft, LeafyGreen } from "lucide-react";
 import { CustomLoader } from "@components/Loader/Index";
 /* import { EditSheet } from "./index-components/EditSheet"; */
 import useEditorStore from "@store/Editor/editor.store";
 import useLoadingStore from "@store/Loader/loader.store";
 import { greenHouseTable } from "../data/GreenhouseData";
 import { motion, AnimatePresence } from "framer-motion";
-import { LineChart } from "./index-components/ChartLine";
-import { EditSheet } from "./index-components/EditSheet";
 import { FloatingLabel } from "@components/threejs/Objects/floatingLabel";
-import { useWsClient } from "ws-request-hook";
-import { Api } from "@Api";
 import useWebsocketClientStore from "@store/Websocket/clientid.store";
+import { useWsClient, BaseDto } from "ws-request-hook";
+import { Api } from "@Api";
+import { SensorChart } from "./index-components/SensorChart";
+
+
+interface WebsocketMessage extends BaseDto {
+    log: Log;
+}
+
+interface Log {
+    id: string;
+    deviceId: string;
+    unit: string;
+    value: number;
+    type: string;
+    date: string;
+}
 
 export const EditorPage = () => {
     const { setIsLoading } = useLoadingStore((state) => state);
@@ -24,9 +37,10 @@ export const EditorPage = () => {
 
     // Initialize Three.js scene and objects
     const [sceneObjects] = ThreeJSUseEffect({mountRef, labelRefs});
-
     const {readyState, onMessage} = useWsClient();
     const { clientId } = useWebsocketClientStore();
+
+    const [val, setVal] = useState(0);
 
 
     // Set loading state
@@ -44,17 +58,21 @@ export const EditorPage = () => {
 
     useEffect(() => {
         const api = new Api();
-        api.subscription.subscribeYourDevicesCreate(clientId!, { withCredentials: true }).then((res) => {});
-      }, []);
-
+        api.subscription.subscribeYourDevicesCreate(clientId!, { withCredentials: true });
+    }, []);
 
     useEffect(() => {
         if (readyState != 1) return;
-
-        onMessage<any>("ServerBroadcastsLogToDashboard", (Data) => {
-            console.log("Lobby message received:", Data);
+        onMessage<WebsocketMessage>("ServerBroadcastsLogToDashboard", (Data) => {
+            setVal(Data.log.value);
         })
     }, [readyState]);
+
+
+    // Delete later / move into a builder for the greenhouse table
+    useEffect(() => {
+        greenHouseTable[0].SensorInfo[0].value = val;
+    }, [val]);
 
     return (
         <>
@@ -76,12 +94,12 @@ export const EditorPage = () => {
                         {/* Icon with data */}
 
                         {
-                            greenhouse.labelIocnPositions.map((Icons, i) => (
-                                <FloatingLabel camera={sceneObjects.camera} position={Icons.position} key={`icon-${greenhouse.id}-${i}`}>
+                            greenhouse.SensorInfo.map((Sensor, i) => (
+                                <FloatingLabel camera={sceneObjects.camera} position={Sensor.position} key={`icon-${greenhouse.id}-${i}`}>
                                     <div className="bg-dark300 rounded-xl shadow-md p-2">
                                         <div className="flex flex-row items-center gap-2">
-                                            {createElement(Icons.icon, { className: "w-6 h-6 text-light200" })}
-                                            <div className="text-sm text-light200">200</div>
+                                            {createElement(Sensor.icon, { className: "w-6 h-6 text-light200" })}
+                                            <div className="text-sm text-light200">{Sensor.value}</div>
                                         </div>
                                     </div>
                                 </FloatingLabel>
@@ -140,67 +158,12 @@ export const EditorPage = () => {
 
                                     <motion.div className="flex flex-col gap-10 h-full w-full p-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
                                         {/* <EditSheet /> */}
-
-                                        {/* Placeholder for the chart, needs work / cleanup */}
-                                        <div className="flex flex-col gap-3 pointer-events-auto">
-                                            {/* Icon - Title - Button */}
-                                            <div className="flex flex-row items-center justify-between">
-                                                <div className="flex flex-row items-center gap-5">
-                                                    <div className="bg-dark300 w-12 aspect-square rounded-xl flex items-center justify-center">
-                                                        <AlarmSmoke size={20} strokeWidth={1.5} className="text-light200" />
-                                                    </div>
-
-                                                    <div className="flex flex-col gap-1">
-                                                        <div className="text-md text-light100">Gas Sensor</div>
-                                                        <div className="text-sm text-light200">Current rate: 1000ms</div>
-                                                    </div>
-                                                </div>
-
-                                                <EditSheet />
-                                            </div>
-                                            
-                                            <LineChart />
-                                        </div>
-
-                                        <div className="flex flex-col gap-3 pointer-events-auto">
-                                            {/* Icon - Title - Button */}
-                                            <div className="flex flex-row items-center justify-between">
-                                                <div className="flex flex-row items-center gap-5">
-                                                    <div className="bg-dark300 w-12 aspect-square rounded-xl flex items-center justify-center">
-                                                        <Thermometer size={20} strokeWidth={1.5} className="text-light200" />
-                                                    </div>
-
-                                                    <div className="flex flex-col gap-1">
-                                                        <div className="text-md text-light100">Temperature Sensor</div>
-                                                        <div className="text-sm text-light200">Current rate: 1000ms</div>
-                                                    </div>
-                                                </div>
-
-                                                <EditSheet />
-                                            </div>
-                                            
-                                            <LineChart />
-                                        </div>
-
-                                        <div className="flex flex-col gap-3 pointer-events-auto">
-                                            {/* Icon - Title - Button */}
-                                            <div className="flex flex-row items-center justify-between">
-                                                <div className="flex flex-row items-center gap-5">
-                                                    <div className="bg-dark300 w-12 aspect-square rounded-xl flex items-center justify-center">
-                                                        <Sun size={20} strokeWidth={1.5} className="text-light200" />
-                                                    </div>
-
-                                                    <div className="flex flex-col gap-1">
-                                                        <div className="text-md text-light100">Light Sensor</div>
-                                                        <div className="text-sm text-light200">Current rate: 1000ms</div>
-                                                    </div>
-                                                </div>
-
-                                                <EditSheet />
-                                            </div>
-                                            
-                                            <LineChart />
-                                        </div>
+                                        <SensorChart
+                                            sensorName="Gas Sensor"
+                                            data={greenHouseTable[0].SensorInfo[0].value}
+                                            icon={AlarmSmoke}
+                                            numberToShow={20}
+                                        />
 
                                     </motion.div>
                                 </motion.div>

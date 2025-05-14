@@ -172,9 +172,6 @@ const htmlLegendPlugin: Plugin<'line'> = {
 	},
 };
 
-/* const randomData = (min: number, max: number, count: number): number[] =>
-	Array.from({ length: count }, () => Math.floor(Math.random() * (max - min + 1)) + min); */
-
 type CustomChartOptions = ChartOptions<'line'> & {
 	plugins: {
 		htmlLegend: {
@@ -228,7 +225,12 @@ const options: CustomChartOptions = {
 	},
 };
 
-export const LineChart = () => {
+export interface LChartData {
+	Label: string[];
+	Data: number[];
+}
+
+export const LineChart = (props: LChartData) => {
 	const chartRef = useRef<ChartJS<'line'> | null>(null);
 	const [chartData, setChartData] = useState<ChartData<'line'>>({
 		labels: [],
@@ -252,21 +254,32 @@ export const LineChart = () => {
 		const chart = chartRef.current;
 		if (!chart) return;
 
+		return () => {
+			const tooltipEl = document.getElementById('chartjs-tooltip');
+			if (tooltipEl) tooltipEl.remove();
+
+			const legendContainer = document.getElementById('legend-container');
+			if (legendContainer) legendContainer.innerHTML = '';
+
+			if (chart) chart.destroy();
+		};
+	}, [isClient]);
+
+	useEffect(() => {
+		const chart = chartRef.current;
+		if (!chart) return;
+
 		const ctx = chart.ctx;
 		if (!ctx) return;
 
 		const [gradient, borderColor] = createGradient(ctx);
 
-		// Initialize with 20 data points
-		const initialData = Array(50).fill(0).map(() => generateRandomValue(0, 100));
-		const initialLabels = Array(50).fill('').map((_, i) => `T-${49 - i}`);
-
 		setChartData({
-			labels: initialLabels,
+			labels: props.Label,
 			datasets: [
 				{
 					label: 'Moisture',
-					data: initialData,
+					data: props.Data,
 					borderWidth: 2,
 					tension: 0,
 					pointRadius: 2,
@@ -277,38 +290,7 @@ export const LineChart = () => {
 			],
 		});
 
-		const interval = setInterval(() => {
-			setChartData(prev => {
-				const newValue = generateRandomValue(50, 55);
-				const newData = [...(prev.datasets[0].data as number[]), newValue].slice(-50);
-				const newLabels = [...(prev.labels as string[]), `T+${Date.now()}`].slice(-50);
-
-				return {
-					...prev,
-					labels: newLabels,
-					datasets: [
-						{
-							...prev.datasets[0],
-							data: newData,
-						},
-					],
-				};
-			});
-		}, 1000); // 1 second interval
-
-		return () => {
-			clearInterval(interval);
-			const tooltipEl = document.getElementById('chartjs-tooltip');
-			if (tooltipEl) tooltipEl.remove();
-
-			const legendContainer = document.getElementById('legend-container');
-			if (legendContainer) legendContainer.innerHTML = '';
-
-			setChartData({ labels: [], datasets: [] });
-
-			if (chart) chart.destroy();
-		};
-	}, [isClient]);
+	}, [props.Label, props.Data]);
 
 	return (
 		<div className="w-full h-32">
@@ -321,13 +303,6 @@ export const LineChart = () => {
 		</div>
 	);
 };
-
-// Utility functions
-const generateRandomValue = (min: number, max: number): number =>
-	Math.floor(Math.random() * (max - min + 1)) + min;
-
-
-
 
 
 

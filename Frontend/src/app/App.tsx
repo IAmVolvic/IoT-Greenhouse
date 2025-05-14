@@ -11,21 +11,13 @@ const App = () => {
 	const router = createBrowserRouter(ROUTES)
     const { clientId } = useWebsocketClientStore();
 
-    if (clientId) {
-        return (
-            <WsClientProvider url={`${import.meta.env.VITE_WS_URI}?id=${clientId ?? ''}`}>
-                <QueryClientProvider client={QUERY_CLIENT}>
-                    <RouterProvider router={router} />
-                </QueryClientProvider>
-            </WsClientProvider>
-        )
-    }else{
-        return (
+    return (
+        <WsClientProvider url={`${import.meta.env.VITE_WS_URI}?id=${clientId ?? ''}`}>
             <QueryClientProvider client={QUERY_CLIENT}>
                 <RouterProvider router={router} />
             </QueryClientProvider>
-        )
-    }
+        </WsClientProvider>
+    )
 }
 
 export default App;

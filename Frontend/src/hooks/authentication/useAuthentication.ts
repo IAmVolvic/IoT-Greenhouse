@@ -74,6 +74,7 @@ export const useAuth = () => {
         }
     }, [setUser, setIsLoggedIn]);
 
+
     return {
         user,
         isLoggedIn,

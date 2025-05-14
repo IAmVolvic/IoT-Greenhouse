@@ -10,19 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Greenhouse.API/Controllers/SubscriptionController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.API/Controllers/SubscriptionController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Greenhouse.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/.env.development" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/Api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/Api.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/src/app/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/app/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/src/hooks/authentication/useAuthentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/hooks/authentication/useAuthentication.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/hooks/authentication/useLogin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/hooks/authentication/useLogin.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/hooks/authentication/useLogout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/hooks/authentication/useLogout.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/hooks/authentication/useSignup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/hooks/authentication/useSignup.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index-components/EditSheet.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index-components/EditSheet.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index-components/ChartLine.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index-components/ChartLine.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/src/modules/editor/data/GreenhouseData.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/modules/editor/data/GreenhouseData.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +22,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DpaMonitoringSettings">
-    <option name="firstShow" value="false" />
+    <option name="autoShow" value="false" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -75,24 +67,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.Greenhouse.API: IIS Express.executor": "Run",
-    ".NET Launch Settings Profile.Greenhouse.API: http.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "deletionFromPopupRequiresConfirmation": "false",
-    "git-widget-placeholder": "feature/frontend/WS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CodeLensConfigurable",
-    "ts.external.directory.path": "/Users/volvic/Desktop/Github/IoT-Greenhouse/Frontend/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.Greenhouse.API: IIS Express.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.Greenhouse.API: http.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/frontend/WS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CodeLensConfigurable&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/volvic/Desktop/Github/IoT-Greenhouse/Frontend/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Greenhouse.API: http">
     <configuration name="Greenhouse.API: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Greenhouse.API/Greenhouse.API.csproj" />
