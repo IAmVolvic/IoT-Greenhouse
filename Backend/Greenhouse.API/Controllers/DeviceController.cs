@@ -30,4 +30,13 @@ public class DeviceController(IDeviceService deviceService) : ControllerBase
         await deviceService.UpdatePreferences(preferencesDto);
         return Ok();
     }
+
+    [HttpDelete]
+    [Route("RemoveDeviceFromUser")]
+    [Authenticated]
+    public async Task<ActionResult> RemoveDeviceFromUser([FromBody] Guid deviceId)
+    {
+        await deviceService.RemoveDeviceFromUser(deviceId);
+        return Ok();
+    }
 }

@@ -9,4 +9,5 @@ public interface IDeviceService
     public void BroadcastUnassignedDeviceInfo(UnassignedDeviceDto device);
     public Task<Domain.DatabaseDtos.Device> AssignDeviceToUser(Guid userId, Guid deviceId, string deviceName);
     public Task<Preferences> UpdatePreferences(PreferencesChangeDto preferences);
+    public Task<Guid> RemoveDeviceFromUser(Guid deviceId);
 }

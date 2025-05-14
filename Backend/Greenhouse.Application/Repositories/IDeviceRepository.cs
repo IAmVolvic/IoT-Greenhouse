@@ -9,4 +9,6 @@ public interface IDeviceRepository
     public Preferences ChangePreferences(Preferences preferences);
     public Preferences GetCurrentPreferences(Guid deviceId);
     public void SetDefaultPreferences(Preferences preferences);
+    public void RemoveDeviceFromUser(Device device);
+    public Device GetDevicesByDeviceId(Guid deviceId);
 }

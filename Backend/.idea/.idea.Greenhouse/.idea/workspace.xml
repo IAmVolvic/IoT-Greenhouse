@@ -10,8 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Greenhouse.Application/Mqtt/Dtos/PreferencesChangeDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Greenhouse.API/Controllers/DeviceController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.API/Controllers/DeviceController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Greenhouse.Application/Repositories/IDeviceRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Application/Repositories/IDeviceRepository.cs" afterDir="false" />
@@ -152,7 +150,7 @@
       <workItem from="1746173570639" duration="718000" />
       <workItem from="1746448749390" duration="6331000" />
       <workItem from="1747040897984" duration="2648000" />
-      <workItem from="1747212455588" duration="1849000" />
+      <workItem from="1747212455588" duration="2739000" />
     </task>
     <servers />
   </component>

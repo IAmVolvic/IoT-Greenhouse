@@ -81,4 +81,20 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
         var dbPreferences = deviceRepository.ChangePreferences(preferences);
         return dbPreferences;
     }
+
+    public async Task<Guid> RemoveDeviceFromUser(Guid deviceId)
+    {
+        var topic = $"user/assign/{deviceId}";
+        try
+        {
+            await mqttPublisher.Publish("unassigned", topic, QualityOfService.ExactlyOnceDelivery);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException("Your device is unresponsive", ex);
+        }
+        var device = deviceRepository.GetDevicesByDeviceId(deviceId);
+        deviceRepository.RemoveDeviceFromUser(device);
+        return deviceId;
+    }
 }

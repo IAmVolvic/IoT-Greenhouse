@@ -37,4 +37,14 @@ public class DeviceRepository(AppDbContext context) : IDeviceRepository
         context.Preferences.Add(preferences);
         context.SaveChanges();
     }
+
+    public void RemoveDeviceFromUser(Device device)
+    {
+        context.Devices.Remove(device);
+    }
+
+    public Device GetDevicesByDeviceId(Guid deviceId)
+    {
+        return context.Devices.SingleOrDefault(d => d.Id == deviceId);
+    }
 }
