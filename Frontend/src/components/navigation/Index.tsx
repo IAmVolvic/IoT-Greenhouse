@@ -4,15 +4,16 @@ import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { EditorNavButtons } from "@modules/editor/components/index-components/nav-buttons";
 import useEditorStore from "@store/Editor/editor.store";
-import { greenHouseTable } from "@modules/editor/data/GreenhouseData";
 import { UsersTableOptions } from "./moreUserOptions";
+import { useGetMyDevices } from "@hooks/devices/MyDevices";
 
 // Todo
 // Nav for mobile
 
 export const Navbar = () => {
+    const { data } = useGetMyDevices();
     const { selectedGH } = useEditorStore();
-    const greenHouseMap = Object.fromEntries(greenHouseTable.map(gh => [gh.id, gh]));
+    const greenHouseMap = Object.fromEntries(data.map(gh => [gh.id, gh]));
     const { isOpen } = useNavStore((state) => state);
 
 	return (

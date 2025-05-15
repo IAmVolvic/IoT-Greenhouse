@@ -14,7 +14,8 @@ import { sceneFloor } from "@components/threejs/Objects/sceneFloor";
 import useNavStore from "@store/Nav/nav.store";
 import useEditorStore from "@store/Editor/editor.store";
 // Data imports
-import { greenHouseTable } from "@modules/editor/data/GreenhouseData";
+import { useGetMyDevices } from "@hooks/devices/MyDevices";
+
 
 
 
@@ -26,6 +27,7 @@ interface ThreeJSUseEffectProps {
 export const ThreeJSUseEffect = (props: ThreeJSUseEffectProps) => {
         const { selectedGH } = useEditorStore();
         const { setIsOpen } = useNavStore((state) => state);
+        const { data, loading } = useGetMyDevices();
 
         const [sceneObjects, setSceneObjects] = useState<{ 
             camera?: THREE.PerspectiveCamera, 
@@ -36,6 +38,8 @@ export const ThreeJSUseEffect = (props: ThreeJSUseEffectProps) => {
         
         // Three.js scene setup
         useEffect(() => {
+            if (loading) return;
+            
             const scene = baseScene();
             const camera = sceneCamera();
             const renderer = sceneRenderer();
@@ -66,7 +70,7 @@ export const ThreeJSUseEffect = (props: ThreeJSUseEffectProps) => {
             worldGroup.add(directionalLight);
     
             // Initialize each greenhouse from the table
-            greenHouseTable.forEach((greenhouse) => {
+            data.forEach((greenhouse) => {
                 const greenhouseGroup = new THREE.Group();
                 greenhouseGroup.position.copy(greenhouse.position);
                 const floorPlan = new FloorPlan();
@@ -76,7 +80,7 @@ export const ThreeJSUseEffect = (props: ThreeJSUseEffectProps) => {
                     objectGroups[greenhouse.id] = fp;
                     // Apply visual state based on current selection
     
-                    const isSelected = greenhouse.id === "gh1";
+                    const isSelected = greenhouse.id === data[0].id;
                     fp.updateGreenhouseVisual(isSelected);
                 });
             
@@ -127,20 +131,20 @@ export const ThreeJSUseEffect = (props: ThreeJSUseEffectProps) => {
                 renderer.dispose();
             };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, []);
+        }, [loading, data]);
     
         // Move camera when selected greenhouse changes
         useEffect(() => {
             if (selectedGH && sceneObjects.camera && sceneObjects.controls && sceneObjects.objectGroups) {   
                 // Update visual state for all greenhouses
-                greenHouseTable.forEach((greenhouse) => {
+                data.forEach((greenhouse) => {
                     const floorPlanInstance = sceneObjects.objectGroups?.[greenhouse.id] as FloorPlan;
                     if (floorPlanInstance) {
                         floorPlanInstance.updateGreenhouseVisual(greenhouse.id === selectedGH);
                     }
                 });
                 
-                const selectedGreenhouse = greenHouseTable.find(gh => gh.id === selectedGH);
+                const selectedGreenhouse = data.find(gh => gh.id === selectedGH);
                 if (selectedGreenhouse) {
                     const currentPosition = sceneObjects.camera.position.clone();
                     const currentTarget = sceneObjects.controls.target.clone();

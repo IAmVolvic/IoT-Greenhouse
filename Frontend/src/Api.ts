@@ -23,6 +23,14 @@ export interface AuthorizedUserResponseDto {
   role?: UserRole;
 }
 
+export interface Device {
+  /** @format uuid */
+  id?: string;
+  /** @format uuid */
+  userId?: string;
+  deviceName?: string | null;
+}
+
 export interface DeviceAssignDto {
   /** @format uuid */
   deviceId?: string;
@@ -307,6 +315,21 @@ export class Api<
         method: "POST",
         body: data,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Device
+     * @name MyDevicesList
+     * @request GET:/Device/MyDevices
+     */
+    myDevicesList: (params: RequestParams = {}) =>
+      this.request<Device[], any>({
+        path: `/Device/MyDevices`,
+        method: "GET",
+        format: "json",
         ...params,
       }),
   };

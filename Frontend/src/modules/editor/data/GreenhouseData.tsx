@@ -1,47 +1,43 @@
-import { AlarmSmoke, LucideIcon, Sun, Thermometer } from "lucide-react";
 import * as THREE from "three";
+import { Device } from "@Api";
+import { GreenHouseData } from "@hooks/devices/MyDevices";
+import { AlarmSmoke, Sun, Thermometer } from "lucide-react";
 
-// Define a type for our greenhouse data
-interface GreenHouseData {
-    id: string;
-    name: string;
-    position: THREE.Vector3;
-    labelPosition: THREE.Vector3;
-    SensorInfo: SensorInfo[];
+
+export const greenHouseTable: GreenHouseData[] = [];
+
+export const transformData = (data: Device[]): GreenHouseData[] => {
+    const transformed = data.map((device, index) => {
+        const offsetX = index * 10;
+
+        return {
+            id: device.id || `unknown-id-${index}`,
+            name: device.deviceName || "Unknown Device",
+            position: new THREE.Vector3(offsetX, 0, 0),
+            labelPosition: new THREE.Vector3(offsetX, 2.5, -2.7),
+            SensorInfo: [
+                {
+                    name: "gas",
+                    value: 0,
+                    position: new THREE.Vector3(offsetX, 1, -1.5),
+                    icon: AlarmSmoke,
+                },
+                {
+                    name: "temperature",
+                    value: 0,
+                    position: new THREE.Vector3(offsetX, 1, 0),
+                    icon: Thermometer,
+                },
+                {
+                    name: "light",
+                    value: 0,
+                    position: new THREE.Vector3(offsetX, 1, 1.5),
+                    icon: Sun,
+                },
+            ]
+        }
+    });
+
+    greenHouseTable.splice(0, greenHouseTable.length, ...transformed);
+    return greenHouseTable;
 }
-
-interface SensorInfo {
-    name: string;
-    value: number;
-    position: THREE.Vector3;
-    icon: LucideIcon;
-}
-
-export const greenHouseTable: GreenHouseData[] = [
-    { 
-        id: "gh1", 
-        name: "Greenhouse 1",
-        position: new THREE.Vector3(0, 0, 0),
-        labelPosition: new THREE.Vector3(0, 2.5, -2.7),
-        SensorInfo: [
-            {
-                name: "gas",
-                value: 0,
-                position: new THREE.Vector3(0, 1, -1.5),
-                icon: AlarmSmoke
-            },
-            {
-                name: "temperature",
-                value: 0,
-                position: new THREE.Vector3(0, 1, 0),
-                icon: Thermometer
-            },
-            {
-                name: "light",
-                value: 0,
-                position: new THREE.Vector3(0, 1, 1.5),
-                icon: Sun
-            },
-        ]
-    }
-];

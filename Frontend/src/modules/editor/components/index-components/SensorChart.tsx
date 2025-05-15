@@ -43,7 +43,7 @@ export const SensorChart = (props: SensorChartProps) => {
                     </div>
 
                     <div className="flex flex-col gap-1">
-                        <div className="text-md text-light100">{props.sensorName}</div>
+                        <div className="text-md text-light100 capitalize">{props.sensorName}</div>
                         <div className="text-sm text-light200">Current rate: 1000ms</div>
                     </div>
                 </div>
