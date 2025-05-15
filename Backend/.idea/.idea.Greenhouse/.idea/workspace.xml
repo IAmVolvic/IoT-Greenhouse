@@ -10,11 +10,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b52f317-1994-4256-90a2-6912f4adef4f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/app/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/app/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/hooks/authentication/useAuthentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/hooks/authentication/useAuthentication.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index-components/ChartLine.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index-components/ChartLine.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/modules/editor/components/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/src/modules/editor/data/GreenhouseData.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/modules/editor/data/GreenhouseData.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Greenhouse/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.API/Controllers/DeviceController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.API/Controllers/DeviceController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.Infrastructure/Services/DeviceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.Infrastructure/Services/DeviceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Greenhouse.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Greenhouse.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/src/components/threejs/sceneRenderer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/src/components/threejs/sceneRenderer.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +23,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DpaMonitoringSettings">
-    <option name="autoShow" value="false" />
+    <option name="firstShow" value="false" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -48,6 +49,7 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/../IoT/IoT_Project_Gas/IoT_Project_Gas.ino" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/15f1ca475afd4288a3258ae9ddf055906c00/26/4b02f313/BaseDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/15f1ca475afd4288a3258ae9ddf055906c00/d0/59410765/ExtensionMethods.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a105b4a31e844e8895058fb1b02b9bc8219600/fd/514b8181/FromBodyAttribute.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -146,6 +148,7 @@
       <workItem from="1746173570639" duration="718000" />
       <workItem from="1746448749390" duration="6331000" />
       <workItem from="1747040897984" duration="2648000" />
+      <workItem from="1747266216074" duration="2892000" />
     </task>
     <servers />
   </component>

@@ -20,4 +20,14 @@ public class DeviceController(IDeviceService deviceService): ControllerBase
         var device = await deviceService.AssignDeviceToUser(authUser.Id, deviceDto.DeviceId,deviceDto.DeviceName);
         return Ok(device);
     }
+    
+    [HttpGet]
+    [Route("MyDevices")]
+    [Authenticated]
+    public ActionResult<List<Device>> MyDevices()
+    {
+        var authUser = HttpContext.Items["AuthenticatedUser"] as AuthorizedUserResponseDto;
+        var devices = deviceService.GetDevicesForUser(authUser.Id);
+        return Ok(devices);
+    }
 }

@@ -1,3 +1,4 @@
+using Greenhouse.Application;
 using Greenhouse.Application.Mqtt.Dtos;
 using Greenhouse.Application.Mqtt.Interfaces;
 using Greenhouse.Application.Repositories;
@@ -48,5 +49,4 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
         var dbDevice = deviceRepository.AssignDeviceToUser(device);
         return dbDevice;
     }
-
 }

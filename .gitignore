@@ -1,2 +1,4 @@
 publish
-Backend/.idea/.idea.Greenhouse/.idea/workspace.xml
+.idea
+Backend/Greenhouse.sln.DotSettings.user
+*.idea*
