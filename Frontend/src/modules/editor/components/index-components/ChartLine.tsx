@@ -278,7 +278,7 @@ export const LineChart = (props: LChartData) => {
 			labels: props.Label,
 			datasets: [
 				{
-					label: 'Moisture',
+					label: 'Value',
 					data: props.Data,
 					borderWidth: 2,
 					tension: 0,
