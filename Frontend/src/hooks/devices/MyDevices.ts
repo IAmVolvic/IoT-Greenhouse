@@ -2,8 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { Api } from "@Api";
 import { LucideIcon } from "lucide-react";
 import * as THREE from "three";
-import { greenHouseTable, transformData } from "@modules/editor/data/GreenhouseData";
+import { transformData } from "@modules/editor/data/GreenhouseData";
 import { useEffect } from "react";
+import { useGreenhouseStore } from "@store/Editor/devices.store";
 
 // Interfaces
 export interface GreenHouseData {
@@ -24,11 +25,13 @@ export interface SensorInfo {
 const API = new Api();
 
 export const useGetMyDevices = () => {
+    const { setGreenhouses, greenhouses } = useGreenhouseStore();
+
     const { refetch, isFetching, data, isSuccess, isError } = useQuery({
         queryKey: ["user-devices"],
-        
+
         queryFn: async () => {
-            const res = await API.device.myDevicesList({withCredentials: true});
+            const res = await API.device.myDevicesList({ withCredentials: true });
             return res.data;
         },
 
@@ -38,25 +41,23 @@ export const useGetMyDevices = () => {
         retry: false,
     });
 
-    // Handle success response
     useEffect(() => {
         if (isSuccess && data && !isFetching) {
             transformData(data);
         }
     }, [isSuccess, data, isFetching]);
 
-    // Handle error response
     useEffect(() => {
         if (isError && !isFetching) {
-            greenHouseTable.splice(0, greenHouseTable.length);
+            setGreenhouses([]);
         }
-    }, [isError, isFetching]);
+    }, [isError, isFetching, setGreenhouses]);
 
     return {
-        data: greenHouseTable as GreenHouseData[],
+        data: greenhouses,
         refresh: refetch,
         loading: isFetching,
-        isSuccess: isSuccess,
-        isError: isError,
+        isSuccess,
+        isError,
     };
 };

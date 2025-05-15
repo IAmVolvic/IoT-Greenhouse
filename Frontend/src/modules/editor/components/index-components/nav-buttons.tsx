@@ -16,14 +16,14 @@ export const EditorNavButtons = () => {
     }));
 
     useEffect(() => {
-        if (!loading && data && data.length > 0) {
-            setSelectedGH(data[0].id);
-        }
+        // Set the first greenhouse ID as the default selection
+        setSelectedGH((!loading)? data[0].id : null);
 
         return () => {
             setSelectedGH(null);
-        };
-    }, [loading, data]);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loading, setSelectedGH]);
 
 	return (
         <div className="flex flex-row items-center justify-center flex-1 h-full">
