@@ -60,19 +60,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                   .HasForeignKey(l => l.DeviceId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
-
-        // Preferences table
         modelBuilder.Entity<Preferences>(entity =>
         {
             entity.ToTable("preferences");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.SSID).IsRequired();
-            entity.Property(e => e.Passwordhash).IsRequired();
             entity.Property(e => e.SensorInterval).IsRequired();
             entity.HasOne<Device>()
-                  .WithMany()
-                  .HasForeignKey(p => p.DeviceId)
-                  .OnDelete(DeleteBehavior.Cascade);
+                .WithMany()
+                .HasForeignKey(p => p.DeviceId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
+
     }
 }

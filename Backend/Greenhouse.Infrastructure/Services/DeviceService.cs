@@ -35,6 +35,13 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
             UserId = userId,
         };
 
+        var preferences = new Preferences()
+        {
+            Id = Guid.NewGuid(),
+            DeviceId = deviceId,
+            SensorInterval = 1000
+        };
+
         var topic = $"user/assign/{deviceId}";
 
         try
@@ -45,8 +52,54 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
         {
             throw new ApplicationException("Your device is unresponsive", ex);
         }
-
         var dbDevice = deviceRepository.AssignDeviceToUser(device);
+        deviceRepository.SetDefaultPreferences(preferences);
         return dbDevice;
+    }
+
+    public async Task<Preferences> UpdatePreferences(PreferencesChangeDto preferencesDto)
+    {
+        var currentPreferences = deviceRepository.GetCurrentPreferences(preferencesDto.DeviceId);
+        var preferences = new Preferences()
+        {
+            Id = currentPreferences.Id,
+            DeviceId = preferencesDto.DeviceId,
+            SensorInterval = preferencesDto.SensorInterval,
+        };
+        
+        var topic = $"preferences/{preferencesDto.DeviceId}";
+
+        try
+        {
+            await mqttPublisher.Publish(preferences.SensorInterval, topic, QualityOfService.ExactlyOnceDelivery);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException("Your device is unresponsive", ex);
+        }
+
+        var dbPreferences = deviceRepository.ChangePreferences(preferences);
+        return dbPreferences;
+    }
+
+    public async Task<Guid> RemoveDeviceFromUser(Guid deviceId)
+    {
+        var topic = $"user/assign/{deviceId}";
+        try
+        {
+            await mqttPublisher.Publish("unassigned", topic, QualityOfService.ExactlyOnceDelivery);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException("Your device is unresponsive", ex);
+        }
+        var device = deviceRepository.GetDevicesByDeviceId(deviceId);
+        deviceRepository.RemoveDeviceFromUser(device);
+        var currentConnections = await connectionManager.GetMembersFromTopicId(deviceId.ToString());
+        foreach (var connection in currentConnections)
+        {
+            await connectionManager.RemoveFromTopic(deviceId.ToString(), connection);
+        }
+        return deviceId;
     }
 }
