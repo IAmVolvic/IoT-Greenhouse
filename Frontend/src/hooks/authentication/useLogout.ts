@@ -8,6 +8,7 @@ export const useLogout = () => {
 	const logout = () => {
 		setCookie('Authentication', '', { path: '/', expires: new Date(0) });
 		window.localStorage.removeItem('user');
+		window.localStorage.removeItem('WsClientId');
 		setUser(null);
 		setIsLoggedIn(false);
 	};

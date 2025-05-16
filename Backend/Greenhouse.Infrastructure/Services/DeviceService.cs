@@ -1,3 +1,4 @@
+using Greenhouse.Application;
 using Greenhouse.Application.Mqtt.Dtos;
 using Greenhouse.Application.Mqtt.Interfaces;
 using Greenhouse.Application.Repositories;

@@ -5,7 +5,7 @@ export const EditSheet = () => {
 	return (
 		<Sheet>
 			<SheetTrigger>
-				<button className="bg-primary rounded-full px-3 py-1 text-sm text-dark100">View</button>
+				<div className="bg-primary rounded-full px-3 py-1 text-sm text-dark100">View</div>
 			</SheetTrigger>
 
 			<SheetContent>

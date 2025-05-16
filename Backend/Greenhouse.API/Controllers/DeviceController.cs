@@ -38,5 +38,15 @@ public class DeviceController(IDeviceService deviceService) : ControllerBase
     {
         await deviceService.RemoveDeviceFromUser(deviceId);
         return Ok();
+
+    
+    [HttpGet]
+    [Route("MyDevices")]
+    [Authenticated]
+    public ActionResult<List<Device>> MyDevices()
+    {
+        var authUser = HttpContext.Items["AuthenticatedUser"] as AuthorizedUserResponseDto;
+        var devices = deviceService.GetDevicesForUser(authUser.Id);
+        return Ok(devices);
     }
 }
