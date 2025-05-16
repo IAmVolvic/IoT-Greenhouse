@@ -3,25 +3,36 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include <Preferences.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
-#define AO_PIN 34
+#define AO_PIN 34  // MQ2 analog pin
+#define ONE_WIRE_BUS 14  // DS18B20 connected to GPIO 39
 
-const char* ssid = "Wifi name";
-const char* password = "Wifi password";
+const char* ssid = "---";
+const char* password = "---";
+const char* deviceId = "---";
 
-const char* mqtt_server = "Mqtt server";
+const char* mqtt_server = "---";
 const int mqtt_port = 8883;
-const char* mqtt_user = "login for mqtt broker";
-const char* mqtt_pass = "password for mqtt broker";
+const char* mqtt_user = "---";
+const char* mqtt_pass = "---";
 const char* mqtt_topic_gas = "mq2/gas";
 const char* mqtt_topic_unassigned = "user/unassigned";
-const char* mqtt_topic_assign = "user/assign/*id of the device*";
+const char* mqtt_topic_temp = "sensor/temp";
+
+std::string mqtt_topic_assign_str = std::string("user/assign/") + deviceId;
+const char* mqtt_topic_assign = mqtt_topic_assign_str.c_str();
+
 
 WiFiClientSecure wifiSecureClient;
 PubSubClient client(wifiSecureClient);
 Preferences preferences;
 
-String user_assigned = "unassigned";  
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+
+String user_assigned = "unassigned";
 unsigned long lastUnassignedPublish = 0;
 
 void callback(char* topic, byte* message, unsigned int length);
@@ -56,13 +67,14 @@ void reconnect() {
 }
 
 void setup() {
+  pinMode(ONE_WIRE_BUS, INPUT_PULLUP);
   Serial.begin(9600);
   delay(100);
   analogSetAttenuation(ADC_11db);
 
   setup_wifi();
 
-  wifiSecureClient.setInsecure();
+  wifiSecureClient.setInsecure(); // Do testów, nie w produkcji
 
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
@@ -76,6 +88,8 @@ void setup() {
     Serial.println("No assigned user yet.");
   }
   preferences.end();
+
+  sensors.begin();
 }
 
 void loop() {
@@ -85,11 +99,13 @@ void loop() {
 
   client.loop();
 
-  if (user_assigned == "") {
+
+
+  if (user_assigned == "unassigned") {
     unsigned long now = millis();
     if (now - lastUnassignedPublish > 10000) {
-      StaticJsonDocument<200> deviceInfo;  
-      deviceInfo["DeviceId"] = "device id";  
+      StaticJsonDocument<200> deviceInfo;
+      deviceInfo["DeviceId"] = deviceId;
       String info;
       serializeJson(deviceInfo, info);
       client.publish(mqtt_topic_unassigned, info.c_str());
@@ -101,18 +117,33 @@ void loop() {
     Serial.print("MQ2 value: ");
     Serial.println(gasValue);
 
-    StaticJsonDocument<200> doc;  
-    doc["Unit"] = "gas";         
-    doc["Value"] = gasValue;     
-    doc["DeviceId"] = "device id";  
+    StaticJsonDocument<200> doc;
+    doc["Unit"] = "gas";
+    doc["Value"] = gasValue;
+    doc["DeviceId"] = deviceId;
     doc["Type"] = "gas";
 
     String payload;
     serializeJson(doc, payload);
     client.publish(mqtt_topic_gas, payload.c_str());
 
-    delay(1000);
+    sensors.requestTemperatures();
+    float temperatureC = sensors.getTempCByIndex(0);
+    Serial.print("Temperature (°C): ");
+    Serial.println(temperatureC);
+
+    StaticJsonDocument<200> temp;
+    temp["Unit"] = "Celcius";
+    temp["Value"] = temperatureC;
+    temp["DeviceId"] = deviceId;
+    temp["Type"] = "temperature";
+
+    String temperature;
+    serializeJson(temp, temperature);
+    client.publish(mqtt_topic_temp, temperature.c_str());
   }
+
+  delay(1000);
 }
 
 void callback(char* topic, byte* message, unsigned int length) {
@@ -120,6 +151,12 @@ void callback(char* topic, byte* message, unsigned int length) {
   for (int i = 0; i < length; i++) {
     incoming += (char)message[i];
   }
+
+  // ✅ Fixed syntax here
+  if (incoming.startsWith("\"") && incoming.endsWith("\"")) {
+    incoming = incoming.substring(1, incoming.length() - 1);
+  }
+
   Serial.print("Message arrived on topic: ");
   Serial.println(topic);
   Serial.print("Message: ");
