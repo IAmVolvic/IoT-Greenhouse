@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 interface SensorChartProps {
     sensorName: string;
     data: number;
+    tick?: number;
     icon: LucideIcon;
     numberToShow: number;
 }
@@ -31,7 +32,7 @@ export const SensorChart = (props: SensorChartProps) => {
                 Data: updatedData
             };
         });
-    }, [props.data, props.numberToShow]);
+    }, [props.data, props.numberToShow, props.tick]);
 
     return (
         <div className="flex flex-col gap-3 pointer-events-auto">

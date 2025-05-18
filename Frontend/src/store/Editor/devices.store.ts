@@ -15,13 +15,21 @@ export const useGreenhouseStore = create<GreenhouseState>()((set) => ({
         set((state) => ({
             greenhouses: state.greenhouses.map((gh) => {
                 if (gh.id !== deviceId) return gh;
+
                 return {
                     ...gh,
-                    SensorInfo: gh.SensorInfo.map((sensor) =>
-                        sensor.name === unit ? { ...sensor, value } : sensor
-                    )
+                    SensorInfo: gh.SensorInfo.map((sensor) => {
+                        if (sensor.name !== unit) return sensor;
+
+                        // 🔧 Change made here
+                        return {
+                            ...sensor,
+                            value,
+                            _v: Date.now(),
+                        };
+                    }),
                 };
-            })
+            }),
         }));
     },
 }));

@@ -76,9 +76,11 @@ export const EditorPage = () => {
             const log = LogData?.log;
             if (!log) return;
 
+            console.log("LogData", log);
+
             useGreenhouseStore.getState().updateSensorValue(
                 log.deviceId,
-                log.unit,
+                log.type,
                 log.value
             );
         });
@@ -181,7 +183,8 @@ export const EditorPage = () => {
                                                 <SensorChart
                                                     key={`${selectedGH}-${sensorInfo.name}`}
                                                     sensorName={`${sensorInfo.name} Sensor`}
-                                                    data={sensorInfo.value || 0} // Here
+                                                    tick={sensorInfo._v}
+                                                    data={sensorInfo.value || 0}
                                                     icon={sensorInfo.icon}
                                                     numberToShow={20}
                                                 />

@@ -18,6 +18,7 @@ export interface GreenHouseData {
 export interface SensorInfo {
     name: string;
     value: number;
+    _v?: number;
     position: THREE.Vector3;
     icon: LucideIcon;
 }

@@ -7,22 +7,19 @@
 #include <DallasTemperature.h>
 
 #define AO_PIN 34  // MQ2 analog pin
-#define ONE_WIRE_BUS 14  // DS18B20 connected to GPIO 39
+#define ONE_WIRE_BUS 2  // DS18B20 connected to GPIO 2
 
 const char* ssid = "---";
 const char* password = "---";
-const char* deviceId = "---";
 
 const char* mqtt_server = "---";
 const int mqtt_port = 8883;
-const char* mqtt_user = "---";
+const char* mqtt_user = "device";
 const char* mqtt_pass = "---";
 const char* mqtt_topic_gas = "mq2/gas";
 const char* mqtt_topic_unassigned = "user/unassigned";
+const char* mqtt_topic_assign = "---";
 const char* mqtt_topic_temp = "sensor/temp";
-
-std::string mqtt_topic_assign_str = std::string("user/assign/") + deviceId;
-const char* mqtt_topic_assign = mqtt_topic_assign_str.c_str();
 
 
 WiFiClientSecure wifiSecureClient;
@@ -105,7 +102,7 @@ void loop() {
     unsigned long now = millis();
     if (now - lastUnassignedPublish > 10000) {
       StaticJsonDocument<200> deviceInfo;
-      deviceInfo["DeviceId"] = deviceId;
+      deviceInfo["DeviceId"] = "181ada5b-024e-41da-91ae-5976f25e8300";
       String info;
       serializeJson(deviceInfo, info);
       client.publish(mqtt_topic_unassigned, info.c_str());
@@ -120,7 +117,7 @@ void loop() {
     StaticJsonDocument<200> doc;
     doc["Unit"] = "gas";
     doc["Value"] = gasValue;
-    doc["DeviceId"] = deviceId;
+    doc["DeviceId"] = "181ada5b-024e-41da-91ae-5976f25e8300";
     doc["Type"] = "gas";
 
     String payload;
@@ -135,7 +132,7 @@ void loop() {
     StaticJsonDocument<200> temp;
     temp["Unit"] = "Celcius";
     temp["Value"] = temperatureC;
-    temp["DeviceId"] = deviceId;
+    temp["DeviceId"] = "181ada5b-024e-41da-91ae-5976f25e8300";
     temp["Type"] = "temperature";
 
     String temperature;
