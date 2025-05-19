@@ -39,7 +39,8 @@ public class DeviceController(IDeviceService deviceService) : ControllerBase
         await deviceService.RemoveDeviceFromUser(deviceId);
         return Ok();
 
-    
+    }
+
     [HttpGet]
     [Route("MyDevices")]
     [Authenticated]
