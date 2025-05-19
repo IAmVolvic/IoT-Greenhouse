@@ -60,25 +60,20 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
     public async Task<Preferences> UpdatePreferences(PreferencesChangeDto preferencesDto)
     {
         var currentPreferences = deviceRepository.GetCurrentPreferences(preferencesDto.DeviceId);
-        var preferences = new Preferences()
-        {
-            Id = currentPreferences.Id,
-            DeviceId = preferencesDto.DeviceId,
-            SensorInterval = preferencesDto.SensorInterval,
-        };
+        currentPreferences.SensorInterval = preferencesDto.SensorInterval;
         
         var topic = $"preferences/{preferencesDto.DeviceId}";
 
         try
         {
-            await mqttPublisher.Publish(preferences.SensorInterval, topic, QualityOfService.ExactlyOnceDelivery);
+            await mqttPublisher.Publish(currentPreferences.SensorInterval, topic, QualityOfService.ExactlyOnceDelivery);
         }
         catch (Exception ex)
         {
             throw new ApplicationException("Your device is unresponsive", ex);
         }
 
-        var dbPreferences = deviceRepository.ChangePreferences(preferences);
+        var dbPreferences = deviceRepository.ChangePreferences(currentPreferences);
         return dbPreferences;
     }
 
