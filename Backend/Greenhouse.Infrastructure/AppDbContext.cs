@@ -11,6 +11,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Device> Devices { get; set; }
     public DbSet<Log> Logs { get; set; }
     public DbSet<Preferences> Preferences { get; set; }
+    public DbSet<UnassignedDevice> UnassignedDevices { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -60,6 +61,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                   .HasForeignKey(l => l.DeviceId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
+
+        // Preferences table
         modelBuilder.Entity<Preferences>(entity =>
         {
             entity.ToTable("preferences");
@@ -71,5 +74,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
+        modelBuilder.Entity<UnassignedDevice>(entity =>
+        {
+            entity.ToTable("unassigned_devices"); // optional custom name
+            entity.HasKey(e => e.Id);
+        });
     }
 }
