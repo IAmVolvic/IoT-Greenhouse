@@ -64,4 +64,19 @@ public class DeviceRepository(AppDbContext context) : IDeviceRepository
         context.UnassignedDevices.Add(unassignedDevice);
         context.SaveChanges();
     }
+
+    public List<UnassignedDevice> GetUnassignedDevices()
+    {
+        return context.UnassignedDevices.ToList();
+    }
+
+    public void DeleteFromUnassignedDevices(Guid deviceId)
+    {
+        var unassignedDevice = context.UnassignedDevices.SingleOrDefault(d => d.Id == deviceId);
+        if (unassignedDevice != null)
+        {
+            context.UnassignedDevices.Remove(unassignedDevice);
+            context.SaveChanges();
+        }
+    }
 }

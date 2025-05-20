@@ -46,6 +46,7 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
 
         var dbDevice = deviceRepository.AssignDeviceToUser(device);
         deviceRepository.SetDefaultPreferences(preferences);
+        deviceRepository.DeleteFromUnassignedDevices(deviceId);
         return dbDevice;
     }
 
@@ -100,5 +101,10 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
             };
             deviceRepository.AddDeviceToUnassignedDevices(unassignedDevice);
         }
+    }
+
+    public List<UnassignedDevice> GetUnassignedDevices()
+    {
+        return deviceRepository.GetUnassignedDevices();
     }
 }
