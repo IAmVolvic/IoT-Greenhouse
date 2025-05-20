@@ -14,4 +14,5 @@ public interface IDeviceRepository
     public bool DeviceExists(Guid deviceId);
     public bool DeviceExistsInUnassignedDevices(Guid deviceId);
     public void AddDeviceToUnassignedDevices(UnassignedDevice unassignedDevice);
+    public List<UnassignedDevice> GetUnassignedDevices();
 }

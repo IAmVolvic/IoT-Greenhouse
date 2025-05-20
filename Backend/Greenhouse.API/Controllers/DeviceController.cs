@@ -50,4 +50,13 @@ public class DeviceController(IDeviceService deviceService) : ControllerBase
         var devices = deviceService.GetDevicesForUser(authUser.Id);
         return Ok(devices);
     }
+    
+    [HttpGet]
+    [Route("UnassignedDevices")]
+    [Authenticated]
+    public ActionResult<List<UnassignedDevice>> UnassignedDevices()
+    {
+        var devices = deviceService.GetUnassignedDevices();
+        return Ok(devices);
+    }
 }

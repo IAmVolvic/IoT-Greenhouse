@@ -101,4 +101,9 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
             deviceRepository.AddDeviceToUnassignedDevices(unassignedDevice);
         }
     }
+
+    public List<UnassignedDevice> GetUnassignedDevices()
+    {
+        return deviceRepository.GetUnassignedDevices();
+    }
 }
