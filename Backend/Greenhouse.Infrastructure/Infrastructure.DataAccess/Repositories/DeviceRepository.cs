@@ -48,4 +48,20 @@ public class DeviceRepository(AppDbContext context) : IDeviceRepository
     {
         return context.Devices.SingleOrDefault(d => d.Id == deviceId);
     }
+
+    public bool DeviceExists(Guid deviceId)
+    {
+        return context.Devices.Any(d => d.Id == deviceId);
+    }
+
+    public bool DeviceExistsInUnassignedDevices(Guid deviceId)
+    {
+        return context.UnassignedDevices.Any(d => d.Id == deviceId);
+    }
+
+    public void AddDeviceToUnassignedDevices(UnassignedDevice unassignedDevice)
+    {
+        context.UnassignedDevices.Add(unassignedDevice);
+        context.SaveChanges();
+    }
 }

@@ -16,15 +16,6 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
     {
         return deviceRepository.GetDevicesByUserId(userId);
     }
-    
-    public void BroadcastUnassignedDeviceInfo(UnassignedDeviceDto unassignedDeviceDto)
-    {
-        var deviceInfo = new ServerBroadcastsUnassignedDeviceToDashboard()
-        {
-            DeviceId = unassignedDeviceDto.DeviceId,
-        };
-        connectionManager.BroadcastToTopic("unassignedDevices", deviceInfo);
-    }
 
     public async Task<Device> AssignDeviceToUser(Guid userId, Guid deviceId, string deviceName)
     {
@@ -52,6 +43,7 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
         {
             throw new ApplicationException("Your device is unresponsive", ex);
         }
+
         var dbDevice = deviceRepository.AssignDeviceToUser(device);
         deviceRepository.SetDefaultPreferences(preferences);
         return dbDevice;
@@ -96,5 +88,17 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
             await connectionManager.RemoveFromTopic(deviceId.ToString(), connection);
         }
         return deviceId;
+    }
+
+    public void CheckAndAddUnassignedDevice(UnassignedDeviceDto device)
+    {
+        if (!deviceRepository.DeviceExists(device.DeviceId) && !deviceRepository.DeviceExistsInUnassignedDevices(device.DeviceId))
+        {
+            var unassignedDevice = new UnassignedDevice()
+            {
+                Id = device.DeviceId,
+            };
+            deviceRepository.AddDeviceToUnassignedDevices(unassignedDevice);
+        }
     }
 }

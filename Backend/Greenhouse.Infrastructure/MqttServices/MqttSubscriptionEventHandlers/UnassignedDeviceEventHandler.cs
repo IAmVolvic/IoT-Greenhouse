@@ -24,6 +24,6 @@ public class UnassignedDeviceEventHandler(IDeviceService deviceService): IMqttMe
         var context = new ValidationContext(dto);
         Validator.ValidateObject(dto, context);
 
-        deviceService.BroadcastUnassignedDeviceInfo(dto);
+        deviceService.CheckAndAddUnassignedDevice(dto);
     }
 }

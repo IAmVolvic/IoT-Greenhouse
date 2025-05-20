@@ -109,6 +109,17 @@ namespace Greenhouse.Infrastructure.Migrations
                     b.ToTable("request_counts", (string)null);
                 });
 
+            modelBuilder.Entity("Greenhouse.Domain.DatabaseDtos.UnassignedDevice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("unassigned_devices", (string)null);
+                });
+
             modelBuilder.Entity("Greenhouse.Domain.DatabaseDtos.User", b =>
                 {
                     b.Property<Guid>("Id")
