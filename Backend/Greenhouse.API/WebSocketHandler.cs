@@ -1,51 +1,67 @@
+using System.Net;
+using System.Net.Sockets;
+using System.Text.Json;
 using System.Web;
 using Fleck;
 using Greenhouse.Application.Websocket.DTOs;
 using Greenhouse.Application.Websocket.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WebSocketBoilerplate;
 
 namespace Greenhouse.API;
 
-public class WebSocketHandler(WebApplication app, HashSet<Type> clientEventHandlers)
+public static class WebSocketHandler
 {
-
-    public void StartServer()
+    public static IServiceCollection RegisterWebsocketApiServices(this IServiceCollection services)
     {
-        var server = new WebSocketServer("ws://0.0.0.0:4001");
-        
+        var assembly = typeof(WebSocketHandler).Assembly;
+        services.InjectEventHandlers(assembly);
+        return services;
+    }
+
+    public static async Task<WebApplication> ConfigureWebsocketApi(this WebApplication app, int wsPort = 4001)
+    {
+        var url = $"ws://0.0.0.0:4001";
+
+        var logger = app.Services.GetRequiredService<ILogger<NonStaticWsExtensionClassForLogger>>();
+        logger.LogInformation("WebSocket server running at: " + url);
+
+        var server = new WebSocketServer(url);
+
         server.Start(ws =>
         {
             var queryString = ws.ConnectionInfo.Path.Split('?').Length > 1
                 ? ws.ConnectionInfo.Path.Split('?')[1]
                 : "";
 
-            var id = HttpUtility.ParseQueryString(queryString)["id"] ??
-                     throw new Exception("Please specify ID query param for websocket connection");
-            
+            var id = HttpUtility.ParseQueryString(queryString)["id"]
+                     ?? throw new Exception("Please specify ID query param for websocket connection");
+
             using var scope = app.Services.CreateScope();
             var manager = scope.ServiceProvider.GetRequiredService<IConnectionManager>();
-            
-            ws.OnOpen = () => manager.OnOpen(ws,id);
-            
+
+            ws.OnOpen = () => manager.OnOpen(ws, id);
             ws.OnClose = () => manager.OnClose(ws, id);
 
-            ws.OnMessage = message =>
+            ws.OnMessage = async message =>
             {
                 try
                 {
-                    var eventTask = app.InvokeClientEventHandler(clientEventHandlers, ws, message);
+                    await app.CallEventHandler(ws, message);
                     
-                    if (eventTask.Exception == null) return;
-                    var error = JsonConvert.SerializeObject(new WebsocketError(ErrorType.SOFT, eventTask.Exception.Message));
-                    ws.Send(error);
                 }
                 catch (Exception e)
                 {
                     var error = JsonConvert.SerializeObject(new WebsocketError(ErrorType.CRITICAL, e.Message));
-                    ws.Send(error);
+                    await ws.Send(error);
                 }
             };
         });
+
+        return app;
     }
 }
+
+public class NonStaticWsExtensionClassForLogger { }
