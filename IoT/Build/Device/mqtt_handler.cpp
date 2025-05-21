@@ -21,6 +21,10 @@ void mqtt_callback(char* topic, byte* message, unsigned int length) {
         user_assigned = incoming;
         Serial.println("User assigned: " + user_assigned);
     }
+
+    if (String(topic) == getTopicPreferences().c_str()) {
+        
+    }
 }
 
 void reconnect_mqtt() {
@@ -29,6 +33,8 @@ void reconnect_mqtt() {
         if (client.connect("ESP32Client", mqtt_user, mqtt_pass)) {
             Serial.println("connected");
             client.subscribe(getAssignTopic().c_str());
+            client.subscribe(getTopicPreferences().c_str());
+            client.subscribe(mqtt_topic_preferences);
         } else {
             Serial.printf("failed, rc=%d. Retrying...\n", client.state());
             delay(5000);

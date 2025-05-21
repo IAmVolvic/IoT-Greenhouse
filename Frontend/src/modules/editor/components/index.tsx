@@ -42,7 +42,10 @@ export const EditorPage = () => {
     // User devices
     const { data, loading } = useGetMyDevices();
     const [selectedData, setSelectedData] = useState<GreenHouseData | null>();
+    const [wsConnected, setWsConnected] = useState(false);
 
+    // API
+    const api = new Api();
 
     // Set loading state
     useEffect(() => {
@@ -63,20 +66,15 @@ export const EditorPage = () => {
 
 
     useEffect(() => {
-        const api = new Api();
-        api.subscription.subscribeYourDevicesCreate(clientId!, { withCredentials: true });
-    });
-
-
-    useEffect(() => {
-        if (loading) return;
         if (readyState !== 1) return;
+        if (wsConnected) return;
+        setWsConnected(true);
+
+        api.subscription.subscribeYourDevicesCreate(clientId!, { withCredentials: true });
 
         onMessage<WebsocketMessage>("ServerBroadcastsLogToDashboard", (LogData) => {
             const log = LogData?.log;
             if (!log) return;
-
-            console.log("LogData", log);
 
             useGreenhouseStore.getState().updateSensorValue(
                 log.deviceId,
@@ -84,7 +82,7 @@ export const EditorPage = () => {
                 log.value
             );
         });
-    }, [loading, readyState, onMessage]);
+    }, [readyState, onMessage]);
 
 
     useEffect(() => {
@@ -186,7 +184,7 @@ export const EditorPage = () => {
                                                     tick={sensorInfo._v}
                                                     data={sensorInfo.value || 0}
                                                     icon={sensorInfo.icon}
-                                                    numberToShow={20}
+                                                    numberToShow={30}
                                                 />
                                             ))
                                         }

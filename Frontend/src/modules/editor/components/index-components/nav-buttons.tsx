@@ -3,6 +3,8 @@ import { SelectInput } from "@components/inputs/select";
 import { CirclePlus, Settings } from "lucide-react";
 import useEditorStore from "@store/Editor/editor.store";
 import { useGetMyDevices } from "@hooks/devices/MyDevices";
+import { EditDevice } from "./Sheets/EditDeviceSheet";
+import { NewDevice } from "./Sheets/NewDeviceSheet";
 
 
 export const EditorNavButtons = () => {
@@ -28,9 +30,7 @@ export const EditorNavButtons = () => {
 	return (
         <div className="flex flex-row items-center justify-center flex-1 h-full">
             <div className="flex flex-row items-center justify-center h-full bg-dark300 rounded-full gap-2">
-                <div className="flex justify-center items-center bg-dark300 text-light200 rounded-full aspect-square h-full hover:bg-light100 hover:text-dark100">
-                    <CirclePlus size={20} strokeWidth={1.5} />
-                </div>
+                <NewDevice />
 
                 <div className="flex justify-center items-center bg-dark300 text-light200 rounded-full aspect-square h-full">
                     <SelectInput
@@ -44,9 +44,7 @@ export const EditorNavButtons = () => {
                     />
                 </div>
 
-                <div className="flex justify-center items-center bg-dark300 text-light200 rounded-full aspect-square h-full hover:bg-light100 hover:text-dark100">
-                    <Settings size={20} strokeWidth={1.5} />
-                </div>
+                <EditDevice />
             </div>
         </div>
 	)

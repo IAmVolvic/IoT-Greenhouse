@@ -70,7 +70,7 @@ export const CustomSelect = forwardRef<{ clearSelection: () => void; }, CustomSe
                     <button 
                         key={item.value}
                         onClick={() => handleRemove(item.value)} 
-                        className="flex flex-row justify-center items-center gap-2 bg-base-300 rounded-full px-5 py-1.5 text-sm"
+                        className="flex flex-row justify-center items-center gap-2 bg-dark200 text-light200 rounded-full px-5 py-1.5 text-sm"
                     >
                         <CgClose />
                         <span>{item.label}</span>
