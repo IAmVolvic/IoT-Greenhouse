@@ -46,7 +46,7 @@ export const EditorPage = () => {
 
     // API
     const api = new Api();
-
+    
     // Set loading state
     useEffect(() => {
         if (!loading) {
@@ -184,7 +184,7 @@ export const EditorPage = () => {
                                                     tick={sensorInfo._v}
                                                     data={sensorInfo.value || 0}
                                                     icon={sensorInfo.icon}
-                                                    numberToShow={30}
+                                                    numberToShow={20}
                                                 />
                                             ))
                                         }

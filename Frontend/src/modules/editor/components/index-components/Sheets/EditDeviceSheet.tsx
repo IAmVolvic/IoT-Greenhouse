@@ -1,3 +1,4 @@
+import { Api } from "@Api";
 import { InputTypeEnum, TextInput } from "@components/inputs/textInput";
 import { Sheet, SheetClose, SheetTrigger } from "@components/shadcn-ui/ui/sheet";
 import { SheetContent } from "@components/Sheets/components/sheetContent";
@@ -8,9 +9,37 @@ import { Settings } from "lucide-react";
 import { useEffect } from "react";
 
 export const EditDevice = () => {
-	const { selectedGH } = useEditorStore();
-    const { data, loading } = useGetMyDevices();
+	const { selectedGH, setSelectedGH } = useEditorStore();
+    const { data, loading, refresh } = useGetMyDevices();
     const greenHouseMap = Object.fromEntries(data.map(gh => [gh.id, gh]));
+	const api = new Api();
+	
+	// Handle device deletion
+	const handleDeleteDevice = () => {
+		const deviceIdToDelete = selectedGH;
+		
+		document.querySelector('.SheetClose')?.dispatchEvent(
+			new MouseEvent('click', { bubbles: true })
+		);
+		
+		if (deviceIdToDelete) {
+			setSelectedGH(null);
+
+			api.device.removeDeviceFromUserDelete(deviceIdToDelete, {withCredentials: true})
+			.then(() => {
+				refresh();
+				return window.location.reload();
+			})
+			.then(() => {
+				if (data.length > 0) {
+					setSelectedGH(data[0].id);
+				}
+			})
+			.catch(error => {
+				console.error("Error deleting device:", error);
+			});
+		}
+	}
 
 	return (
 		<Sheet>
@@ -34,7 +63,7 @@ export const EditDevice = () => {
 
 							<TextInput parentClassName="flex flex-col gap-2 w-full text-light200" titleClassName="text-light100 text-sm" inputType={InputTypeEnum.number} inputTitle="Device Sensor Rate" setInput={() => {}} input={""} />
 
-							<button className="flex items-center justify-center gap-2 text-sm text-light100 bg-danger rounded-full px-5 h-10">
+							<button className="flex items-center justify-center gap-2 text-sm text-light100 bg-danger rounded-full px-5 h-10" onClick={handleDeleteDevice}>
 								<div className="text-sm">Delete Device</div>
 							</button>
 						</div>

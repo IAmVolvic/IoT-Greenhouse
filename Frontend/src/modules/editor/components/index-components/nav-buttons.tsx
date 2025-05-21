@@ -19,7 +19,7 @@ export const EditorNavButtons = () => {
 
     useEffect(() => {
         // Set the first greenhouse ID as the default selection
-        setSelectedGH((!loading)? data[0].id : null);
+        setSelectedGH((!loading && data.length > 0) ? data[0].id : null);
 
         return () => {
             setSelectedGH(null);

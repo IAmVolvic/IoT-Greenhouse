@@ -37,10 +37,22 @@ export interface DeviceAssignDto {
   deviceName?: string | null;
 }
 
+export interface PreferencesChangeDto {
+  /** @format uuid */
+  deviceId?: string;
+  /** @format int32 */
+  sensorInterval?: number;
+}
+
 export interface SubscirbeToTopicDto {
   topicNames: string[];
   /** @format int32 */
   userId: number;
+}
+
+export interface UnassignedDevice {
+  /** @format uuid */
+  id?: string;
 }
 
 export interface UserLoginDto {
@@ -322,12 +334,62 @@ export class Api<
      * No description
      *
      * @tags Device
+     * @name PreferencesChangePreferencesPartialUpdate
+     * @request PATCH:/Device/Preferences/ChangePreferences
+     */
+    preferencesChangePreferencesPartialUpdate: (
+      data: PreferencesChangeDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/Device/Preferences/ChangePreferences`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Device
+     * @name RemoveDeviceFromUserDelete
+     * @request DELETE:/Device/RemoveDeviceFromUser
+     */
+    removeDeviceFromUserDelete: (data: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/Device/RemoveDeviceFromUser`,
+        method: "DELETE",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Device
      * @name MyDevicesList
      * @request GET:/Device/MyDevices
      */
     myDevicesList: (params: RequestParams = {}) =>
       this.request<Device[], any>({
         path: `/Device/MyDevices`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Device
+     * @name UnassignedDevicesList
+     * @request GET:/Device/UnassignedDevices
+     */
+    unassignedDevicesList: (params: RequestParams = {}) =>
+      this.request<UnassignedDevice[], any>({
+        path: `/Device/UnassignedDevices`,
         method: "GET",
         format: "json",
         ...params,
