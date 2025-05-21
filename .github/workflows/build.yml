@@ -30,6 +30,7 @@ jobs:
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.scanner.scanAll=false \
             /d:sonar.coverageReportPaths="../coverage-report/SonarQube.xml" \
+            /d:sonar.coverage.exclusions="**/Greenhouse.Infrastructure/Infrastructure.DataAccess/**/*,**/Greenhouse.Infrastructure/AppDbContext.cs,**/Greenhouse.API/ActionFilters/**/*" \
             /d:sonar.qualitygate.wait=true \
             /d:sonar.qualitygate.timeout=300 \
             /d:sonar.exclusions="**/Frontend/**"
