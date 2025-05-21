@@ -8,7 +8,3 @@ const char* mqtt_topic_unassigned = "user/unassigned";
 std::string getAssignTopic() {
     return std::string("user/assign/") + deviceId;
 }
-
-std::string getTopicPreferences() {
-    return std::string("preferences/") + deviceId;
-}

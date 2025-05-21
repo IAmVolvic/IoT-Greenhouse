@@ -10,9 +10,7 @@
 
 WiFiClientSecure wifiSecureClient;
 PubSubClient client(wifiSecureClient);
-
 String user_assigned = "unassigned";
-unsigned long user_defined_delay = 1000;
 unsigned long lastUnassignedPublish = 0;
 
 void setup_wifi() {
@@ -78,5 +76,5 @@ void loop() {
         client.publish(mqtt_topic_temp, tempPayload.c_str());
     }
 
-    delay(10);
+    delay(1000);
 }
