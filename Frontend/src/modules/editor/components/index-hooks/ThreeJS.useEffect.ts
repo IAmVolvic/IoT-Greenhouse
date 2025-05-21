@@ -131,7 +131,7 @@ export const ThreeJSUseEffect = (props: ThreeJSUseEffectProps) => {
                 renderer.dispose();
             };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [loading, data]);
+        }, [loading]);
     
         // Move camera when selected greenhouse changes
         useEffect(() => {

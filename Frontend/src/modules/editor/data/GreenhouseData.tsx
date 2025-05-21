@@ -2,9 +2,7 @@ import * as THREE from "three";
 import { Device } from "@Api";
 import { GreenHouseData } from "@hooks/devices/MyDevices";
 import { AlarmSmoke, Sun, Thermometer } from "lucide-react";
-
-
-export const greenHouseTable: GreenHouseData[] = [];
+import { useGreenhouseStore } from "@store/Editor/devices.store";
 
 export const transformData = (data: Device[]): GreenHouseData[] => {
     const transformed = data.map((device, index) => {
@@ -34,10 +32,12 @@ export const transformData = (data: Device[]): GreenHouseData[] => {
                     position: new THREE.Vector3(offsetX, 1, 1.5),
                     icon: Sun,
                 },
-            ]
-        }
+            ],
+        };
     });
 
-    greenHouseTable.splice(0, greenHouseTable.length, ...transformed);
-    return greenHouseTable;
-}
+    // Set store state
+    useGreenhouseStore.getState().setGreenhouses(transformed);
+
+    return transformed;
+};

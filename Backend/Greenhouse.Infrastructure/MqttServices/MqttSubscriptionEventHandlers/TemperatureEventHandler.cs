@@ -1,20 +1,22 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using Greenhouse.Application.Mqtt.Dtos;
-using Greenhouse.Application.Services.Device;
+using Greenhouse.Application.Services.Logs;
+using Greenhouse.Infrastructure.Services;
 using HiveMQtt.Client.Events;
 using HiveMQtt.MQTT5.Types;
+using Microsoft.Extensions.Logging;
 
 namespace Greenhouse.Infrastructure.MqttServices.MqttSubscriptionEventHandlers;
 
-public class UnassignedDeviceEventHandler(IDeviceService deviceService): IMqttMessageHandler
+public class TemperatureEventHandler(ILogService logService) : IMqttMessageHandler
 {
-    public string TopicFilter { get; } = "user/unassigned";
+    public string TopicFilter { get; } = "sensor/temp";
     public QualityOfService QoS { get; } = QualityOfService.AtLeastOnceDelivery;
 
     public void Handle(object? sender, OnMessageReceivedEventArgs args)
     {
-        var dto = JsonSerializer.Deserialize<UnassignedDeviceDto>(args.PublishMessage.PayloadAsString,
+        var dto = JsonSerializer.Deserialize<DeviceLogDto>(args.PublishMessage.PayloadAsString,
             new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
@@ -24,6 +26,6 @@ public class UnassignedDeviceEventHandler(IDeviceService deviceService): IMqttMe
         var context = new ValidationContext(dto);
         Validator.ValidateObject(dto, context);
 
-        deviceService.CheckAndAddUnassignedDevice(dto);
+        logService.AddToDbAndBroadcast(dto);
     }
 }

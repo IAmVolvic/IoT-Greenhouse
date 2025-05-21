@@ -11,6 +11,7 @@ import { useWsClient, BaseDto } from "ws-request-hook";
 import { Api } from "@Api";
 import { SensorChart } from "./index-components/SensorChart";
 import { GreenHouseData, SensorInfo, useGetMyDevices } from "@hooks/devices/MyDevices";
+import { useGreenhouseStore } from "@store/Editor/devices.store";
 
 
 interface WebsocketMessage extends BaseDto {
@@ -37,12 +38,14 @@ export const EditorPage = () => {
     const [sceneObjects] = ThreeJSUseEffect({mountRef, labelRefs});
     const {readyState, onMessage} = useWsClient();
     const { clientId } = useWebsocketClientStore();
-    const [val, setVal] = useState(0);
     
     // User devices
     const { data, loading } = useGetMyDevices();
     const [selectedData, setSelectedData] = useState<GreenHouseData | null>();
+    const [wsConnected, setWsConnected] = useState(false);
 
+    // API
+    const api = new Api();
 
     // Set loading state
     useEffect(() => {
@@ -63,15 +66,22 @@ export const EditorPage = () => {
 
 
     useEffect(() => {
-        const api = new Api();
-        api.subscription.subscribeYourDevicesCreate(clientId!, { withCredentials: true });
-    });
+        if (readyState !== 1) return;
+        if (wsConnected) return;
+        setWsConnected(true);
 
-    useEffect(() => {
-        if (readyState != 1) return;
-        onMessage<WebsocketMessage>("ServerBroadcastsLogToDashboard", (Data) => {
-            setVal(Data.log.value);
-        })
+        api.subscription.subscribeYourDevicesCreate(clientId!, { withCredentials: true });
+
+        onMessage<WebsocketMessage>("ServerBroadcastsLogToDashboard", (LogData) => {
+            const log = LogData?.log;
+            if (!log) return;
+
+            useGreenhouseStore.getState().updateSensorValue(
+                log.deviceId,
+                log.type,
+                log.value
+            );
+        });
     }, [readyState, onMessage]);
 
 
@@ -81,14 +91,7 @@ export const EditorPage = () => {
         if (!selectedData) return;
         setSelectedData(selectedData || null);
 
-    }, [loading, val, selectedGH, data]);
-
-
-    useEffect(() => {
-        if (loading) return;
-        if (!selectedData) return;
-        selectedData.SensorInfo[0].value = val;
-    }, [loading, val, selectedData]);
+    }, [loading, selectedGH, data]);
 
     return (
         <>
@@ -176,10 +179,12 @@ export const EditorPage = () => {
                                         {
                                             (!loading && selectedData != null) && selectedData.SensorInfo.map((sensorInfo: SensorInfo) => (
                                                 <SensorChart
+                                                    key={`${selectedGH}-${sensorInfo.name}`}
                                                     sensorName={`${sensorInfo.name} Sensor`}
+                                                    tick={sensorInfo._v}
                                                     data={sensorInfo.value || 0}
                                                     icon={sensorInfo.icon}
-                                                    numberToShow={20}
+                                                    numberToShow={30}
                                                 />
                                             ))
                                         }

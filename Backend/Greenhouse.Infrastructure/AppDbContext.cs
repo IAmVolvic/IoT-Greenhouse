@@ -11,6 +11,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Device> Devices { get; set; }
     public DbSet<Log> Logs { get; set; }
     public DbSet<Preferences> Preferences { get; set; }
+    public DbSet<UnassignedDevice> UnassignedDevices { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -66,13 +67,17 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         {
             entity.ToTable("preferences");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.SSID).IsRequired();
-            entity.Property(e => e.Passwordhash).IsRequired();
             entity.Property(e => e.SensorInterval).IsRequired();
             entity.HasOne<Device>()
-                  .WithMany()
-                  .HasForeignKey(p => p.DeviceId)
-                  .OnDelete(DeleteBehavior.Cascade);
+                .WithMany()
+                .HasForeignKey(p => p.DeviceId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<UnassignedDevice>(entity =>
+        {
+            entity.ToTable("unassigned_devices"); // optional custom name
+            entity.HasKey(e => e.Id);
         });
     }
 }
