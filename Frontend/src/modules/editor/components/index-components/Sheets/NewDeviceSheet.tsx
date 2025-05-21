@@ -62,16 +62,12 @@ export const NewDevice = () => {
 			</SheetTrigger>
 
 			<SheetContent>
-				<DialogTitle>Add New Device</DialogTitle>
+				<DialogTitle></DialogTitle>
 				<div className="flex flex-col justify-between h-full w-full py-5">
 					<div className="flex flex-col gap-10">
 						<div className="flex flex-col">
-							<div className="text-xl text-light100">
-								{selectedGH ? greenHouseMap[selectedGH]?.name : ""}
-							</div>
-							<div className="text-sm text-light200">
-								Edit your device details here
-							</div>
+							<div className="text-xl text-light100">New Device</div>
+							<div className="text-sm text-light200">Add a device to your account</div>
 						</div>
 
 						<div className="flex flex-col gap-10">
@@ -99,10 +95,7 @@ export const NewDevice = () => {
 						</div>
 					</div>
 
-					<button
-						className="flex items-center justify-center gap-2 text-sm text-dark100 bg-primary rounded-full px-5 h-10"
-						onClick={handleCreateDevice}
-					>
+					<button className="flex items-center justify-center gap-2 text-sm text-dark100 bg-primary rounded-full px-5 h-10" onClick={handleCreateDevice}>
 						<div className="text-sm">Add Device</div>
 					</button>
 				</div>
