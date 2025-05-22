@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 interface SensorChartProps {
     sensorName: string;
+    sensorRate: number;
     data: number;
     tick?: number;
     icon: LucideIcon;
@@ -44,7 +45,7 @@ export const SensorChart = (props: SensorChartProps) => {
 
                     <div className="flex flex-col gap-1">
                         <div className="text-md text-light100 capitalize">{props.sensorName}</div>
-                        <div className="text-sm text-light200">Current rate: 1000ms</div>
+                        <div className="text-sm text-light200">Current rate: {props.sensorRate}ms</div>
                     </div>
                 </div>
             </div>

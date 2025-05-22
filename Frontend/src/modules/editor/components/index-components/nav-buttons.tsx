@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { SelectInput } from "@components/inputs/select";
-import { CirclePlus, Settings } from "lucide-react";
 import useEditorStore from "@store/Editor/editor.store";
 import { useGetMyDevices } from "@hooks/devices/MyDevices";
 import { EditDevice } from "./Sheets/EditDeviceSheet";
@@ -19,7 +18,7 @@ export const EditorNavButtons = () => {
 
     useEffect(() => {
         // Set the first greenhouse ID as the default selection
-        setSelectedGH((!loading)? data[0].id : null);
+        setSelectedGH((!loading && data.length > 0) ? data[0].id : null);
 
         return () => {
             setSelectedGH(null);
@@ -37,14 +36,17 @@ export const EditorNavButtons = () => {
                         inputTitle="Select a project"
                         handleChange={(e) => { setSelectedGH(e.target.value); }}
                         selectArray={greenhouseSelectOptions}
-                        defaultValue={selectedGH || ""}
+                        defaultValue={selectedGH || "Select a project"}
                         defaultValueText="Select a project"
                         parentClassName="flex items-center justify-start h-full overflow-hidden text-nowrap text-ellipsis"
                         titleClassName="hidden"
                     />
                 </div>
 
-                <EditDevice />
+                {data.length > 0 && (
+                    <EditDevice />
+                )}
+                
             </div>
         </div>
 	)

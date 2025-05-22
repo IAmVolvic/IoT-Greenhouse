@@ -79,4 +79,10 @@ public class DeviceRepository(AppDbContext context) : IDeviceRepository
             context.SaveChanges();
         }
     }
+
+    public void UpdateDevice(Device device)
+    {
+        context.Devices.Update(device);
+        context.SaveChanges();
+    }
 }

@@ -16,4 +16,5 @@ public interface IDeviceRepository
     public void AddDeviceToUnassignedDevices(UnassignedDevice unassignedDevice);
     public List<UnassignedDevice> GetUnassignedDevices();
     public void DeleteFromUnassignedDevices(Guid deviceId);
+    public void UpdateDevice(Device device);
 }
