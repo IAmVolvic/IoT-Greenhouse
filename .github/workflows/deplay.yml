@@ -16,10 +16,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup .NET SDK
+      - name: Setup .NET SDKs
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.x'
+          dotnet-version: |
+            9.0.x
+            8.0.x
 
       - name: Install dotnet-ef as local tool
         run: dotnet tool restore
