@@ -64,10 +64,19 @@ jobs:
 
       - name: Restart API on server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             cd $DEPLOY_PATH
-            echo "Restarting screen session..."
-            screen -S just2play -X quit || true
+
+            echo "Checking for existing screen session..."
+            if screen -list | grep -q "\.just2play"; then
+              echo "Session exists. Restarting..."
+              screen -S just2play -X quit
+            else
+              echo "No existing session found. Creating new one..."
+            fi
+
+            echo "Starting new screen session..."
             screen -dmS just2play dotnet Greenhouse.API.dll
+            
             echo "Deployment complete."
           EOF
