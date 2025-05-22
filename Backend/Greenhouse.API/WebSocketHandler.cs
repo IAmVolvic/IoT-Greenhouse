@@ -23,7 +23,7 @@ public static class WebSocketHandler
 
     public static async Task<WebApplication> ConfigureWebsocketApi(this WebApplication app, int wsPort = 4001)
     {
-        var url = $"ws://0.0.0.0/ws";
+        var url = $"ws://0.0.0.0:4001";
 
         var logger = app.Services.GetRequiredService<ILogger<NonStaticWsExtensionClassForLogger>>();
         logger.LogInformation("WebSocket server running at: " + url);
