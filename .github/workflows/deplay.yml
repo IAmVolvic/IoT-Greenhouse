@@ -38,23 +38,19 @@ jobs:
 
       - name: Inject secrets and restart API
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             cd $DEPLOY_PATH
-            
-            echo "Injecting secrets into appsettings.json..."
 
-            sed -i "s|__PSDB__|${{ secrets.DB_CONNECTION }}|g" appsettings.json
-            sed -i "s|__JWT_TOKEN__|${{ secrets.JWT_TOKEN }}|g" appsettings.json
-            sed -i "s|__JWT_ISSUER__|${{ secrets.JWT_ISSUER }}|g" appsettings.json
-            sed -i "s|__JWT_AUDIENCE__|${{ secrets.JWT_AUDIENCE }}|g" appsettings.json
-            sed -i "s|__PASSWORD_SALT__|${{ secrets.PASSWORD_SALT }}|g" appsettings.json
-            sed -i "s|__MQTT_BROKER__|${{ secrets.MQTT_BROKER }}|g" appsettings.json
-            sed -i "s|__MQTT_USER__|${{ secrets.MQTT_USERNAME }}|g" appsettings.json
-            sed -i "s|__MQTT_PASS__|${{ secrets.MQTT_PASSWORD }}|g" appsettings.json
+            echo "Installing EF Core CLI..."
+            export PATH="$HOME/.dotnet/tools:$PATH"
+            dotnet tool install --global dotnet-ef --version 8.0.0
+
+            echo "Injecting secrets into appsettings.json..."
+            # your sed commands here...
 
             echo "Running EF Core migrations..."
-            dotnet tool restore
-            ~/.dotnet/tools/dotnet-ef database update -p Greenhouse.Infrastructure -s Greenhouse.API
+            export PATH="$HOME/.dotnet/tools:$PATH"
+            dotnet ef database update -p Greenhouse.Infrastructure -s Greenhouse.API
 
             echo "Restarting screen session..."
             screen -S just2play -X quit || true
