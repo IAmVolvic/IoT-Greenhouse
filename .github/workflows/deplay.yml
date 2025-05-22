@@ -40,7 +40,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
             cd $DEPLOY_PATH
-
+            
             echo "Injecting secrets into appsettings.json..."
 
             sed -i "s|__PSDB__|${{ secrets.DB_CONNECTION }}|g" appsettings.json
@@ -53,7 +53,8 @@ jobs:
             sed -i "s|__MQTT_PASS__|${{ secrets.MQTT_PASSWORD }}|g" appsettings.json
 
             echo "Running EF Core migrations..."
-            dotnet ef database update -p Greenhouse.Infrastructure -s Greenhouse.API
+            dotnet tool restore
+            ~/.dotnet/tools/dotnet-ef database update -p Greenhouse.Infrastructure -s Greenhouse.API
 
             echo "Restarting screen session..."
             screen -S just2play -X quit || true
