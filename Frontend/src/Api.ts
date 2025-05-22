@@ -23,11 +23,9 @@ export interface AuthorizedUserResponseDto {
   role?: UserRole;
 }
 
-export interface Device {
+export interface ChangeDeviceNameDto {
   /** @format uuid */
-  id?: string;
-  /** @format uuid */
-  userId?: string;
+  deviceId?: string;
   deviceName?: string | null;
 }
 
@@ -35,6 +33,16 @@ export interface DeviceAssignDto {
   /** @format uuid */
   deviceId?: string;
   deviceName?: string | null;
+}
+
+export interface DeviceResponseDto {
+  /** @format uuid */
+  id?: string;
+  /** @format uuid */
+  userId?: string;
+  deviceName?: string | null;
+  /** @format int32 */
+  deviceRate?: number;
 }
 
 export interface PreferencesChangeDto {
@@ -353,6 +361,25 @@ export class Api<
      * No description
      *
      * @tags Device
+     * @name ChangeDeviceNamePartialUpdate
+     * @request PATCH:/Device/ChangeDeviceName
+     */
+    changeDeviceNamePartialUpdate: (
+      data: ChangeDeviceNameDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/Device/ChangeDeviceName`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Device
      * @name RemoveDeviceFromUserDelete
      * @request DELETE:/Device/RemoveDeviceFromUser
      */
@@ -373,7 +400,7 @@ export class Api<
      * @request GET:/Device/MyDevices
      */
     myDevicesList: (params: RequestParams = {}) =>
-      this.request<Device[], any>({
+      this.request<DeviceResponseDto[], any>({
         path: `/Device/MyDevices`,
         method: "GET",
         format: "json",
@@ -392,6 +419,21 @@ export class Api<
         path: `/Device/UnassignedDevices`,
         method: "GET",
         format: "json",
+        ...params,
+      }),
+  };
+  acceptance = {
+    /**
+     * No description
+     *
+     * @tags Greenhouse.API
+     * @name AcceptanceList
+     * @request GET:/acceptance
+     */
+    acceptanceList: (params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/acceptance`,
+        method: "GET",
         ...params,
       }),
   };

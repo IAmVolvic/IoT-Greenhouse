@@ -1,16 +1,17 @@
 import * as THREE from "three";
-import { Device } from "@Api";
+import { DeviceResponseDto } from "@Api";
 import { GreenHouseData } from "@hooks/devices/MyDevices";
 import { AlarmSmoke, Sun, Thermometer } from "lucide-react";
 import { useGreenhouseStore } from "@store/Editor/devices.store";
 
-export const transformData = (data: Device[]): GreenHouseData[] => {
+export const transformData = (data: DeviceResponseDto[]): GreenHouseData[] => {
     const transformed = data.map((device, index) => {
         const offsetX = index * 10;
 
         return {
             id: device.id || `unknown-id-${index}`,
             name: device.deviceName || "Unknown Device",
+            deviceRate: device.deviceRate || 0,
             position: new THREE.Vector3(offsetX, 0, 0),
             labelPosition: new THREE.Vector3(offsetX, 2.5, -2.7),
             SensorInfo: [

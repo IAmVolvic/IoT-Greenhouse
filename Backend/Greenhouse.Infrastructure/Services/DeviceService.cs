@@ -3,6 +3,7 @@ using Greenhouse.Application.Mqtt.Dtos;
 using Greenhouse.Application.Mqtt.Interfaces;
 using Greenhouse.Application.Repositories;
 using Greenhouse.Application.Services.Device;
+using Greenhouse.Application.Services.Device.Requests;
 using Greenhouse.Application.Websocket.DTOs;
 using Greenhouse.Application.Websocket.Interfaces;
 using Greenhouse.Domain.DatabaseDtos;
@@ -15,6 +16,34 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
     public List<Device> GetDevicesForUser(Guid userId)
     {
         return deviceRepository.GetDevicesByUserId(userId);
+    }
+    
+    public List<DeviceResponseDto> UserDevices(Guid userId)
+    {
+        var devices = GetDevicesForUser(userId);
+        var deviceResponseDtos = new List<DeviceResponseDto>();
+
+        var index = 0;
+        while (index < devices.Count)
+        {
+            var device = devices[index];
+            var currentPreferences = deviceRepository.GetCurrentPreferences(device.Id);
+            
+            var deviceRate = currentPreferences?.SensorInterval ?? 0;
+            var dto = DeviceResponseDto.FromEntity(device, deviceRate);
+            
+            deviceResponseDtos.Add(dto);
+            index++;
+        }
+
+        return deviceResponseDtos;
+    }
+    
+    public async void UpdateDeviceName(ChangeDeviceNameDto changeDeviceNameDto)
+    {
+        var currentDevice = deviceRepository.GetDevicesByDeviceId(changeDeviceNameDto.DeviceId);
+        currentDevice.DeviceName = changeDeviceNameDto.DeviceName;
+        deviceRepository.UpdateDevice(currentDevice);
     }
 
     public async Task<Device> AssignDeviceToUser(Guid userId, Guid deviceId, string deviceName)

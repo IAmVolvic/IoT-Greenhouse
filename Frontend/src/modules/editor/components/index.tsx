@@ -186,6 +186,7 @@ export const EditorPage = () => {
                                                         data={sensorInfo.value || 0}
                                                         icon={sensorInfo.icon}
                                                         numberToShow={20}
+                                                        sensorRate={data.find((greenhouse) => selectedGH === greenhouse.id)?.deviceRate || 0}
                                                     />
                                                 ))
                                                 : (

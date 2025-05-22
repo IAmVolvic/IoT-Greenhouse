@@ -1,20 +1,15 @@
 import { useState, useEffect } from "react";
 import { Api, UnassignedDevice } from "@Api";
 import { InputTypeEnum, TextInput } from "@components/inputs/textInput";
-import { Sheet, SheetClose, SheetTrigger } from "@components/shadcn-ui/ui/sheet";
+import { Sheet, SheetTrigger } from "@components/shadcn-ui/ui/sheet";
 import { SheetContent } from "@components/Sheets/components/sheetContent";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { CirclePlus } from "lucide-react";
-
-import useEditorStore from "@store/Editor/editor.store";
 import { useGetMyDevices } from "@hooks/devices/MyDevices";
 
 export const NewDevice = () => {
-	const { selectedGH } = useEditorStore();
-	const { data, refresh } = useGetMyDevices();
+	const { refresh } = useGetMyDevices();
 	const api = new Api();
-
-	const greenHouseMap = Object.fromEntries(data.map(gh => [gh.id, gh]));
 
 	const [newDevice, setNewDevice] = useState<string>("default");
 	const [newDeviceName, setNewDeviceName] = useState<string>("");

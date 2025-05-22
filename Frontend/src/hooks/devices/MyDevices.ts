@@ -10,6 +10,7 @@ import { useGreenhouseStore } from "@store/Editor/devices.store";
 export interface GreenHouseData {
     id: string;
     name: string;
+    deviceRate: number;
     position: THREE.Vector3;
     labelPosition: THREE.Vector3;
     SensorInfo: SensorInfo[];
