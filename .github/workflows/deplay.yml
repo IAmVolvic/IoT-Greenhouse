@@ -21,6 +21,9 @@ jobs:
         with:
           dotnet-version: '9.x'
 
+      - name: Install dotnet-ef as local tool
+        run: dotnet tool restore
+
       - name: Restore dependencies
         run: dotnet restore ./Backend/Greenhouse.API/Greenhouse.API.csproj
 
