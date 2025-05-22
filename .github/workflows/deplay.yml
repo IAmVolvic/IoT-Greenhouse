@@ -22,7 +22,7 @@ jobs:
           dotnet-version: '9.x'
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ./Backend/Greenhouse.API/Greenhouse.API.csproj
 
       - name: Inject secrets for EF migration
         run: |
