@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -55,21 +56,25 @@ public static class ApiTestBase
         if (descriptor != null)
             services.Remove(descriptor);
     }
-    public static async Task<AuthorizedUser> TestRegisterAndAddJwt(HttpClient httpClient)
+    public static async Task<AuthorizedUser> TestRegisterAndSetAuthCookie(HttpClient client)
     {
-        var registerDto = new UserSignupDto
+        var user = new UserSignupDto
         {
-            Name = new Random().NextDouble() * 123 + "@gmail.com",
-            Password = new Random().NextDouble() * 123 + "@gmail.com"
+            Name = $"{Guid.NewGuid()}@test.com",
+            Password = "SecurePassword123!"
         };
-        var signIn = await httpClient.PostAsJsonAsync(
-            "Auth/@user/signup", registerDto);
-        var authResponseDto = await signIn.Content
-                                  .ReadFromJsonAsync<AuthorizedUser>(new JsonSerializerOptions
-                                      { PropertyNameCaseInsensitive = true }) ??
-                              throw new Exception("Failed to deserialize " + await signIn.Content.ReadAsStringAsync() +
-                                                  " to " + nameof(AuthorizedUser));
-        httpClient.DefaultRequestHeaders.Add("Authentication", authResponseDto.JWT);
-        return authResponseDto;
+
+        var response = await client.PostAsJsonAsync("Auth/@user/signup", user);
+
+        var auth = await response.Content.ReadFromJsonAsync<AuthorizedUser>(new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        }) ?? throw new Exception("Failed to register");
+
+        // ✅ Manually set cookie header
+        client.DefaultRequestHeaders.Add("Cookie", $"Authentication={auth.JWT}");
+
+        return auth;
     }
+
 }

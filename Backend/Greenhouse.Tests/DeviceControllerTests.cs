@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Json;
 using Greenhouse.API.FrontendDtos;
 using Greenhouse.Application.Mqtt.Dtos;
@@ -15,19 +16,28 @@ public class DeviceControllerTests
 {
     private HttpClient _httpClient;
     private IServiceProvider _scopedServiceProvider;
-
+    private CookieContainer _cookieContainer;
     [SetUp]
     public void Setup()
     {
         var factory = new WebApplicationFactory<Program>()
             .WithWebHostBuilder(builder =>
             {
-                builder.ConfigureServices(services => { services.DefaultTestConfig(); });
+                builder.ConfigureServices(services =>
+                {
+                    services.DefaultTestConfig();
+                });
             });
 
-        _httpClient = factory.CreateClient();
+        _httpClient = factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            BaseAddress = new Uri("http://localhost")
+        });
+
         _scopedServiceProvider = factory.Services.CreateScope().ServiceProvider;
     }
+
+
 
     [TearDown]
     public void TearDown()
@@ -38,24 +48,21 @@ public class DeviceControllerTests
     [Test]
     public async Task AssignDeviceToUser_ShouldReturnOkWithDevice()
     {
-        // Arrange
-        await ApiTestBase.TestRegisterAndAddJwt(_httpClient);
+        await ApiTestBase.TestRegisterAndSetAuthCookie(_httpClient);
+
         var assignDto = new DeviceAssignDto
         {
             DeviceId = Guid.NewGuid(),
             DeviceName = "Test Device"
         };
 
-        // Act
         var response = await _httpClient.PostAsJsonAsync("Device/AssignDeviceToUser", assignDto);
+        var result = await response.Content.ReadFromJsonAsync<DeviceResponseDto>();
         var body = await response.Content.ReadAsStringAsync();
         Console.WriteLine("Response body: " + body);
         Console.WriteLine("Status Code: " + response.StatusCode);
-        Assert.That(response.IsSuccessStatusCode, Is.True, "Request failed with status: " + response.StatusCode);
-
-        // Assert
+        Assert.That(response.IsSuccessStatusCode, Is.True, "Request failed with status: " + body);
         Assert.That(response.IsSuccessStatusCode, Is.True);
-        var result = await response.Content.ReadFromJsonAsync<DeviceResponseDto>();
         Assert.That(result, Is.Not.Null);
         Assert.That(result.DeviceName, Is.EqualTo(assignDto.DeviceName));
     }
@@ -63,7 +70,7 @@ public class DeviceControllerTests
     [Test]
     public async Task ChangePreferences_ShouldReturnOk()
     {
-        await ApiTestBase.TestRegisterAndAddJwt(_httpClient);
+        await ApiTestBase.TestRegisterAndSetAuthCookie(_httpClient);
         var dto = new PreferencesChangeDto
         {
             DeviceId = Guid.NewGuid(),
@@ -78,7 +85,7 @@ public class DeviceControllerTests
     [Test]
     public async Task ChangeDeviceName_ShouldReturnOk()
     {
-        await ApiTestBase.TestRegisterAndAddJwt(_httpClient);
+        await ApiTestBase.TestRegisterAndSetAuthCookie(_httpClient);
         var dto = new ChangeDeviceNameDto
         {
             DeviceId = Guid.NewGuid(),
@@ -93,7 +100,7 @@ public class DeviceControllerTests
     [Test]
     public async Task RemoveDeviceFromUser_ShouldReturnOk()
     {
-        await ApiTestBase.TestRegisterAndAddJwt(_httpClient);
+        await ApiTestBase.TestRegisterAndSetAuthCookie(_httpClient);
         var deviceId = Guid.NewGuid();
 
         var response = await _httpClient.SendAsync(new HttpRequestMessage
@@ -109,7 +116,7 @@ public class DeviceControllerTests
     [Test]
     public async Task MyDevices_ShouldReturnDeviceList()
     {
-        await ApiTestBase.TestRegisterAndAddJwt(_httpClient);
+        await ApiTestBase.TestRegisterAndSetAuthCookie(_httpClient);
 
         var response = await _httpClient.GetAsync("Device/MyDevices");
 
@@ -121,7 +128,7 @@ public class DeviceControllerTests
     [Test]
     public async Task UnassignedDevices_ShouldReturnDeviceList()
     {
-        await ApiTestBase.TestRegisterAndAddJwt(_httpClient);
+        await ApiTestBase.TestRegisterAndSetAuthCookie(_httpClient);
 
         var response = await _httpClient.GetAsync("Device/UnassignedDevices");
 
