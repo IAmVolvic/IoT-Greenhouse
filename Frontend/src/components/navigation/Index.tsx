@@ -48,7 +48,7 @@ export const Navbar = () => {
                                 <PencilRuler size={20} strokeWidth={1.5} />
                             </div>
 
-                            <div className="text-light200 text-sm text-nowrap text-ellipsis overflow-hidden"> {selectedGH ? greenHouseMap[selectedGH]?.name : ''} </div>
+                            <div className="text-light200 text-sm text-nowrap text-ellipsis overflow-hidden"> {selectedGH ? greenHouseMap[selectedGH]?.name : 'Editor'} </div>
                         </div>
                     )}
                     

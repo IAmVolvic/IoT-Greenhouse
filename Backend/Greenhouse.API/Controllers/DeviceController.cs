@@ -3,6 +3,7 @@ using Greenhouse.API.FrontendDtos;
 using Greenhouse.Application.Mqtt.Dtos;
 using Greenhouse.Application.Security.Requests;
 using Greenhouse.Application.Services.Device;
+using Greenhouse.Application.Services.Device.Requests;
 using Greenhouse.Domain.DatabaseDtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +31,15 @@ public class DeviceController(IDeviceService deviceService) : ControllerBase
         await deviceService.UpdatePreferences(preferencesDto);
         return Ok();
     }
+    
+    [HttpPatch]
+    [Route("ChangeDeviceName")]
+    [Authenticated]
+    public Task<ActionResult> ChangeDeviceName([FromBody] ChangeDeviceNameDto changeDeviceNameDto)
+    {
+        deviceService.UpdateDeviceName(changeDeviceNameDto);
+        return Task.FromResult<ActionResult>(Ok());
+    }
 
     [HttpDelete]
     [Route("RemoveDeviceFromUser")]
@@ -44,10 +54,10 @@ public class DeviceController(IDeviceService deviceService) : ControllerBase
     [HttpGet]
     [Route("MyDevices")]
     [Authenticated]
-    public ActionResult<List<Device>> MyDevices()
+    public ActionResult<List<DeviceResponseDto>> MyDevices()
     {
         var authUser = HttpContext.Items["AuthenticatedUser"] as AuthorizedUserResponseDto;
-        var devices = deviceService.GetDevicesForUser(authUser.Id);
+        var devices = deviceService.UserDevices(authUser.Id);
         return Ok(devices);
     }
     

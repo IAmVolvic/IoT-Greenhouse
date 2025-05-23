@@ -3,6 +3,7 @@ using System;
 using Greenhouse.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Greenhouse.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250522161329_FeatureFlag")]
+    partial class FeatureFlag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,20 +68,6 @@ namespace Greenhouse.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("feature_flag", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("8e5930c3-bb5f-4e3e-bfe6-f3c6d460a2c8"),
-                            FlagName = "feature_login",
-                            IsToggled = true
-                        },
-                        new
-                        {
-                            Id = new Guid("3bd9d2e2-8a94-4d0a-8977-7e219ee91e64"),
-                            FlagName = "feature_signup",
-                            IsToggled = true
-                        });
                 });
 
             modelBuilder.Entity("Greenhouse.Domain.DatabaseDtos.Log", b =>

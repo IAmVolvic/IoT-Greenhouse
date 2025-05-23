@@ -2,6 +2,7 @@ using Greenhouse.Application;
 using Greenhouse.Application.Repositories;
 using Greenhouse.Application.Security;
 using Greenhouse.Application.Services.Device;
+using Greenhouse.Application.Services.FeatureToggle;
 using Greenhouse.Application.Services.Logs;
 using Greenhouse.Application.Services.User;
 using Greenhouse.Domain.DatabaseDtos;
@@ -20,6 +21,7 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ILogRepository, LogRepository>();
         services.AddScoped<IDeviceRepository, DeviceRepository>();
+        services.AddScoped<IFeatureToggleRepository, FeatureToggleRepository>();
         
         services.AddScoped<ILogService, LogService>();
         services.AddScoped<IHelloService, HelloService>();
@@ -28,6 +30,8 @@ public static class DependencyInjection
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService.AuthService>();
         services.AddScoped<IJwtManager, JwtManager>();
+        
+        services.AddScoped<IFeatureToggleService, FeatureToggleService>();
         
         return services;
     }

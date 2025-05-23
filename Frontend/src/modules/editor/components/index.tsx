@@ -46,7 +46,7 @@ export const EditorPage = () => {
 
     // API
     const api = new Api();
-
+    
     // Set loading state
     useEffect(() => {
         if (!loading) {
@@ -170,23 +170,30 @@ export const EditorPage = () => {
                                     
                                     <motion.div className="w-full flex items-center ml-14 px-5 py-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
                                         <div className="flex flex-col">
-                                            <div className="text-xl text-light100">{data.find((greenhouse) => selectedGH === greenhouse.id)?.name}</div>
+                                            <div className="text-xl text-light100">{data.find((greenhouse) => selectedGH === greenhouse.id)?.name ?? "No Device Selected"}</div>
                                             <div className="text-sm text-light200">Data charts</div>
                                         </div>
                                     </motion.div>
 
                                     <motion.div className="flex flex-col gap-10 h-full w-full p-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
                                         {
-                                            (!loading && selectedData != null) && selectedData.SensorInfo.map((sensorInfo: SensorInfo) => (
-                                                <SensorChart
-                                                    key={`${selectedGH}-${sensorInfo.name}`}
-                                                    sensorName={`${sensorInfo.name} Sensor`}
-                                                    tick={sensorInfo._v}
-                                                    data={sensorInfo.value || 0}
-                                                    icon={sensorInfo.icon}
-                                                    numberToShow={30}
-                                                />
-                                            ))
+                                            (!loading && selectedData != null && selectedData.SensorInfo.length > 0)
+                                                ? selectedData.SensorInfo.map((sensorInfo: SensorInfo) => (
+                                                    <SensorChart
+                                                        key={`${selectedGH}-${sensorInfo.name}`}
+                                                        sensorName={`${sensorInfo.name} Sensor`}
+                                                        tick={sensorInfo._v}
+                                                        data={sensorInfo.value || 0}
+                                                        icon={sensorInfo.icon}
+                                                        numberToShow={20}
+                                                        sensorRate={data.find((greenhouse) => selectedGH === greenhouse.id)?.deviceRate || 0}
+                                                    />
+                                                ))
+                                                : (
+                                                    <div className="flex items-center w-full h-full">
+                                                        <div className="text-light200">No data available</div>
+                                                    </div>
+                                                )
                                         }
                                     </motion.div>
                                 </motion.div>
