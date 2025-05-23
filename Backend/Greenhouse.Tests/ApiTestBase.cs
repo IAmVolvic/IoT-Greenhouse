@@ -1,74 +1,75 @@
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text.Json;
 using Greenhouse.API;
+using Greenhouse.API.Controllers;
+using Greenhouse.API.FrontendDtos;
 using Greenhouse.Application.Security;
+using Greenhouse.Application.Security.Requests;
 using Greenhouse.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Moq;
 using PgCtx;
 
 namespace Greenhouse.Tests;
 
-public class ApiTestBase : WebApplicationFactory<Program>
+public static class ApiTestBase
 {
-    public ApiTestBase()
+    public static IServiceCollection DefaultTestConfig(
+        this IServiceCollection services,
+        bool useTestContainer = true,
+        bool makeWsClient = true,
+        Action? customSeeder = null
+    )
     {
-        PgCtxSetup = new PgCtxSetup<AppDbContext>();
-        Environment.SetEnvironmentVariable("ADMIN_NAME", "TestAdmin");
-        Environment.SetEnvironmentVariable("ADMIN_EMAIL", "testadmin@example.com");
-        Environment.SetEnvironmentVariable("ADMIN_PHONENUMBER", "12345678");
-        Environment.SetEnvironmentVariable("ADMIN_PASSWORD", "ValidPassword123");
-        Environment.SetEnvironmentVariable("TestDb", PgCtxSetup._postgres.GetConnectionString());
-        
-        ApplicationServices = base.Services.CreateScope().ServiceProvider;
-        
-        // Mock the AuthService
-        MockAuthService = new Mock<IAuthService>();
-        TestHttpClient = CreateClient();
-        TestHttpClient.DefaultRequestHeaders.Add("Cookie", "Authentication=valid-token");
-        
-        Seed().GetAwaiter().GetResult();
-    }
-
-    protected override IHost CreateHost(IHostBuilder builder)
-    {
-        builder.ConfigureServices(services =>
+        if (useTestContainer)
         {
-            // Replace the DB context
-            var descriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
-            if (descriptor != null)
-                services.Remove(descriptor);
-
+            var db = new PgCtxSetup<AppDbContext>();
+            RemoveExistingService<DbContextOptions<AppDbContext>>(services);
             services.AddDbContext<AppDbContext>(opt =>
             {
-                opt.UseNpgsql(PgCtxSetup._postgres.GetConnectionString());
-                opt.EnableSensitiveDataLogging(false);
+                opt.UseNpgsql(db._postgres.GetConnectionString());
+                opt.EnableSensitiveDataLogging();
                 opt.LogTo(_ => { });
             });
+        }
 
-            // Use the mocked AuthService
-            services.AddScoped<IAuthService>(_ => MockAuthService.Object);
-        });
+        if (customSeeder is not null)
+        {
+            RemoveExistingService<ISeeder>(services);
+            customSeeder.Invoke();
+        }
 
-        return base.CreateHost(builder);
+        if (makeWsClient) services.AddScoped<TestWsClient>();
+
+        return services;
     }
 
-    public async Task Seed()
+    private static void RemoveExistingService<T>(IServiceCollection services)
     {
-        var ctx = ApplicationServices.GetRequiredService<AppDbContext>();
-        await ctx.SaveChangesAsync();
+        var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(T));
+        if (descriptor != null)
+            services.Remove(descriptor);
     }
-
-    #region Properties
-
-    public Mock<IAuthService> MockAuthService { get; private set; }
-    public PgCtxSetup<AppDbContext> PgCtxSetup;
-    public HttpClient TestHttpClient { get; set; }
-
-    public IServiceProvider ApplicationServices { get; set; }
-
-    #endregion
+    public static async Task<AuthorizedUser> TestRegisterAndAddJwt(HttpClient httpClient)
+    {
+        var registerDto = new UserSignupDto
+        {
+            Name = new Random().NextDouble() * 123 + "@gmail.com",
+            Password = new Random().NextDouble() * 123 + "@gmail.com"
+        };
+        var signIn = await httpClient.PostAsJsonAsync(
+            "Auth/@user/signup", registerDto);
+        var authResponseDto = await signIn.Content
+                                  .ReadFromJsonAsync<AuthorizedUser>(new JsonSerializerOptions
+                                      { PropertyNameCaseInsensitive = true }) ??
+                              throw new Exception("Failed to deserialize " + await signIn.Content.ReadAsStringAsync() +
+                                                  " to " + nameof(AuthorizedUser));
+        httpClient.DefaultRequestHeaders.Add("Authentication", authResponseDto.JWT);
+        return authResponseDto;
+    }
 }
