@@ -8,8 +8,10 @@ using Greenhouse.API.FrontendDtos;
 using Greenhouse.Application.Security;
 using Greenhouse.Application.Security.Requests;
 using Greenhouse.Infrastructure;
+using Greenhouse.Infrastructure.Environment;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -24,6 +26,7 @@ public static class ApiTestBase
         this IServiceCollection services,
         bool useTestContainer = true,
         bool makeWsClient = true,
+        bool enableMqtt = true,
         Action? customSeeder = null
     )
     {
@@ -46,7 +49,20 @@ public static class ApiTestBase
         }
 
         if (makeWsClient) services.AddScoped<TestWsClient>();
+        if (enableMqtt)
+        {
+            RemoveExistingService<TestMqttClient>(services);
 
+            var provider = services.BuildServiceProvider();
+            var config = provider.GetRequiredService<IConfiguration>();
+            services.Configure<MqttSettings>(config.GetSection("MqttSettings"));
+
+            services.AddScoped<TestMqttClient>(sp =>
+            {
+                var mqttConfig = sp.GetRequiredService<IOptions<MqttSettings>>().Value;
+                return new TestMqttClient(mqttConfig.MQTT_BROKER_HOST, mqttConfig.MQTT_USERNAME, mqttConfig.MQTT_PASSWORD);
+            });
+        }
         return services;
     }
 
