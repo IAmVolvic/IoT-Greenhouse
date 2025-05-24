@@ -5,7 +5,9 @@ using Greenhouse.Application.Mqtt.Dtos;
 using Greenhouse.Application.Security.Requests;
 using Greenhouse.Application.Services.Device.Requests;
 using Greenhouse.Domain.DatabaseDtos;
+using Greenhouse.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
@@ -70,16 +72,41 @@ public class DeviceControllerTests
     [Test]
     public async Task ChangePreferences_ShouldReturnOk()
     {
-        await ApiTestBase.TestRegisterAndSetAuthCookie(_httpClient);
+        var userInfo = await ApiTestBase.TestRegisterAndSetAuthCookie(_httpClient);
+        var dbContext = _scopedServiceProvider.GetService<AppDbContext>();
+        var deviceId = Guid.NewGuid();
+        var device = new Device()
+        {
+            Id = deviceId,
+            DeviceName = "Test Device",
+            UserId = Guid.Parse(userInfo.UserId)
+        };
+        var preferenceId = Guid.NewGuid();
+        var preference = new Preferences()
+        {
+            DeviceId = deviceId,
+            SensorInterval = 1000,
+            Id = preferenceId,
+        };
+        await dbContext.Devices.AddAsync(device);
+        await dbContext.Preferences.AddAsync(preference);
+        await dbContext.SaveChangesAsync();
         var dto = new PreferencesChangeDto
         {
-            DeviceId = Guid.NewGuid(),
+            DeviceId = deviceId,
             SensorInterval = 600
         };
 
         var response = await _httpClient.PatchAsJsonAsync("Device/Preferences/ChangePreferences", dto);
-
+        var result = await response.Content.ReadFromJsonAsync<Preferences>();
+        dbContext.Entry(preference).State = EntityState.Detached;
+        var prefFromDb = await dbContext.Preferences
+            .Where(p => p.Id == preferenceId)
+            .FirstOrDefaultAsync();
         Assert.That(response.IsSuccessStatusCode, Is.True);
+        Assert.That(prefFromDb, Is.Not.Null);
+        Assert.That(prefFromDb.DeviceId, Is.EqualTo(deviceId));
+        Assert.That(prefFromDb.SensorInterval, Is.EqualTo(600));
     }
 
     [Test]
