@@ -1,4 +1,5 @@
 using Greenhouse.API.Attributes;
+using Greenhouse.API.FrontendDtos;
 using Greenhouse.Application.Security.Requests;
 using Greenhouse.Application.Services.FeatureToggle;
 using Greenhouse.Application.Services.User;
@@ -42,7 +43,7 @@ public class AuthController(IUserService userService, IFeatureToggleService feat
                 Expires = DateTimeOffset.UtcNow.AddDays(7)
             });
 
-            return Ok(new { message = "Login successful" });
+            return Ok(new AuthorizedUser(){JWT = loginResponse.JwtToken});
         }
         else
         {
@@ -66,7 +67,7 @@ public class AuthController(IUserService userService, IFeatureToggleService feat
                 Expires = DateTimeOffset.UtcNow.AddDays(7)
             });
 
-            return Ok(new { message = "Signup successful" });
+            return Ok(new AuthorizedUser(){JWT = signupResponse.JwtToken, UserId = signupResponse.Id,});
         }
         else
         {

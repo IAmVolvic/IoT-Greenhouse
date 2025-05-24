@@ -9,17 +9,20 @@ using Greenhouse.Domain.DatabaseDtos;
 using Greenhouse.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Moq;
+using NUnit.Framework;
 
 namespace Greenhouse.Tests;
 
+[TestFixture]
 public class UserServiceTests
 {
-    private readonly Mock<IPasswordHasher<User>> _mockPasswordHasher;
-    private readonly Mock<IJwtManager> _mockJwtManager;
-    private readonly Mock<IUserRepository> _mockUserRepo;
-    private readonly IUserService _userService;
+    private Mock<IPasswordHasher<User>> _mockPasswordHasher;
+    private Mock<IJwtManager> _mockJwtManager;
+    private Mock<IUserRepository> _mockUserRepo;
+    private IUserService _userService;
 
-    public UserServiceTests()
+    [SetUp]
+    public void Setup()
     {
         _mockPasswordHasher = new Mock<IPasswordHasher<User>>();
         _mockJwtManager = new Mock<IJwtManager>();
@@ -27,62 +30,62 @@ public class UserServiceTests
         
         _userService = new UserService(_mockPasswordHasher.Object, _mockJwtManager.Object, _mockUserRepo.Object);
     }
-    
+
     // USER SIGN UP
-    [Fact]
+    [Test]
     public void SignUp_ShouldCreateUser_AndReturnResponse()
     {
         // Arrange
         var signupDto = new UserSignupDto { Name = "test", Password = "test123456" };
+
         // Act
         var result = _userService.SignUp(signupDto);
-        
+
         // Assert
         _mockUserRepo.Verify(u => u.CreateUser(It.IsAny<User>()), Times.Once);
-        Assert.NotNull(result);
-        Assert.NotEqual(Guid.Empty.ToString(), result.Id);
+        Assert.IsNotNull(result);
+        Assert.AreNotEqual(Guid.Empty.ToString(), result.Id);
     }
-    
-    [Fact]
+
+    [Test]
     public void SignUp_Should_Fail_To_Create_User_As_User_Exists()
     {
         // Arrange
         var signupDto = new UserSignupDto { Name = "test", Password = "1234567890" };
-    
+
         _mockUserRepo
             .Setup(repo => repo.CreateUser(It.IsAny<User>()))
             .Throws(new ErrorException("User", "A user with this name already exists."));
 
         // Act & Assert
         var ex = Assert.Throws<ErrorException>(() => _userService.SignUp(signupDto));
-        Assert.Equal("A user with this name already exists.", ex.Message);
+        Assert.AreEqual("A user with this name already exists.", ex.Message);
     }
 
-    [Fact]
+    [Test]
     public void SignUp_Should_Throw_When_Password_Is_Too_Short()
     {
-        //Arrange
+        // Arrange
         var signupDto = new UserSignupDto { Name = "test", Password = "123" };
-        
+
         // Act & Assert
         var ex = Assert.Throws<ValidationException>(() => _userService.SignUp(signupDto));
-        Assert.Equal("Password is too short.", ex.Message);
+        Assert.AreEqual("Password is too short.", ex.Message);
     }
-    
-    [Fact]
+
+    [Test]
     public void SignUp_Should_Throw_When_Password_Is_Empty()
     {
-        //Arrange
+        // Arrange
         var signupDto = new UserSignupDto { Name = "test", Password = "" };
-        
+
         // Act & Assert
         var ex = Assert.Throws<ValidationException>(() => _userService.SignUp(signupDto));
-        Assert.Equal("Password is required.", ex.Message);
+        Assert.AreEqual("Password is required.", ex.Message);
     }
-    
-    
+
     // USER LOGIN
-    [Fact]
+    [Test]
     public void Login_Should_Return_Response()
     {
         // Arrange
@@ -110,12 +113,12 @@ public class UserServiceTests
         var result = _userService.Login(loginDto);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(userFromDb.Id.ToString(), result.Id);
-        Assert.Equal("fake-jwt-token", result.JwtToken);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(userFromDb.Id.ToString(), result.Id);
+        Assert.AreEqual("fake-jwt-token", result.JwtToken);
     }
-    
-    [Fact]
+
+    [Test]
     public void Login_Should_Fail_If_User_Does_Not_Exist()
     {
         // Arrange
@@ -127,10 +130,10 @@ public class UserServiceTests
 
         // Act & Assert
         var ex = Assert.Throws<ErrorException>(() => _userService.Login(loginDto));
-        Assert.Equal("User does not exist", ex.Message);
+        Assert.AreEqual("User does not exist", ex.Message);
     }
-    
-    [Fact]
+
+    [Test]
     public void Login_Should_Fail_If_Password_Is_Incorrect()
     {
         // Arrange
@@ -152,6 +155,6 @@ public class UserServiceTests
 
         // Act & Assert
         var ex = Assert.Throws<ErrorException>(() => _userService.Login(loginDto));
-        Assert.Equal("Password does not match", ex.Message);
+        Assert.AreEqual("Password does not match", ex.Message);
     }
 }

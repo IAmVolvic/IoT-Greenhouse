@@ -28,8 +28,8 @@ public class DeviceController(IDeviceService deviceService) : ControllerBase
     [Authenticated]
     public async Task<ActionResult> ChangePreferences([FromBody] PreferencesChangeDto preferencesDto)
     {
-        await deviceService.UpdatePreferences(preferencesDto);
-        return Ok();
+        var preferences = await deviceService.UpdatePreferences(preferencesDto);
+        return Ok(preferences);
     }
     
     [HttpPatch]
