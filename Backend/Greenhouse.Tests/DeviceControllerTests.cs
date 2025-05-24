@@ -113,15 +113,33 @@ public class DeviceControllerTests
     public async Task ChangeDeviceName_ShouldReturnOk()
     {
         await ApiTestBase.TestRegisterAndSetAuthCookie(_httpClient);
+        var userInfo = await ApiTestBase.TestRegisterAndSetAuthCookie(_httpClient);
+        var dbContext = _scopedServiceProvider.GetService<AppDbContext>();
+        var deviceId = Guid.NewGuid();
+        var device = new Device()
+        {
+            Id = deviceId,
+            DeviceName = "Test Device",
+            UserId = Guid.Parse(userInfo.UserId)
+        };
+        await dbContext.Devices.AddAsync(device);
+        await dbContext.SaveChangesAsync();
         var dto = new ChangeDeviceNameDto
         {
-            DeviceId = Guid.NewGuid(),
+            DeviceId = deviceId,
             DeviceName = "Updated Device Name"
         };
 
         var response = await _httpClient.PatchAsJsonAsync("Device/ChangeDeviceName", dto);
-
+        
+        dbContext.Entry(device).State = EntityState.Detached;
+        
+        var deviceInDb = await dbContext.Devices
+            .Where(p => p.Id == deviceId)
+            .FirstOrDefaultAsync();
         Assert.That(response.IsSuccessStatusCode, Is.True);
+        Assert.That(deviceInDb, Is.Not.Null);
+        Assert.That(deviceInDb.DeviceName, Is.EqualTo(dto.DeviceName));
     }
 
     [Test]
