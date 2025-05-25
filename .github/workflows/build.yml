@@ -89,13 +89,11 @@ jobs:
             -reporttypes:SonarQube
 
       - name: Run Mutation Tests (Stryker)
-        if: always()
         run: |
           cd Backend
           dotnet stryker --reporter html --output ../StrykerOutput || true
 
       - name: Upload Mutation Test Report
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Mutation-Test-Report
