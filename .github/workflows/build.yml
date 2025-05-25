@@ -44,6 +44,37 @@ jobs:
         run: |
           cd Backend
           dotnet build --configuration Release
+          
+      - name: Create appsettings.json from secrets
+        run: |
+          cd Backend
+          cd Greenhouse.API
+          echo '{
+            "Logging": {
+              "LogLevel": {
+                "Default": "Information",
+                "Microsoft.AspNetCore": "Warning"
+              }
+            },
+            "JwtSettings": {
+              "Token": "${{ secrets.JWT_TOKEN }}",
+              "Issuer": "${{ secrets.JWT_ISSUER }}",
+              "Audience": "${{ secrets.JWT_AUDIENCE }}"
+            },
+            "PasswordSettings": {
+              "Salt": "${{ secrets.PASSWORD_SALT }}",
+              "ByteSizeA": 128,
+              "ByteSizeB": 8,
+              "MemorySize": 12288,
+              "Iterations": 3,
+              "DegreeOfParallelism": 1
+            },
+            "MqttSettings": {
+              "MQTT_BROKER_HOST": "${{ secrets.MQTT_BROKER }}",
+              "MQTT_USERNAME": "${{ secrets.MQTT_USERNAME }}",
+              "MQTT_PASSWORD": "${{ secrets.MQTT_PASSWORD }}"
+            }
+          }' > appsettings.json
 
       - name: Run Unit Tests with Coverage
         run: |
