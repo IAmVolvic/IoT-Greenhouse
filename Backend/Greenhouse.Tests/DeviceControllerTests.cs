@@ -6,6 +6,7 @@ using Greenhouse.Application.Security.Requests;
 using Greenhouse.Application.Services.Device.Requests;
 using Greenhouse.Domain.DatabaseDtos;
 using Greenhouse.Infrastructure;
+using HiveMQtt.Client;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,7 @@ public class DeviceControllerTests
     private IServiceProvider _scopedServiceProvider;
     private CookieContainer _cookieContainer;
     private WebApplicationFactory<Program> _factory;
+    private HiveMQClient _hiveMQClient;
     [SetUp]
     public void Setup()
     {
@@ -36,18 +38,24 @@ public class DeviceControllerTests
         {
             BaseAddress = new Uri("http://localhost")
         });
-
+        
         _scopedServiceProvider = _factory.Services.CreateScope().ServiceProvider;
+        _hiveMQClient = _scopedServiceProvider.GetRequiredService<HiveMQClient>();
     }
 
 
 
     [TearDown]
-    public void TearDown()
+    public async void TearDown()
     {
         _httpClient?.Dispose();
         (_scopedServiceProvider as IDisposable)?.Dispose();
         _factory?.Dispose();
+        if (_hiveMQClient != null)
+        {
+            await _hiveMQClient.DisconnectAsync();
+            _hiveMQClient.Dispose();
+        }
     }
 
     [Test]
