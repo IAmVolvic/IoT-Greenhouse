@@ -17,7 +17,6 @@ public class SubscriptionControllerTests
     private IServiceProvider _scopedServiceProvider;
     private CookieContainer _cookieContainer;
     private WebApplicationFactory<Program> _factory;
-    private HiveMQClient _hiveMQClient;
     [SetUp]
     public void Setup()
     {
@@ -36,21 +35,15 @@ public class SubscriptionControllerTests
         });
 
         _scopedServiceProvider = _factory.Services.CreateScope().ServiceProvider;
-        _hiveMQClient = _scopedServiceProvider.GetRequiredService<HiveMQClient>();
     }
     
     
     [TearDown]
-    public async void TearDown()
+    public  void TearDown()
     {
         _httpClient?.Dispose();
         (_scopedServiceProvider as IDisposable)?.Dispose();
         _factory?.Dispose();
-        if (_hiveMQClient != null)
-        {
-            await _hiveMQClient.DisconnectAsync();
-            _hiveMQClient.Dispose();
-        }
     }
 
     [Test]
