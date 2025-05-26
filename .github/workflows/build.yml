@@ -77,7 +77,9 @@ jobs:
               "MQTT_USERNAME": "${{ secrets.MQTT_USERNAME }}",
               "MQTT_PASSWORD": "${{ secrets.MQTT_PASSWORD }}"
             }
-          }' > appsettings.json
+          }
+          ' > appsettings.json
+
 
       - name: Run Unit Tests with Coverage
         run: |
@@ -91,17 +93,17 @@ jobs:
             -targetdir:coverage-report \
             -reporttypes:SonarQube
 
-      - name: Run Mutation Tests (Stryker)
-        run: |
-          cd Backend
-          dotnet stryker --reporter html --output ../StrykerOutput || true
-
-      - name: Upload Mutation Test Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: Mutation-Test-Report
-          path: StrykerOutput/**
-          if-no-files-found: warn
+      #      - name: Run Mutation Tests (Stryker)
+      #        run: |
+      #          cd Backend
+      #          dotnet stryker --reporter html --output ../StrykerOutput || true
+      
+      #      - name: Upload Mutation Test Report
+      #        uses: actions/upload-artifact@v4
+      #        with:
+      #          name: Mutation-Test-Report
+      #          path: StrykerOutput/**
+      #          if-no-files-found: warn
 
       - name: Complete SonarQube Analysis
         if: always()
