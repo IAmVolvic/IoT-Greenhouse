@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0
           
       - name: Start Mosquitto with Docker Compose
-        run: docker compose -f Backend/MosquittoSetuo/mosquitto/docker-compose.yml up -d
+        run: docker compose -f Backend/MosquittoSetuo/mosquitto/docker-compose.yaml up -d
 
       - name: Install required tools
         run: |
