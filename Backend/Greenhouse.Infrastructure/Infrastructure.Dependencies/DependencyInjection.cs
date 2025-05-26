@@ -24,7 +24,6 @@ public static class DependencyInjection
         services.AddScoped<IFeatureToggleRepository, FeatureToggleRepository>();
         
         services.AddScoped<ILogService, LogService>();
-        services.AddScoped<IHelloService, HelloService>();
         services.AddScoped<IDeviceService, DeviceService>();
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddScoped<IUserService, UserService>();

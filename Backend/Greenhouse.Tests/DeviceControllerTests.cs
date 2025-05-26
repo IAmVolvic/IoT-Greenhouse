@@ -6,6 +6,8 @@ using Greenhouse.Application.Security.Requests;
 using Greenhouse.Application.Services.Device.Requests;
 using Greenhouse.Domain.DatabaseDtos;
 using Greenhouse.Infrastructure;
+using HiveMQtt.Client;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,8 +38,9 @@ public class DeviceControllerTests
         {
             BaseAddress = new Uri("http://localhost")
         });
-
+        
         _scopedServiceProvider = _factory.Services.CreateScope().ServiceProvider;
+        
     }
 
 
@@ -233,7 +236,7 @@ public class DeviceControllerTests
         var dbContext = _scopedServiceProvider.GetService<AppDbContext>();
 
         var userId = Guid.Parse(userInfo.UserId);
-
+        
         var deviceId1 = Guid.NewGuid();
         var device1 = new UnassignedDevice()
         {

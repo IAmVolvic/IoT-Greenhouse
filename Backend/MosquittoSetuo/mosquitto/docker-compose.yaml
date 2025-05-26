@@ -1,0 +1,32 @@
+﻿version: "3.8"
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto
+    hostname: mosquitto
+    container_name: mosquitto
+    restart: no
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    configs:
+      - source: mosquitto_config
+        target: /mosquitto/config/mosquitto.conf
+    command: mosquitto -c /mosquitto/config/mosquitto.conf
+
+configs:
+  mosquitto_config:
+    content: |
+      # Basic configuration
+      listener 1883 0.0.0.0
+      listener 9001 0.0.0.0
+      protocol websockets
+      
+      # Allow anonymous connections
+      allow_anonymous true
+      
+      # Disable persistence (optional)
+      persistence false
+      
+      # Logging
+      log_dest stdout
+      log_type all

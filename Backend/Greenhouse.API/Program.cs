@@ -93,8 +93,7 @@ public class Program
         app.UseSwaggerUI();
         app.UseCors("AllowedOriginsPolicy");
         app.MapControllers();
-
-        // Optional MQTT setup
+        
         await app.ConfigureMqtt();
 
         // WebSocket setup

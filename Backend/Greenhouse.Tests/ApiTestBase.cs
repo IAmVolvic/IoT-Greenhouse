@@ -49,20 +49,6 @@ public static class ApiTestBase
         }
 
         if (makeWsClient) services.AddScoped<TestWsClient>();
-        if (enableMqtt)
-        {
-            RemoveExistingService<TestMqttClient>(services);
-
-            var provider = services.BuildServiceProvider();
-            var config = provider.GetRequiredService<IConfiguration>();
-            services.Configure<MqttSettings>(config.GetSection("MqttSettings"));
-
-            services.AddScoped<TestMqttClient>(sp =>
-            {
-                var mqttConfig = sp.GetRequiredService<IOptions<MqttSettings>>().Value;
-                return new TestMqttClient(mqttConfig.MQTT_BROKER_HOST, mqttConfig.MQTT_USERNAME, mqttConfig.MQTT_PASSWORD);
-            });
-        }
         return services;
     }
 
