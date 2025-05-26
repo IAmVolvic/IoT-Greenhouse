@@ -52,7 +52,8 @@ jobs:
         run: |
           cd Backend
           cd Greenhouse.API
-          echo '{
+          cat <<EOF > appsettings.json
+          {
             "Logging": {
               "LogLevel": {
                 "Default": "Information",
@@ -78,9 +79,9 @@ jobs:
               "MQTT_PASSWORD": "${{ secrets.MQTT_PASSWORD }}"
             }
           }
-          ' > appsettings.json
-
-
+          EOF
+          
+          
       - name: Run Unit Tests with Coverage
         run: |
           cd Backend
