@@ -27,6 +27,7 @@ public class SubscriptionControllerTests
                 {
                     services.DefaultTestConfig();
                 });
+                
             });
 
         _httpClient = _factory.CreateClient(new WebApplicationFactoryClientOptions

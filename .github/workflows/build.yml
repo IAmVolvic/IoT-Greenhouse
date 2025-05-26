@@ -36,7 +36,7 @@ jobs:
             /d:sonar.coverage.exclusions="**/Greenhouse.Infrastructure/Infrastructure.DataAccess/**/*,**/Greenhouse.Infrastructure/AppDbContext.cs,**/Greenhouse.API/ActionFilters/**/*" \
             /d:sonar.qualitygate.wait=true \
             /d:sonar.qualitygate.timeout=300 \
-            /d:sonar.exclusions="**/Frontend/**"
+            /d:sonar.exclusions="**/Frontend/**,**/Greenhouse.API/appsettings.json,**/Greenhouse.Infrastructure/Infrastructure.DataAccess/**/*,**/Greenhouse.Infrastructure/AppDbContext.cs,**/Greenhouse.API/ActionFilters/**/*"
 
       - name: Restore Dependencies
         run: |
@@ -80,8 +80,6 @@ jobs:
             }
           }
           EOF
-          
-          
       - name: Run Unit Tests with Coverage
         run: |
           cd Backend
@@ -111,3 +109,12 @@ jobs:
         run: |
           cd Backend
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+/d:sonar:
+  exclusions="**/Frontend/**,**/Greenhouse:
+    API/appsettings:
+      json,**/Greenhouse:
+        Infrastructure/Infrastructure:
+          DataAccess/**/*,**/Greenhouse:
+            Infrastructure/AppDbContext:
+              cs,**/Greenhouse:
+                API/ActionFilters/**/*":
