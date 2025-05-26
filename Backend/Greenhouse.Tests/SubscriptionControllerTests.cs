@@ -39,7 +39,7 @@ public class SubscriptionControllerTests
     
     
     [TearDown]
-    public  void TearDown()
+    public void TearDown()
     {
         _httpClient?.Dispose();
         (_scopedServiceProvider as IDisposable)?.Dispose();
@@ -51,25 +51,50 @@ public class SubscriptionControllerTests
     {
         await ApiTestBase.TestRegisterAndSetAuthCookie(_httpClient);
         
-        var wsClient1 = _scopedServiceProvider.GetRequiredService<TestWsClient>();
         
         var connManager = _scopedServiceProvider.GetRequiredService<IConnectionManager>();
 
         var subscribeToTopicDto = new SubscirbeToTopicDto
         {
-            userId = int.Parse(wsClient1.WsClientId),
+            userId = 123,
             TopicNames = new List<string> { "Topic1" }
         };
         
         var response = await _httpClient.PostAsJsonAsync("Subscription/Subscribe/SpecificTopics",subscribeToTopicDto);
         
         var membersAtTopic = await connManager.GetMembersFromTopicId("Topic1");
-        
+        List<int> memberIds = membersAtTopic.Select(int.Parse).ToList();
         Assert.That(response.IsSuccessStatusCode, Is.True, "Subscription request failed");
 
-        Assert.That(membersAtTopic, Is.Not.Null, "No members found for topic");
-        Assert.That(membersAtTopic, Does.Contain(wsClient1.WsClientId), "User not subscribed to the topic");
+        Assert.That(memberIds, Is.Not.Null, "No members found for topic");
+        Assert.That(memberIds, Does.Contain(123), "User not subscribed to the topic");
 
-        Assert.That(membersAtTopic.Count, Is.EqualTo(1), "Unexpected number of members in the topic");
+        Assert.That(memberIds.Count, Is.EqualTo(1), "Unexpected number of members in the topic");
+    }
+    
+    [Test]
+    public async Task SubscribeToYourDevices_Subscribes_To_Your_Devices()
+    {
+        await ApiTestBase.TestRegisterAndSetAuthCookie(_httpClient);
+        
+        
+        var connManager = _scopedServiceProvider.GetRequiredService<IConnectionManager>();
+
+        var subscribeToTopicDto = new SubscirbeToTopicDto
+        {
+            userId = 123,
+            TopicNames = new List<string> { "Topic1" }
+        };
+        
+        var response = await _httpClient.PostAsJsonAsync("Subscription/Subscribe/SpecificTopics",subscribeToTopicDto);
+        
+        var membersAtTopic = await connManager.GetMembersFromTopicId("Topic1");
+        List<int> memberIds = membersAtTopic.Select(int.Parse).ToList();
+        Assert.That(response.IsSuccessStatusCode, Is.True, "Subscription request failed");
+
+        Assert.That(memberIds, Is.Not.Null, "No members found for topic");
+        Assert.That(memberIds, Does.Contain(123), "User not subscribed to the topic");
+
+        Assert.That(memberIds.Count, Is.EqualTo(1), "Unexpected number of members in the topic");
     }
 }

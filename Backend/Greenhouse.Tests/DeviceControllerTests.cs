@@ -29,7 +29,6 @@ public class DeviceControllerTests
         _factory = new WebApplicationFactory<Program>()
             .WithWebHostBuilder(builder =>
             {
-                builder.UseEnvironment("Test");
                 builder.ConfigureServices(services =>
                 {
                     services.DefaultTestConfig();
@@ -241,7 +240,7 @@ public class DeviceControllerTests
         var dbContext = _scopedServiceProvider.GetService<AppDbContext>();
 
         var userId = Guid.Parse(userInfo.UserId);
-
+        
         var deviceId1 = Guid.NewGuid();
         var device1 = new UnassignedDevice()
         {
