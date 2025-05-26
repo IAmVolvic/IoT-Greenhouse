@@ -22,7 +22,6 @@ public class DeviceControllerTests
     private IServiceProvider _scopedServiceProvider;
     private CookieContainer _cookieContainer;
     private WebApplicationFactory<Program> _factory;
-    private HiveMQClient _hiveMQClient;
     [SetUp]
     public void Setup()
     {
@@ -42,7 +41,6 @@ public class DeviceControllerTests
         
         _scopedServiceProvider = _factory.Services.CreateScope().ServiceProvider;
         
-        _hiveMQClient = _scopedServiceProvider.GetRequiredService<HiveMQClient>();
     }
 
 
@@ -53,8 +51,6 @@ public class DeviceControllerTests
         _httpClient?.Dispose();
         (_scopedServiceProvider as IDisposable)?.Dispose();
         _factory?.Dispose();
-        _hiveMQClient?.Dispose();
-        _hiveMQClient.DisconnectAsync().Wait();
     }
 
     [Test]

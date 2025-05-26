@@ -31,7 +31,7 @@ public static class MqttExtensions
             var logger = sp.GetRequiredService<ILogger<HiveMQClient>>();
 
             var options = new HiveMQClientOptionsBuilder()
-                .WithWebSocketServer($"wss://{mqttSettings.MQTT_BROKER_HOST}:8884/mqtt")
+                .WithWebSocketServer($"{mqttSettings.MQTT_BROKER_HOST}")
                 .WithClientId($"myClientId_{Guid.NewGuid()}")
                 .WithCleanStart(true)
                 .WithKeepAlive(30)

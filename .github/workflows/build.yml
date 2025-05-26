@@ -14,7 +14,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
+          
+      - name: Start Mosquitto with Docker Compose
+        run: |
+          cd Backend/MosquittoSetuo
+          docker-compose up -d
+          
       - name: Install required tools
         run: |
           dotnet tool install -g dotnet-sonarscanner
@@ -70,7 +75,7 @@ jobs:
               "DegreeOfParallelism": 1
             },
             "MqttSettings": {
-              "MQTT_BROKER_HOST": "${{ secrets.MQTT_BROKER }}",
+              "MQTT_BROKER_HOST": "${{ secrets.MQTT_BROKER_TESTING }}",
               "MQTT_USERNAME": "${{ secrets.MQTT_USERNAME }}",
               "MQTT_PASSWORD": "${{ secrets.MQTT_PASSWORD }}"
             }
