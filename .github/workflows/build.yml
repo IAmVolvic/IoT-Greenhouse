@@ -109,12 +109,3 @@ jobs:
         run: |
           cd Backend
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-/d:sonar:
-  exclusions="**/Frontend/**,**/Greenhouse:
-    API/appsettings:
-      json,**/Greenhouse:
-        Infrastructure/Infrastructure:
-          DataAccess/**/*,**/Greenhouse:
-            Infrastructure/AppDbContext:
-              cs,**/Greenhouse:
-                API/ActionFilters/**/*":
