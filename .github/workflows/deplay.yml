@@ -65,18 +65,27 @@ jobs:
       - name: Restart API on server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd $DEPLOY_PATH
+            set -e  # Stop on error
+
+            cd $DEPLOY_PATH || exit 1
 
             echo "Checking for existing screen session..."
             if screen -list | grep -q "\.just2play"; then
-              echo "Session exists. Restarting..."
+              echo "Session exists. Killing existing session..."
               screen -S just2play -X quit
+              sleep 2
             else
-              echo "No existing session found. Creating new one..."
+              echo "No existing session found."
             fi
 
             echo "Starting new screen session..."
-            screen -dmS just2play dotnet Greenhouse.API.dll
-            
+            # Optional: clear logs or check permissions here
+
+            screen -dmS just2play bash -c 'dotnet Greenhouse.API.dll >> out.log 2>&1'
+
+            sleep 1
+            echo "Verifying screen is running..."
+            screen -list | grep just2play && echo "Screen started successfully." || echo "Screen failed to start!"
+
             echo "Deployment complete."
           EOF
