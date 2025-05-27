@@ -2,16 +2,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using Greenhouse.Application.Mqtt.Dtos;
 using Greenhouse.Application.Services.Logs;
-using Greenhouse.Infrastructure.Services;
 using HiveMQtt.Client.Events;
 using HiveMQtt.MQTT5.Types;
-using Microsoft.Extensions.Logging;
 
 namespace Greenhouse.Infrastructure.MqttServices.MqttSubscriptionEventHandlers;
 
-public class GasEventHandler(ILogService logService) : IMqttMessageHandler
+public class LightEventHandler(ILogService logService) : IMqttMessageHandler
 {
-    public string TopicFilter { get; } = "sensor/gas";
+    public string TopicFilter { get; } = "sensor/light";
     public QualityOfService QoS { get; } = QualityOfService.AtLeastOnceDelivery;
 
     public void Handle(object? sender, OnMessageReceivedEventArgs args)
