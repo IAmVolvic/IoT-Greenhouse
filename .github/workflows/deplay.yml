@@ -84,4 +84,4 @@ jobs:
           sudo apt-get install -y k6
 
       - name: Run Spike Test with K6
-        run: k6 run ./k6/spike-test.js
+        run: k6 run ./K6/spike-test.js
