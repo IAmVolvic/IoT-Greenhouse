@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
+namespace Greenhouse.Infrastructure.MqttServices;
 public static class MqttExtensions
 {
     public static IServiceCollection RegisterMqttInfrastructure(this IServiceCollection services)

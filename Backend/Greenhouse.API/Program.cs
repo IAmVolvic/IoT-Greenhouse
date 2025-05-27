@@ -8,11 +8,14 @@ using Greenhouse.Application.Environment;
 using Greenhouse.Application.Security;
 using Greenhouse.Infrastructure;
 using Greenhouse.Infrastructure.AuthService;
+using Greenhouse.Infrastructure.MqttServices;
 using Greenhouse.Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using WebSocketBoilerplate;
+
+namespace Greenhouse.API;
 
 public class Program
 {

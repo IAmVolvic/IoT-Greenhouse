@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
+using Greenhouse.API;
 using Greenhouse.API.FrontendDtos;
 using Greenhouse.Application.Mqtt.Dtos;
 using Greenhouse.Application.Security.Requests;
