@@ -6,28 +6,27 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#define AO_PIN 34  // MQ2 analog pin
-#define ONE_WIRE_BUS 14  // DS18B20 connected to GPIO 14
+#define AO_PIN 34         // MQ2 analog pin
+#define ONE_WIRE_BUS 14   // DS18B20 connected to GPIO
+#define LDR_PIN 35        // LDR analog pin
 
-// Replace with your actual WiFi credentials
+// WiFi credentials (replace with your own in a secure way)
 const char* ssid = "YOUR_WIFI_SSID";
 const char* password = "YOUR_WIFI_PASSWORD";
 
-// Replace with your actual MQTT broker settings
-const char* mqtt_server = "your-mqtt-broker-address";
+// MQTT broker details (replace with your own in a secure way)
+const char* mqtt_server = "YOUR_MQTT_BROKER_ADDRESS";
 const int mqtt_port = 8883;
-const char* mqtt_user = "your-mqtt-username";
-const char* mqtt_pass = "your-mqtt-password";
+const char* mqtt_user = "YOUR_MQTT_USERNAME";
+const char* mqtt_pass = "YOUR_MQTT_PASSWORD";
 
-// MQTT topics
-const char* mqtt_topic_gas = "mq2/gas";
+// MQTT topics (replace device/user IDs with placeholders)
+const char* mqtt_topic_gas = "sensor/gas";
 const char* mqtt_topic_unassigned = "user/unassigned";
-const char* mqtt_topic_assign = "user/assign/YOUR-DEVICE-ID";
+const char* mqtt_topic_assign = "user/assign/YOUR_DEVICE_ID";
 const char* mqtt_topic_temp = "sensor/temp";
-const char* mqtt_topic_preferences = "preferences/YOUR-DEVICE-ID";
-
-// Unique identifier for your device
-const char* device_id = "YOUR-DEVICE-ID";
+const char* mqtt_topic_preferences = "preferences/YOUR_DEVICE_ID";
+const char* mqtt_topic_ldr = "sensor/light";
 
 WiFiClientSecure wifiSecureClient;
 PubSubClient client(wifiSecureClient);
@@ -80,7 +79,7 @@ void setup() {
 
   setup_wifi();
 
-  wifiSecureClient.setInsecure(); // For testing only, not for production
+  wifiSecureClient.setInsecure(); // ⚠️ For testing only
 
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
@@ -117,7 +116,7 @@ void loop() {
     unsigned long now = millis();
     if (now - lastUnassignedPublish > 10000) {
       StaticJsonDocument<200> deviceInfo;
-      deviceInfo["DeviceId"] = device_id;
+      deviceInfo["DeviceId"] = "YOUR_DEVICE_ID";
       String info;
       serializeJson(deviceInfo, info);
       client.publish(mqtt_topic_unassigned, info.c_str());
@@ -132,7 +131,7 @@ void loop() {
     StaticJsonDocument<200> doc;
     doc["Unit"] = "gas";
     doc["Value"] = gasValue;
-    doc["DeviceId"] = device_id;
+    doc["DeviceId"] = "YOUR_DEVICE_ID";
     doc["Type"] = "gas";
 
     String payload;
@@ -145,14 +144,28 @@ void loop() {
     Serial.println(temperatureC);
 
     StaticJsonDocument<200> temp;
-    temp["Unit"] = "Celsius";
+    temp["Unit"] = "Celcius";
     temp["Value"] = temperatureC;
-    temp["DeviceId"] = device_id;
+    temp["DeviceId"] = "YOUR_DEVICE_ID";
     temp["Type"] = "temperature";
 
     String temperature;
     serializeJson(temp, temperature);
     client.publish(mqtt_topic_temp, temperature.c_str());
+
+    int ldrValue = analogRead(LDR_PIN);
+    Serial.print("LDR value: ");
+    Serial.println(ldrValue);
+
+    StaticJsonDocument<200> ldr;
+    ldr["Unit"] = "analog";
+    ldr["Value"] = ldrValue;
+    ldr["DeviceId"] = "YOUR_DEVICE_ID";
+    ldr["Type"] = "light";
+
+    String ldrPayload;
+    serializeJson(ldr, ldrPayload);
+    client.publish(mqtt_topic_ldr, ldrPayload.c_str());
   }
 
   delay(user_defined_delay);
