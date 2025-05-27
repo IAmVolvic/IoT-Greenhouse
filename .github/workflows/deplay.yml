@@ -69,21 +69,22 @@ jobs:
 
             cd $DEPLOY_PATH || exit 1
 
+            echo "Checking for running Greenhouse.API.dll processes..."
+            pkill -f 'dotnet Greenhouse.API.dll' && echo "Existing API process killed." || echo "No running process found."
+
             echo "Checking for existing screen session..."
             if screen -list | grep -q "\.just2play"; then
-              echo "Session exists. Killing existing session..."
+              echo "Session exists. Killing it..."
               screen -S just2play -X quit
-              sleep 2
+              sleep 1
             else
-              echo "No existing session found."
+              echo "No existing screen session."
             fi
 
             echo "Starting new screen session..."
-            # Optional: clear logs or check permissions here
-
             screen -dmS just2play bash -c 'dotnet Greenhouse.API.dll >> out.log 2>&1'
 
-            sleep 1
+            sleep 2
             echo "Verifying screen is running..."
             screen -list | grep just2play && echo "Screen started successfully." || echo "Screen failed to start!"
 
