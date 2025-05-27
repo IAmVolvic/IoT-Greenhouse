@@ -19,7 +19,7 @@ public class DeviceController(IDeviceService deviceService) : ControllerBase
     public async Task<ActionResult> Post([FromBody] DeviceAssignDto deviceDto)
     {
         var authUser = HttpContext.Items["AuthenticatedUser"] as AuthorizedUserResponseDto;
-        var device = await deviceService.AssignDeviceToUser(authUser.Id, deviceDto.DeviceId, deviceDto.DeviceName);
+        var device = await deviceService.AssignDeviceToUser(authUser!.Id, deviceDto.DeviceId, deviceDto.DeviceName);
         return Ok(device);
     }
 

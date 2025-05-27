@@ -43,7 +43,7 @@ public class AuthController(IUserService userService, IFeatureToggleService feat
                 Expires = DateTimeOffset.UtcNow.AddDays(7)
             });
 
-            return Ok(new AuthorizedUser(){JWT = loginResponse.JwtToken});
+            return Ok(new AuthorizedUser(){Jwt = loginResponse.JwtToken});
         }
         else
         {
@@ -67,7 +67,7 @@ public class AuthController(IUserService userService, IFeatureToggleService feat
                 Expires = DateTimeOffset.UtcNow.AddDays(7)
             });
 
-            return Ok(new AuthorizedUser(){JWT = signupResponse.JwtToken, UserId = signupResponse.Id,});
+            return Ok(new AuthorizedUser(){Jwt = signupResponse.JwtToken, UserId = signupResponse.Id,});
         }
         else
         {

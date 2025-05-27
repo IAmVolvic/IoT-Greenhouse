@@ -74,7 +74,7 @@ public static class ApiTestBase
         }) ?? throw new Exception("Failed to register");
 
         // ✅ Manually set cookie header
-        client.DefaultRequestHeaders.Add("Cookie", $"Authentication={auth.JWT}");
+        client.DefaultRequestHeaders.Add("Cookie", $"Authentication={auth.Jwt}");
 
         return auth;
     }

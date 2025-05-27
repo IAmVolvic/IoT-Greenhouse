@@ -154,7 +154,7 @@ public class AuthControllerTests
         var ok = result.Result as OkObjectResult;
         var user = ok!.Value as AuthorizedUser;
 
-        Assert.That(user!.JWT, Is.EqualTo(jwt));
+        Assert.That(user!.Jwt, Is.EqualTo(jwt));
         Assert.That(user.UserId, Is.EqualTo(userId.ToString()));
 
         responseCookiesMock.Verify(c => c.Append(
