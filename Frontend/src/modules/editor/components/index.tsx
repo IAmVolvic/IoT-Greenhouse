@@ -118,7 +118,7 @@ export const EditorPage = () => {
                                     <div className="bg-dark300 rounded-xl shadow-md p-2">
                                         <div className="flex flex-row items-center gap-2">
                                             {createElement(Sensor.icon, { className: "w-6 h-6 text-light200" })}
-                                            <div className="text-sm text-light200">{Sensor.value}</div>
+                                            <div className="text-sm text-light200">{Sensor.value.toFixed(1)}</div>
                                         </div>
                                     </div>
                                 </FloatingLabel>
