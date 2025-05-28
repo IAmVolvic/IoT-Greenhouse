@@ -7,11 +7,17 @@ namespace Greenhouse.Tests;
 
 public class TestMqttClient
 {
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+    {
+        WriteIndented = true,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    };
+
     public TestMqttClient(string host, string username, string password)
     {
         var options = new HiveMQClientOptionsBuilder()
-            .WithWebSocketServer(
-                $"wss://{host}:8884/mqtt") // Using WSS (secure WebSocket)
+            .WithWebSocketServer($"wss://{host}:8884/mqtt")
             .WithClientId($"myClientId_{Guid.NewGuid()}")
             .WithCleanStart(true)
             .WithKeepAlive(30)
@@ -25,21 +31,17 @@ public class TestMqttClient
             .WithRequestResponseInformation(true)
             .WithAllowInvalidBrokerCertificates(true)
             .Build();
+
         MqttClient = new HiveMQClient(options);
+
         MqttClient.OnMessageReceived += (_, args) =>
         {
-            var jsonSerializerOptions = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            };
-
             var jsonElement = JsonSerializer.Deserialize<JsonElement>(args.PublishMessage.PayloadAsString);
-            var stringRepresentation = JsonSerializer.Serialize(jsonElement, jsonSerializerOptions);
+            var stringRepresentation = JsonSerializer.Serialize(jsonElement, JsonSerializerOptions);
             ReceivedMessages.Enqueue(stringRepresentation);
             Console.WriteLine($"Received message: {stringRepresentation}");
         };
+
         MqttClient.ConnectAsync().GetAwaiter().GetResult();
     }
 

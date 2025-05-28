@@ -19,7 +19,7 @@ public class UserServiceTests
     private Mock<IPasswordHasher<User>> _mockPasswordHasher;
     private Mock<IJwtManager> _mockJwtManager;
     private Mock<IUserRepository> _mockUserRepo;
-    private IUserService _userService;
+    private UserService _userService;
 
     [SetUp]
     public void Setup()
@@ -43,7 +43,7 @@ public class UserServiceTests
 
         // Assert
         _mockUserRepo.Verify(u => u.CreateUser(It.IsAny<User>()), Times.Once);
-        Assert.IsNotNull(result);
+        Assert.That(result, Is.Not.Null);
         Assert.That(result.Id, Is.Not.EqualTo(Guid.Empty.ToString()));
     }
 
@@ -113,9 +113,12 @@ public class UserServiceTests
         var result = _userService.Login(loginDto);
 
         // Assert
-        Assert.IsNotNull(result);
-        Assert.That(result.Id, Is.EqualTo(userFromDb.Id.ToString()));
-        Assert.That(result.JwtToken, Is.EqualTo("fake-jwt-token"));
+        Assert.That(result, Is.Not.Null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Id, Is.EqualTo(userFromDb.Id.ToString()));
+            Assert.That(result.JwtToken, Is.EqualTo("fake-jwt-token"));
+        });
     }
 
     [Test]

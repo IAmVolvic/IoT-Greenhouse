@@ -212,13 +212,6 @@ public sealed class WebSocketConnectionManager : IConnectionManager
     {
         try
         {
-            var state = new
-            {
-                Connections = _connectionIdToSocket.Keys,
-                Topics = _topicMembers,
-                MemberSubscriptions = _memberTopics
-            };
-
             _logger.LogDebug("Current state: {State}", JsonOptionsWithWriteIndented);
         }
         catch (Exception ex)
