@@ -21,12 +21,12 @@ public static class WebSocketHandler
         return services;
     }
 
-    public static async Task<WebApplication> ConfigureWebsocketApi(this WebApplication app, int wsPort = 4001)
+    public static Task<WebApplication> ConfigureWebsocketApi(this WebApplication app, int wsPort = 4001)
     {
         var url = $"ws://0.0.0.0:4001";
 
         var logger = app.Services.GetRequiredService<ILogger<NonStaticWsExtensionClassForLogger>>();
-        logger.LogInformation("WebSocket server running at: " + url);
+        logger.LogInformation("WebSocket server running at: {Url}", url);
 
         var server = new WebSocketServer(url);
 
@@ -37,7 +37,7 @@ public static class WebSocketHandler
                 : "";
 
             var id = HttpUtility.ParseQueryString(queryString)["id"]
-                     ?? throw new Exception("Please specify ID query param for websocket connection");
+                     ?? throw new InvalidOperationException("Missing 'id' query parameter for WebSocket connection.");
 
             using var scope = app.Services.CreateScope();
             var manager = scope.ServiceProvider.GetRequiredService<IConnectionManager>();
@@ -45,23 +45,22 @@ public static class WebSocketHandler
             ws.OnOpen = () => manager.OnOpen(ws, id);
             ws.OnClose = () => manager.OnClose(ws, id);
 
-            ws.OnMessage = async message =>
+            ws.OnMessage = message =>
             {
                 try
-                {
-                    await app.CallEventHandler(ws, message);
-                    
+                { 
+                    app.CallEventHandler(ws, message);
                 }
                 catch (Exception e)
                 {
                     var error = JsonConvert.SerializeObject(new WebsocketError(ErrorType.CRITICAL, e.Message));
-                    await ws.Send(error);
+                    ws.Send(error);
                 }
             };
         });
 
-        return app;
+        return Task.FromResult(app);
     }
 }
 
-public class NonStaticWsExtensionClassForLogger { }
+public abstract class NonStaticWsExtensionClassForLogger { }

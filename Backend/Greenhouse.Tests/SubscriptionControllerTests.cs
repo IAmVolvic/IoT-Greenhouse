@@ -58,7 +58,7 @@ public class SubscriptionControllerTests
 
         var subscribeToTopicDto = new SubscirbeToTopicDto
         {
-            userId = 123,
+            UserId = 123,
             TopicNames = new List<string> { "Topic1" }
         };
         
@@ -84,7 +84,7 @@ public class SubscriptionControllerTests
 
         var subscribeToTopicDto = new SubscirbeToTopicDto
         {
-            userId = 123,
+            UserId = 123,
             TopicNames = new List<string> { "Topic1" }
         };
         

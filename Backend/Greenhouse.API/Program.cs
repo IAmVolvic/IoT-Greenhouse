@@ -81,16 +81,16 @@ public class Program
 
         var app = builder.Build();
 
-        await ConfigureMiddleware(app, configuration);
+        await ConfigureMiddleware(app);
         await app.RunAsync();
     }
 
 
-    private static async Task ConfigureMiddleware(WebApplication app, IConfiguration config)
+    private static async Task ConfigureMiddleware(WebApplication app)
     {
         var logger = app.Services.GetRequiredService<ILogger<Program>>();
         var options = app.Services.GetRequiredService<IOptionsMonitor<JwtSettings>>().CurrentValue;
-        logger.LogInformation(JsonConvert.SerializeObject(options));
+        logger.LogInformation("Options: {@Options}", options);
 
         app.UseSwagger();
         app.UseSwaggerUI();

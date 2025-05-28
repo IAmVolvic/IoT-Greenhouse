@@ -57,7 +57,7 @@ public class DeviceController(IDeviceService deviceService) : ControllerBase
     public ActionResult<List<DeviceResponseDto>> MyDevices()
     {
         var authUser = HttpContext.Items["AuthenticatedUser"] as AuthorizedUserResponseDto;
-        var devices = deviceService.UserDevices(authUser.Id);
+        var devices = deviceService.UserDevices(authUser!.Id);
         return Ok(devices);
     }
     

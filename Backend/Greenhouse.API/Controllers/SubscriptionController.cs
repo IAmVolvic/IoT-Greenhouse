@@ -27,7 +27,7 @@ public class SubscriptionController(IWebsocketSubscriptionService websocketSubsc
     [Authenticated]
     public async Task<ActionResult> SubscribeToSpecificTopics([FromBody] SubscirbeToTopicDto topicInfo)
     {
-        await websocketSubscriptionService.SubscribeToTopic(topicInfo.userId.ToString(), topicInfo.TopicNames.ToList());
+        await websocketSubscriptionService.SubscribeToTopic(topicInfo.UserId.ToString(), topicInfo.TopicNames.ToList());
         return Ok();
     }
 }
