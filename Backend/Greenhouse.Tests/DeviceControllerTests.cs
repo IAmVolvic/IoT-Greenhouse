@@ -21,7 +21,6 @@ public class DeviceControllerTests
 {
     private HttpClient _httpClient;
     private IServiceProvider _scopedServiceProvider;
-    private CookieContainer _cookieContainer;
     private WebApplicationFactory<Program> _factory;
     [SetUp]
     public void Setup()

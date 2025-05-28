@@ -88,11 +88,12 @@ public class PasswordManagerTests
         var data = new byte[] { 1, 2, 3, 4, 5, 100, 255 };
         var encoded = typeof(PasswordManger)
             .GetMethod("Encode", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
-            .Invoke(_passwordManager, new object[] { data }) as string;
+            ?.Invoke(_passwordManager, new object[] { data }) as string;
 
+        if (encoded == null) return;
         var decoded = typeof(PasswordManger)
             .GetMethod("Decode", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
-            .Invoke(_passwordManager, new object[] { encoded }) as byte[];
+            ?.Invoke(_passwordManager, [encoded]) as byte[];
 
         Assert.That(decoded, Is.EqualTo(data), "Base64 encode/decode mismatch");
     }

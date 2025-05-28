@@ -40,7 +40,7 @@ public class LogServiceTests
             Type = "Temperature"
         };
 
-        Log capturedLog = null;
+        var capturedLog = new Log();
         _logRepositoryMock
             .Setup(repo => repo.AddDeviceLog(It.IsAny<Log>()))
             .Callback<Log>(log => capturedLog = log);
@@ -71,8 +71,8 @@ public class LogServiceTests
             Type = "Temperature"
         };
 
-        ServerBroadcastsLogToDashboard capturedBroadcast = null;
-        string capturedTopic = null;
+        var capturedBroadcast = new ServerBroadcastsLogToDashboard();
+        var capturedTopic = "";
 
         _connectionManagerMock
             .Setup(cm => cm.BroadcastToTopic(It.IsAny<string>(), It.IsAny<ServerBroadcastsLogToDashboard>()))
@@ -88,10 +88,16 @@ public class LogServiceTests
 
         // Assert
         _connectionManagerMock.Verify(cm => cm.BroadcastToTopic(It.IsAny<string>(), It.IsAny<object>()), Times.Once);
-        Assert.That(capturedTopic, Is.EqualTo(deviceId.ToString()), "Broadcast topic mismatch");
-        Assert.That(capturedBroadcast, Is.Not.Null, "Broadcast message was null");
-        Assert.That(capturedBroadcast.Log.DeviceId, Is.EqualTo(logDto.DeviceId));
-        Assert.That(capturedBroadcast.Log.Unit, Is.EqualTo(logDto.Unit));
+        Assert.Multiple(() =>
+        {
+            Assert.That(capturedTopic, Is.EqualTo(deviceId.ToString()), "Broadcast topic mismatch");
+            Assert.That(capturedBroadcast, Is.Not.Null, "Broadcast message was null");
+        });
+        Assert.Multiple(() =>
+        {
+            Assert.That(capturedBroadcast.Log.DeviceId, Is.EqualTo(logDto.DeviceId));
+            Assert.That(capturedBroadcast.Log.Unit, Is.EqualTo(logDto.Unit));
+        });
     }
 
 }

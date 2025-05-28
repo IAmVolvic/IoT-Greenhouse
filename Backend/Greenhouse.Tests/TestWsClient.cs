@@ -13,7 +13,10 @@ public class TestWsClient
         Console.WriteLine("Connecting to websocket at: " + websocketUrl);
         WsClient = new WebsocketClient(websocketUrl);
 
-        WsClient.MessageReceived.Subscribe(msg => { ReceivedMessages.Enqueue(msg.Text); });
+        WsClient.MessageReceived.Subscribe(msg =>
+        {
+            if (msg.Text != null) ReceivedMessages.Enqueue(msg.Text);
+        });
         WsClient.StartOrFail();
         Task.Delay(1000).GetAwaiter().GetResult();
     }

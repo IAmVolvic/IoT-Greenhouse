@@ -44,7 +44,7 @@ public class UserServiceTests
         // Assert
         _mockUserRepo.Verify(u => u.CreateUser(It.IsAny<User>()), Times.Once);
         Assert.IsNotNull(result);
-        Assert.AreNotEqual(Guid.Empty.ToString(), result.Id);
+        Assert.That(result.Id, Is.Not.EqualTo(Guid.Empty.ToString()));
     }
 
     [Test]
@@ -59,7 +59,7 @@ public class UserServiceTests
 
         // Act & Assert
         var ex = Assert.Throws<ErrorException>(() => _userService.SignUp(signupDto));
-        Assert.AreEqual("A user with this name already exists.", ex.Message);
+        Assert.That(ex.Message, Is.EqualTo("A user with this name already exists."));
     }
 
     [Test]
@@ -70,7 +70,7 @@ public class UserServiceTests
 
         // Act & Assert
         var ex = Assert.Throws<ValidationException>(() => _userService.SignUp(signupDto));
-        Assert.AreEqual("Password is too short.", ex.Message);
+        Assert.That(ex.Message, Is.EqualTo("Password is too short."));
     }
 
     [Test]
@@ -81,7 +81,7 @@ public class UserServiceTests
 
         // Act & Assert
         var ex = Assert.Throws<ValidationException>(() => _userService.SignUp(signupDto));
-        Assert.AreEqual("Password is required.", ex.Message);
+        Assert.That(ex.Message, Is.EqualTo("Password is required."));
     }
 
     // USER LOGIN
@@ -114,8 +114,8 @@ public class UserServiceTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(userFromDb.Id.ToString(), result.Id);
-        Assert.AreEqual("fake-jwt-token", result.JwtToken);
+        Assert.That(result.Id, Is.EqualTo(userFromDb.Id.ToString()));
+        Assert.That(result.JwtToken, Is.EqualTo("fake-jwt-token"));
     }
 
     [Test]
@@ -130,7 +130,7 @@ public class UserServiceTests
 
         // Act & Assert
         var ex = Assert.Throws<ErrorException>(() => _userService.Login(loginDto));
-        Assert.AreEqual("User does not exist", ex.Message);
+        Assert.That(ex.Message, Is.EqualTo("User does not exist"));
     }
 
     [Test]
@@ -155,6 +155,6 @@ public class UserServiceTests
 
         // Act & Assert
         var ex = Assert.Throws<ErrorException>(() => _userService.Login(loginDto));
-        Assert.AreEqual("Password does not match", ex.Message);
+        Assert.That(ex.Message, Is.EqualTo("Password does not match"));
     }
 }
