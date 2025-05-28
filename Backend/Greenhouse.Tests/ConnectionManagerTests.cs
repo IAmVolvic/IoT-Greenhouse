@@ -100,7 +100,7 @@ public class WebSocketConnectionManagerTests
         await _manager.OnOpen(_socketMock.Object, clientId);
         await _manager.OnClose(_socketMock.Object, clientId);
 
-        Assert.Throws<Exception>(() => _manager.GetSocketFromClientId(clientId));
+        Assert.Throws<InvalidOperationException>(() => _manager.GetSocketFromClientId(clientId));
     }
 
     [Test]
@@ -119,6 +119,6 @@ public class WebSocketConnectionManagerTests
         var unknownSocket = new Mock<IWebSocketConnection>();
         unknownSocket.Setup(s => s.ConnectionInfo.Id).Returns(Guid.NewGuid());
 
-        Assert.Throws<Exception>(() => _manager.GetClientIdFromSocket(unknownSocket.Object));
+        Assert.Throws<InvalidOperationException>(() => _manager.GetClientIdFromSocket(unknownSocket.Object));
     }
 }
