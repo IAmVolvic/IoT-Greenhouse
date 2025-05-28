@@ -45,12 +45,12 @@ public class PasswordManger(IOptions<PasswordSettings> passwordSettings)
         return hashAlgo.GetBytes(256 / 8);
     }
 
-    protected byte[] Decode(string value)
+    private static byte[] Decode(string value)
     {
         return Convert.FromBase64String(value);
     }
 
-    protected string Encode(byte[] value)
+    private static string Encode(byte[] value)
     {
         return Convert.ToBase64String(value);
     }

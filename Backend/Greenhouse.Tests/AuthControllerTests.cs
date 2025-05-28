@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using System;
+
+namespace Greenhouse.Tests;
 
 [TestFixture]
 public class AuthControllerTests
@@ -154,8 +155,11 @@ public class AuthControllerTests
         var ok = result.Result as OkObjectResult;
         var user = ok!.Value as AuthorizedUser;
 
-        Assert.That(user!.Jwt, Is.EqualTo(jwt));
-        Assert.That(user.UserId, Is.EqualTo(userId.ToString()));
+        Assert.Multiple(() =>
+        {
+            Assert.That(user!.Jwt, Is.EqualTo(jwt));
+            Assert.That(user.UserId, Is.EqualTo(userId.ToString()));
+        });
 
         responseCookiesMock.Verify(c => c.Append(
             "Authentication",

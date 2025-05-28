@@ -71,7 +71,7 @@ public class WebSocketConnectionManagerTests
 
         var members = await _manager.GetMembersFromTopicId(topic);
         Assert.That(members, Does.Not.Contain(clientId));
-        Assert.That(members.Count, Is.EqualTo(0));
+        Assert.That(members, Is.Empty);
     }
 
     [Test]

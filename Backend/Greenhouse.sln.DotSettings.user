@@ -26,25 +26,29 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=28705fba_002D2032_002D4135_002Db3fe_002D8eea29633ea5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Solution /&gt;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4caa27e0_002D1348_002D4a9a_002Da5d8_002D124c998f84c5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Solution /&gt;
+&lt;/SessionState&gt;</s:String>
 	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=647becdb_002D0f6f_002D4f92_002Db103_002Df5e07dfd75e9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="DeviceControllerTests #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;NUnit3x::A38CB8F9-53E5-4958-8826-90AF6F722A94::net8.0::Greenhouse.Tests.DeviceControllerTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=97dee731_002Db89e_002D4547_002D9da8_002Da41deada2d2f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;Solution /&gt;
-&lt;/SessionState&gt;</s:String>
+	
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=aebf8b26_002D1b01_002D4e06_002Daeb6_002D8ec3e6fa53ac/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="ChangePreferences_ShouldReturnOk" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;NUnit3x::A38CB8F9-53E5-4958-8826-90AF6F722A94::net8.0::Greenhouse.Tests.DeviceControllerTests.ChangePreferences_ShouldReturnOk&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c2a77079_002D1359_002D408c_002Da57d_002Dc96854857bbb/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetUser_ShouldReturnOk_WhenFeaturesEnabled" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;NUnit3x::A38CB8F9-53E5-4958-8826-90AF6F722A94::net8.0::AuthControllerTests.GetUser_ShouldReturnOk_WhenFeaturesEnabled&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
+	
 	
 	<s:String x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestRunner/HangingTestRunnerResponse/@EntryValue">KillProcess</s:String>
 	</wpf:ResourceDictionary>

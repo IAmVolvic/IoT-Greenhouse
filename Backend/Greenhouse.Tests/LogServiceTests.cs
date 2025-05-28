@@ -51,11 +51,14 @@ public class LogServiceTests
         // Assert
         _logRepositoryMock.Verify(r => r.AddDeviceLog(It.IsAny<Log>()), Times.Once);
         Assert.That(capturedLog, Is.Not.Null, "Log was not captured");
-        Assert.That(capturedLog.DeviceId, Is.EqualTo(logDto.DeviceId));
-        Assert.That(capturedLog.Unit, Is.EqualTo(logDto.Unit));
-        Assert.That(capturedLog.Value, Is.EqualTo(logDto.Value));
-        Assert.That(capturedLog.Type, Is.EqualTo(logDto.Type));
-        Assert.That(capturedLog.Date, Is.Not.EqualTo(default(DateTime)), "Date was not set");
+        Assert.Multiple(() =>
+        {
+            Assert.That(capturedLog.DeviceId, Is.EqualTo(logDto.DeviceId));
+            Assert.That(capturedLog.Unit, Is.EqualTo(logDto.Unit));
+            Assert.That(capturedLog.Value, Is.EqualTo(logDto.Value));
+            Assert.That(capturedLog.Type, Is.EqualTo(logDto.Type));
+            Assert.That(capturedLog.Date, Is.Not.EqualTo(default(DateTime)), "Date was not set");
+        });
     }
 
     [Test]

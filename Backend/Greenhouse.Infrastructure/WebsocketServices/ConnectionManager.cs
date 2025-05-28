@@ -23,8 +23,17 @@ public sealed class WebSocketConnectionManager : IConnectionManager
     {
         _logger = logger;
     }
-
-
+    
+    private static readonly JsonSerializerOptions JsonOptionsWithPropertyNamingPolicy = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+    
+    private static readonly JsonSerializerOptions JsonOptionsWithWriteIndented = new()
+    {
+        WriteIndented = true
+    };
+    
     public ConcurrentDictionary<string, object> GetConnectionIdToSocketDictionary()
     {
         var idToSocket = new ConcurrentDictionary<string, object>();
@@ -120,7 +129,7 @@ public sealed class WebSocketConnectionManager : IConnectionManager
                 return newSet;
             });
 
-        if (_topicMembers.TryGetValue(topic, out var members) && !members.Any()) _topicMembers.TryRemove(topic, out _);
+        if (_topicMembers.TryGetValue(topic, out var members) && members.Count == 0) _topicMembers.TryRemove(topic, out _);
 
         _memberTopics.AddOrUpdate(
             memberId,
@@ -132,7 +141,7 @@ public sealed class WebSocketConnectionManager : IConnectionManager
                 return newSet;
             });
 
-        if (_memberTopics.TryGetValue(memberId, out var topics) && !topics.Any())
+        if (_memberTopics.TryGetValue(memberId, out var topics) && topics.Count == 0)
             _memberTopics.TryRemove(memberId, out _);
 
         await LogCurrentState();
@@ -156,8 +165,7 @@ public sealed class WebSocketConnectionManager : IConnectionManager
 
             try
             {
-                var json = JsonSerializer.Serialize(message,
-                    new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+                var json = JsonSerializer.Serialize(message, JsonOptionsWithPropertyNamingPolicy);
                 await socket.Send(json);
                 _logger.LogDebug("Sent message to client {ClientId} on topic {Topic}", memberId, topic);
             }
@@ -211,8 +219,7 @@ public sealed class WebSocketConnectionManager : IConnectionManager
                 MemberSubscriptions = _memberTopics
             };
 
-            _logger.LogDebug("Current state: {State}",
-                JsonSerializer.Serialize(state, new JsonSerializerOptions { WriteIndented = true }));
+            _logger.LogDebug("Current state: {State}", JsonOptionsWithWriteIndented);
         }
         catch (Exception ex)
         {

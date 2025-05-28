@@ -9,17 +9,19 @@ namespace Greenhouse.Infrastructure.MqttServices.MqttSubscriptionEventHandlers;
 
 public class UnassignedDeviceEventHandler(IDeviceService deviceService): IMqttMessageHandler
 {
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+    
     public string TopicFilter { get; } = "user/unassigned";
     public QualityOfService QoS { get; } = QualityOfService.AtLeastOnceDelivery;
 
     public void Handle(object? sender, OnMessageReceivedEventArgs args)
     {
         var dto = JsonSerializer.Deserialize<UnassignedDeviceDto>(args.PublishMessage.PayloadAsString,
-            new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            }) ?? throw new InvalidOperationException("Could not deserialize into DeviceLogDto from " +
-                                                      args.PublishMessage.PayloadAsString);
+            JsonOptions) ?? throw new InvalidOperationException("Could not deserialize into DeviceLogDto from " +
+                                                                args.PublishMessage.PayloadAsString);
         
         var context = new ValidationContext(dto);
         Validator.ValidateObject(dto, context);

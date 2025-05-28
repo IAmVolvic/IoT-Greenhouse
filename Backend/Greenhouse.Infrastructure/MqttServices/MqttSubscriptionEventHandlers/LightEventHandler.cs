@@ -9,18 +9,22 @@ namespace Greenhouse.Infrastructure.MqttServices.MqttSubscriptionEventHandlers;
 
 public class LightEventHandler(ILogService logService) : IMqttMessageHandler
 {
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
     public string TopicFilter { get; } = "sensor/light";
     public QualityOfService QoS { get; } = QualityOfService.AtLeastOnceDelivery;
 
     public void Handle(object? sender, OnMessageReceivedEventArgs args)
     {
-        var dto = JsonSerializer.Deserialize<DeviceLogDto>(args.PublishMessage.PayloadAsString,
-            new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            }) ?? throw new InvalidOperationException("Could not deserialize into DeviceLogDto from " +
-                                                      args.PublishMessage.PayloadAsString);
-        
+        var dto = JsonSerializer.Deserialize<DeviceLogDto>(
+                      args.PublishMessage.PayloadAsString,
+                      JsonOptions)
+                  ?? throw new InvalidOperationException(
+                      $"Could not deserialize into DeviceLogDto from payload: {args.PublishMessage.PayloadAsString}");
+
         var context = new ValidationContext(dto);
         Validator.ValidateObject(dto, context);
 

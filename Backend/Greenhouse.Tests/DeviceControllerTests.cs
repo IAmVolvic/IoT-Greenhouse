@@ -70,8 +70,11 @@ public class DeviceControllerTests
         Console.WriteLine("Response body: " + body);
         Console.WriteLine("Status Code: " + response.StatusCode);
         Assert.That(response.IsSuccessStatusCode, Is.True, "Request failed with status: " + body);
-        Assert.That(response.IsSuccessStatusCode, Is.True);
-        Assert.That(result, Is.Not.Null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(response.IsSuccessStatusCode, Is.True);
+            Assert.That(result, Is.Not.Null);
+        });
         Assert.That(result.DeviceName, Is.EqualTo(assignDto.DeviceName));
     }
 
@@ -111,10 +114,16 @@ public class DeviceControllerTests
             var prefFromDb = await dbContext.Preferences
                 .Where(p => p.Id == preferenceId)
                 .FirstOrDefaultAsync();
-            Assert.That(response.IsSuccessStatusCode, Is.True);
-            Assert.That(prefFromDb, Is.Not.Null);
-            Assert.That(prefFromDb.DeviceId, Is.EqualTo(deviceId));
-            Assert.That(prefFromDb.SensorInterval, Is.EqualTo(600));
+            Assert.Multiple(() =>
+            {
+                Assert.That(response.IsSuccessStatusCode, Is.True);
+                Assert.That(prefFromDb, Is.Not.Null);
+            });
+            Assert.Multiple(() =>
+            {
+                Assert.That(prefFromDb.DeviceId, Is.EqualTo(deviceId));
+                Assert.That(prefFromDb.SensorInterval, Is.EqualTo(600));
+            });
         }
     }
 
@@ -148,8 +157,11 @@ public class DeviceControllerTests
             var deviceInDb = await dbContext.Devices
                 .Where(p => p.Id == deviceId)
                 .FirstOrDefaultAsync();
-            Assert.That(response.IsSuccessStatusCode, Is.True);
-            Assert.That(deviceInDb, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(response.IsSuccessStatusCode, Is.True);
+                Assert.That(deviceInDb, Is.Not.Null);
+            });
             Assert.That(deviceInDb.DeviceName, Is.EqualTo(dto.DeviceName));
         }
     }
@@ -186,8 +198,11 @@ public class DeviceControllerTests
                 .Where(p => p.Id == deviceId)
                 .FirstOrDefaultAsync();
 
-            Assert.That(response.IsSuccessStatusCode, Is.True);
-            Assert.That(deviceInDb, Is.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(response.IsSuccessStatusCode, Is.True);
+                Assert.That(deviceInDb, Is.Null);
+            });
         }
     }
 
@@ -228,7 +243,7 @@ public class DeviceControllerTests
         var devices = await response.Content.ReadFromJsonAsync<List<DeviceResponseDto>>();
 
         Assert.That(devices, Is.Not.Null);
-        Assert.That(devices.Count, Is.EqualTo(2));
+        Assert.That(devices, Has.Count.EqualTo(2));
 
         var deviceIds = devices.Select(d => d.Id).ToList();
         Assert.That(deviceIds, Does.Contain(deviceId1));
@@ -273,9 +288,11 @@ public class DeviceControllerTests
         Assert.That(devices, Is.Not.Null, "Returned device list should not be null");
         Assert.That(devices, Has.Count.EqualTo(2), "Returned device list should contain exactly 2 devices");
 
-        // Check that the returned devices contain the devices we added
-        Assert.That(devices.Any(d => d.Id == deviceId1), Is.True, "Device 1 should be in the returned list");
-        Assert.That(devices.Any(d => d.Id == deviceId2), Is.True, "Device 2 should be in the returned list");
-
+        Assert.Multiple(() =>
+        {
+            // Check that the returned devices contain the devices we added
+            Assert.That(devices.Any(d => d.Id == deviceId1), Is.True, "Device 1 should be in the returned list");
+            Assert.That(devices.Any(d => d.Id == deviceId2), Is.True, "Device 2 should be in the returned list");
+        });
     }
 }

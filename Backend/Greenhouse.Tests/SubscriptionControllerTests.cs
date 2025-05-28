@@ -64,13 +64,16 @@ public class SubscriptionControllerTests
         var response = await _httpClient.PostAsJsonAsync("Subscription/Subscribe/SpecificTopics",subscribeToTopicDto);
         
         var membersAtTopic = await connManager.GetMembersFromTopicId("Topic1");
-        List<int> memberIds = membersAtTopic.Select(int.Parse).ToList();
-        Assert.That(response.IsSuccessStatusCode, Is.True, "Subscription request failed");
+        var memberIds = membersAtTopic.Select(int.Parse).ToList();
+        Assert.Multiple(() =>
+        {
+            Assert.That(response.IsSuccessStatusCode, Is.True, "Subscription request failed");
 
-        Assert.That(memberIds, Is.Not.Null, "No members found for topic");
+            Assert.That(memberIds, Is.Not.Null, "No members found for topic");
+        });
         Assert.That(memberIds, Does.Contain(123), "User not subscribed to the topic");
 
-        Assert.That(memberIds.Count, Is.EqualTo(1), "Unexpected number of members in the topic");
+        Assert.That(memberIds, Has.Count.EqualTo(1), "Unexpected number of members in the topic");
     }
     
     [Test]
@@ -90,12 +93,15 @@ public class SubscriptionControllerTests
         var response = await _httpClient.PostAsJsonAsync("Subscription/Subscribe/SpecificTopics",subscribeToTopicDto);
         
         var membersAtTopic = await connManager.GetMembersFromTopicId("Topic1");
-        List<int> memberIds = membersAtTopic.Select(int.Parse).ToList();
-        Assert.That(response.IsSuccessStatusCode, Is.True, "Subscription request failed");
+        var memberIds = membersAtTopic.Select(int.Parse).ToList();
+        Assert.Multiple(() =>
+        {
+            Assert.That(response.IsSuccessStatusCode, Is.True, "Subscription request failed");
 
-        Assert.That(memberIds, Is.Not.Null, "No members found for topic");
+            Assert.That(memberIds, Is.Not.Null, "No members found for topic");
+        });
+        
         Assert.That(memberIds, Does.Contain(123), "User not subscribed to the topic");
-
-        Assert.That(memberIds.Count, Is.EqualTo(1), "Unexpected number of members in the topic");
+        Assert.That(memberIds, Has.Count.EqualTo(1), "Unexpected number of members in the topic");
     }
 }

@@ -41,7 +41,7 @@ public class PasswordManagerTests
 
         Assert.That(hash, Is.Not.Null);
         var parts = hash.Split('$');
-        Assert.That(parts.Length, Is.EqualTo(3), "Hashed password format is incorrect");
+        Assert.That(parts, Has.Length.EqualTo(3), "Hashed password format is incorrect");
         Assert.That(parts[0], Is.EqualTo(_passwordSettings.Salt), "Prefix doesn't match configured salt");
     }
 
