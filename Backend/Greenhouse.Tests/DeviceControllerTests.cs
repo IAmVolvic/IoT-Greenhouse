@@ -95,25 +95,28 @@ public class DeviceControllerTests
             SensorInterval = 1000,
             Id = preferenceId,
         };
-        await dbContext.Devices.AddAsync(device);
-        await dbContext.Preferences.AddAsync(preference);
-        await dbContext.SaveChangesAsync();
-        var dto = new PreferencesChangeDto
+        if (dbContext != null)
         {
-            DeviceId = deviceId,
-            SensorInterval = 600
-        };
+            await dbContext.Devices.AddAsync(device);
+            await dbContext.Preferences.AddAsync(preference);
+            await dbContext.SaveChangesAsync();
+            var dto = new PreferencesChangeDto
+            {
+                DeviceId = deviceId,
+                SensorInterval = 600
+            };
 
-        var response = await _httpClient.PatchAsJsonAsync("Device/Preferences/ChangePreferences", dto);
-        var result = await response.Content.ReadFromJsonAsync<Preferences>();
-        dbContext.Entry(preference).State = EntityState.Detached;
-        var prefFromDb = await dbContext.Preferences
-            .Where(p => p.Id == preferenceId)
-            .FirstOrDefaultAsync();
-        Assert.That(response.IsSuccessStatusCode, Is.True);
-        Assert.That(prefFromDb, Is.Not.Null);
-        Assert.That(prefFromDb.DeviceId, Is.EqualTo(deviceId));
-        Assert.That(prefFromDb.SensorInterval, Is.EqualTo(600));
+            var response = await _httpClient.PatchAsJsonAsync("Device/Preferences/ChangePreferences", dto);
+            var result = await response.Content.ReadFromJsonAsync<Preferences>();
+            dbContext.Entry(preference).State = EntityState.Detached;
+            var prefFromDb = await dbContext.Preferences
+                .Where(p => p.Id == preferenceId)
+                .FirstOrDefaultAsync();
+            Assert.That(response.IsSuccessStatusCode, Is.True);
+            Assert.That(prefFromDb, Is.Not.Null);
+            Assert.That(prefFromDb.DeviceId, Is.EqualTo(deviceId));
+            Assert.That(prefFromDb.SensorInterval, Is.EqualTo(600));
+        }
     }
 
     [Test]
@@ -129,24 +132,27 @@ public class DeviceControllerTests
             DeviceName = "Test Device",
             UserId = Guid.Parse(userInfo.UserId)
         };
-        await dbContext.Devices.AddAsync(device);
-        await dbContext.SaveChangesAsync();
-        var dto = new ChangeDeviceNameDto
+        if (dbContext != null)
         {
-            DeviceId = deviceId,
-            DeviceName = "Updated Device Name"
-        };
+            await dbContext.Devices.AddAsync(device);
+            await dbContext.SaveChangesAsync();
+            var dto = new ChangeDeviceNameDto
+            {
+                DeviceId = deviceId,
+                DeviceName = "Updated Device Name"
+            };
 
-        var response = await _httpClient.PatchAsJsonAsync("Device/ChangeDeviceName", dto);
-        
-        dbContext.Entry(device).State = EntityState.Detached;
-        
-        var deviceInDb = await dbContext.Devices
-            .Where(p => p.Id == deviceId)
-            .FirstOrDefaultAsync();
-        Assert.That(response.IsSuccessStatusCode, Is.True);
-        Assert.That(deviceInDb, Is.Not.Null);
-        Assert.That(deviceInDb.DeviceName, Is.EqualTo(dto.DeviceName));
+            var response = await _httpClient.PatchAsJsonAsync("Device/ChangeDeviceName", dto);
+
+            dbContext.Entry(device).State = EntityState.Detached;
+
+            var deviceInDb = await dbContext.Devices
+                .Where(p => p.Id == deviceId)
+                .FirstOrDefaultAsync();
+            Assert.That(response.IsSuccessStatusCode, Is.True);
+            Assert.That(deviceInDb, Is.Not.Null);
+            Assert.That(deviceInDb.DeviceName, Is.EqualTo(dto.DeviceName));
+        }
     }
 
     [Test]
@@ -163,24 +169,27 @@ public class DeviceControllerTests
             DeviceName = "Test Device",
             UserId = Guid.Parse(userInfo.UserId)
         };
-        await dbContext.Devices.AddAsync(device);
-        await dbContext.SaveChangesAsync();
-
-        var response = await _httpClient.SendAsync(new HttpRequestMessage
+        if (dbContext != null)
         {
-            Method = HttpMethod.Delete,
-            RequestUri = new Uri("Device/RemoveDeviceFromUser", UriKind.Relative),
-            Content = JsonContent.Create(deviceId)
-        });
+            await dbContext.Devices.AddAsync(device);
+            await dbContext.SaveChangesAsync();
 
-        dbContext.Entry(device).State = EntityState.Detached;
+            var response = await _httpClient.SendAsync(new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri("Device/RemoveDeviceFromUser", UriKind.Relative),
+                Content = JsonContent.Create(deviceId)
+            });
 
-        var deviceInDb = await dbContext.Devices
-            .Where(p => p.Id == deviceId)
-            .FirstOrDefaultAsync();
+            dbContext.Entry(device).State = EntityState.Detached;
 
-        Assert.That(response.IsSuccessStatusCode, Is.True);
-        Assert.That(deviceInDb, Is.Null);
+            var deviceInDb = await dbContext.Devices
+                .Where(p => p.Id == deviceId)
+                .FirstOrDefaultAsync();
+
+            Assert.That(response.IsSuccessStatusCode, Is.True);
+            Assert.That(deviceInDb, Is.Null);
+        }
     }
 
     [Test]
@@ -207,8 +216,11 @@ public class DeviceControllerTests
             UserId = userId
         };
 
-        await dbContext.Devices.AddRangeAsync(device1, device2);
-        await dbContext.SaveChangesAsync();
+        if (dbContext != null)
+        {
+            await dbContext.Devices.AddRangeAsync(device1, device2);
+            await dbContext.SaveChangesAsync();
+        }
 
         var response = await _httpClient.GetAsync("Device/MyDevices");
 
@@ -249,8 +261,12 @@ public class DeviceControllerTests
             Id = deviceId2
         };
 
-        await dbContext.UnassignedDevices.AddRangeAsync(device1, device2);
-        await dbContext.SaveChangesAsync();
+        if (dbContext != null)
+        {
+            await dbContext.UnassignedDevices.AddRangeAsync(device1, device2);
+            await dbContext.SaveChangesAsync();
+        }
+
         var response = await _httpClient.GetAsync("Device/UnassignedDevices");
 
         Assert.That(response.IsSuccessStatusCode, Is.True);

@@ -18,8 +18,8 @@ public class UnassignedDeviceEventHandler(IDeviceService deviceService): IMqttMe
             new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
-            }) ?? throw new Exception("Could not deserialize into DeviceLogDto from " +
-                                      args.PublishMessage.PayloadAsString);
+            }) ?? throw new InvalidOperationException("Could not deserialize into DeviceLogDto from " +
+                                                      args.PublishMessage.PayloadAsString);
         
         var context = new ValidationContext(dto);
         Validator.ValidateObject(dto, context);

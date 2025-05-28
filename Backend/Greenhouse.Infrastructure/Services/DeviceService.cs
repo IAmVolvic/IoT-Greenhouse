@@ -39,7 +39,7 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
         return deviceResponseDtos;
     }
     
-    public async void UpdateDeviceName(ChangeDeviceNameDto device)
+    public void UpdateDeviceName(ChangeDeviceNameDto device)
     {
         var currentDevice = deviceRepository.GetDevicesByDeviceId(device.DeviceId);
         currentDevice.DeviceName = device.DeviceName;
@@ -70,7 +70,7 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
         }
         catch (Exception ex)
         {
-            throw new ApplicationException("Your device is unresponsive", ex);
+            throw new InvalidOperationException("Your device is unresponsive", ex);
         }
 
         var dbDevice = deviceRepository.AssignDeviceToUser(device);
@@ -92,7 +92,7 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
         }
         catch (Exception ex)
         {
-            throw new ApplicationException("Your device is unresponsive", ex);
+            throw new InvalidOperationException("Your device is unresponsive", ex);
         }
 
         var dbPreferences = deviceRepository.ChangePreferences(currentPreferences);
@@ -108,7 +108,7 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
         }
         catch (Exception ex)
         {
-            throw new ApplicationException("Your device is unresponsive", ex);
+            throw new InvalidOperationException("Your device is unresponsive", ex);
         }
         var device = deviceRepository.GetDevicesByDeviceId(deviceId);
         deviceRepository.RemoveDeviceFromUser(device);

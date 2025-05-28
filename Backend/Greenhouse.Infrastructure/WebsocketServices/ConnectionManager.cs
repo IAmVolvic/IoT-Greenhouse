@@ -191,16 +191,16 @@ public sealed class WebSocketConnectionManager : IConnectionManager
 
         if (_socketToConnectionId.TryGetValue(webSocket.ConnectionInfo.Id.ToString(), out var clientId))
             return clientId;
-        throw new Exception("Could not find clientId for socket: " + webSocket.ConnectionInfo.Id);
+        throw new InvalidOperationException("Could not find clientId for socket: " + webSocket.ConnectionInfo.Id);
     }
 
     public object GetSocketFromClientId(string clientId)
     {
         if (_connectionIdToSocket.TryGetValue(clientId, out var socket)) return socket;
-        throw new Exception("Could not find socket for clientId: " + clientId);
+        throw new InvalidOperationException("Could not find socket for clientId: " + clientId);
     }
 
-    private async Task LogCurrentState()
+    private Task LogCurrentState()
     {
         try
         {
@@ -218,5 +218,7 @@ public sealed class WebSocketConnectionManager : IConnectionManager
         {
             _logger.LogError(ex, "Error logging current state");
         }
+
+        return Task.CompletedTask;
     }
 }
