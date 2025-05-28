@@ -4,5 +4,5 @@ namespace Greenhouse.Application.Websocket.DTOs;
 
 public class FromClientDto : BaseDto
 {
-    public string messageContent { get; set; }
+    public string MessageContent { get; set; } = null!;
 }

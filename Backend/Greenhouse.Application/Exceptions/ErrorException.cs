@@ -1,15 +1,8 @@
 namespace Greenhouse.Application.Exceptions
 {
-    public class ErrorException : Exception
+    public class ErrorException(string source, string description) : Exception(description)
     {
-        public string Source { get; set; }
-        public string Description { get; set; }
-
-        public ErrorException(string source, string description)
-            : base(description)
-        {
-            Source = source;
-            Description = description;
-        }
+        public sealed override string Source { get; set; } = source;
+        public string Description { get; set; } = description;
     }
 }

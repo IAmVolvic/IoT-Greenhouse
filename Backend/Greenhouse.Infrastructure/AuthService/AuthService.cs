@@ -20,7 +20,7 @@ public class AuthService : IAuthService
     {
         var jwtData = _jwtManager.IsJwtValid(jwtToken);
         var uuidClaim = jwtData.Claims.FirstOrDefault(claim => claim.Type == "uuid");
-        var userData = _repository.GetUserById(Guid.Parse(uuidClaim.Value));
+        var userData = _repository.GetUserById(Guid.Parse(uuidClaim!.Value));
         
         return AuthorizedUserResponseDto.FromEntity(userData);
     }

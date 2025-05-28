@@ -8,7 +8,7 @@ public class AuthorizedUserResponseDto
 {
     public Guid Id { get; set; }
     
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
     
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public UserRole Role { get; set; }

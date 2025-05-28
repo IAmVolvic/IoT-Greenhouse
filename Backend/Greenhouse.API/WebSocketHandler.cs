@@ -25,7 +25,7 @@ public static class WebSocketHandler
     {
         var url = $"ws://0.0.0.0:4001";
 
-        var logger = app.Services.GetRequiredService<ILogger<NonStaticWsExtensionClassForLogger>>();
+        var logger = app.Services.GetRequiredService<ILogger<Program>>();
         logger.LogInformation("WebSocket server running at: {Url}", url);
 
         var server = new WebSocketServer(url);
@@ -62,5 +62,3 @@ public static class WebSocketHandler
         return Task.FromResult(app);
     }
 }
-
-public abstract class NonStaticWsExtensionClassForLogger { }

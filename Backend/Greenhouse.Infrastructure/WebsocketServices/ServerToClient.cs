@@ -11,7 +11,7 @@ public class ServerToClient : IServerToClient
     {
         var echo = new ServerEchosClient()
         {
-            echoValue = "echo: " + dto.messageContent
+            EchoValue = "echo: " + dto.MessageContent
         };
 
         var serialized = JsonSerializer.Serialize(echo);

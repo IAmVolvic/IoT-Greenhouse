@@ -8,10 +8,10 @@ public class Log
     [Required]
     public Guid DeviceId { get; set; }
     [Required]
-    public string Unit { get; set; }
+    public string Unit { get; set; } = null!;
     [Required]
     public decimal Value { get; set; }
     [Required]
-    public string Type { get; set; }
+    public string Type { get; set; } = null!;
     public DateTime Date { get; set; }
 }

@@ -11,10 +11,12 @@ public class ErrorResponseDto
     
     public void AddError(string source, string description)
     {
-        if (!Errors.ContainsKey(source))
+        if (!Errors.TryGetValue(source, out var value))
         {
-            Errors[source] = new List<string>();
+            value = ([]);
+            Errors[source] = value;
         }
-        Errors[source].Add(description);
+
+        value.Add(description);
     }
 }

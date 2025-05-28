@@ -4,5 +4,5 @@ namespace Greenhouse.Application.Websocket;
 
 public class ServerEchosClient : BaseDto
 {
-    public string echoValue { get; set; }
+    public string EchoValue { get; set; } = null!;
 }

@@ -23,7 +23,7 @@ public class LogService(ILogRepository logRepository,IConnectionManager connecti
         logRepository.AddDeviceLog(deviceLog);
         var logBroadcast = new ServerBroadcastsLogToDashboard()
         {
-            log = deviceLog
+            Log = deviceLog
         };
         connectionManager.BroadcastToTopic(deviceLog.DeviceId.ToString(), logBroadcast);
     }

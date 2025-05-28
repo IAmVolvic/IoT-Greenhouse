@@ -90,8 +90,8 @@ public class LogServiceTests
         _connectionManagerMock.Verify(cm => cm.BroadcastToTopic(It.IsAny<string>(), It.IsAny<object>()), Times.Once);
         Assert.That(capturedTopic, Is.EqualTo(deviceId.ToString()), "Broadcast topic mismatch");
         Assert.That(capturedBroadcast, Is.Not.Null, "Broadcast message was null");
-        Assert.That(capturedBroadcast.log.DeviceId, Is.EqualTo(logDto.DeviceId));
-        Assert.That(capturedBroadcast.log.Unit, Is.EqualTo(logDto.Unit));
+        Assert.That(capturedBroadcast.Log.DeviceId, Is.EqualTo(logDto.DeviceId));
+        Assert.That(capturedBroadcast.Log.Unit, Is.EqualTo(logDto.Unit));
     }
 
 }
