@@ -7,20 +7,16 @@
 #include <DallasTemperature.h>
 
 #define AO_PIN 34         // MQ2 analog pin
-#define ONE_WIRE_BUS 14   // DS18B20 connected to GPIO
-#define LDR_PIN 35        // LDR analog pin
+#define ONE_WIRE_BUS 14   // DS18B20 connected to GPIO 14
+#define LDR_PIN 35
 
-// WiFi credentials (replace with your own in a secure way)
 const char* ssid = "YOUR_WIFI_SSID";
 const char* password = "YOUR_WIFI_PASSWORD";
 
-// MQTT broker details (replace with your own in a secure way)
-const char* mqtt_server = "YOUR_MQTT_BROKER_ADDRESS";
+const char* mqtt_server = "YOUR_MQTT_SERVER";
 const int mqtt_port = 8883;
 const char* mqtt_user = "YOUR_MQTT_USERNAME";
 const char* mqtt_pass = "YOUR_MQTT_PASSWORD";
-
-// MQTT topics (replace device/user IDs with placeholders)
 const char* mqtt_topic_gas = "sensor/gas";
 const char* mqtt_topic_unassigned = "user/unassigned";
 const char* mqtt_topic_assign = "user/assign/YOUR_DEVICE_ID";
@@ -79,7 +75,7 @@ void setup() {
 
   setup_wifi();
 
-  wifiSecureClient.setInsecure(); // ⚠️ For testing only
+  wifiSecureClient.setInsecure(); // Not secure – for testing only
 
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
@@ -124,6 +120,7 @@ void loop() {
       lastUnassignedPublish = now;
     }
   } else {
+    // GAS SENSOR (MQ2)
     int gasValue = analogRead(AO_PIN);
     Serial.print("MQ2 value: ");
     Serial.println(gasValue);
@@ -138,13 +135,14 @@ void loop() {
     serializeJson(doc, payload);
     client.publish(mqtt_topic_gas, payload.c_str());
 
+    // TEMPERATURE SENSOR (DS18B20)
     sensors.requestTemperatures();
     float temperatureC = sensors.getTempCByIndex(0);
     Serial.print("Temperature (°C): ");
     Serial.println(temperatureC);
 
     StaticJsonDocument<200> temp;
-    temp["Unit"] = "Celcius";
+    temp["Unit"] = "Celsius";
     temp["Value"] = temperatureC;
     temp["DeviceId"] = "YOUR_DEVICE_ID";
     temp["Type"] = "temperature";
@@ -157,9 +155,11 @@ void loop() {
     Serial.print("LDR value: ");
     Serial.println(ldrValue);
 
+    float lumenValue = ((float)ldrValue / 4095.0) * 1000.0;
+
     StaticJsonDocument<200> ldr;
-    ldr["Unit"] = "analog";
-    ldr["Value"] = ldrValue;
+    ldr["Unit"] = "lumen";
+    ldr["Value"] = lumenValue;
     ldr["DeviceId"] = "YOUR_DEVICE_ID";
     ldr["Type"] = "light";
 
