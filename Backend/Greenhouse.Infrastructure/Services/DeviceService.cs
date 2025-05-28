@@ -39,10 +39,10 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
         return deviceResponseDtos;
     }
     
-    public async void UpdateDeviceName(ChangeDeviceNameDto changeDeviceNameDto)
+    public async void UpdateDeviceName(ChangeDeviceNameDto device)
     {
-        var currentDevice = deviceRepository.GetDevicesByDeviceId(changeDeviceNameDto.DeviceId);
-        currentDevice.DeviceName = changeDeviceNameDto.DeviceName;
+        var currentDevice = deviceRepository.GetDevicesByDeviceId(device.DeviceId);
+        currentDevice.DeviceName = device.DeviceName;
         deviceRepository.UpdateDevice(currentDevice);
     }
 
@@ -79,12 +79,12 @@ public class DeviceService(IDeviceRepository deviceRepository, IConnectionManage
         return dbDevice;
     }
 
-    public async Task<Preferences> UpdatePreferences(PreferencesChangeDto preferencesDto)
+    public async Task<Preferences> UpdatePreferences(PreferencesChangeDto preferences)
     {
-        var currentPreferences = deviceRepository.GetCurrentPreferences(preferencesDto.DeviceId);
-        currentPreferences.SensorInterval = preferencesDto.SensorInterval;
+        var currentPreferences = deviceRepository.GetCurrentPreferences(preferences.DeviceId);
+        currentPreferences.SensorInterval = preferences.SensorInterval;
         
-        var topic = $"preferences/{preferencesDto.DeviceId}";
+        var topic = $"preferences/{preferences.DeviceId}";
 
         try
         {
