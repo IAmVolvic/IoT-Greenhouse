@@ -12,6 +12,9 @@ This project provides an affordable and easy-to-use solution built on the **ESP3
 
 Developed by **Tymon & Kyle** as part of the **4th Semester IoT Exam Project (2025)**.
 
+Frontend: https://app.just2play.gg/
+Backend: https://just2play.gg/swagger/index.html
+
 ---
 
 ## 🔧 Features
