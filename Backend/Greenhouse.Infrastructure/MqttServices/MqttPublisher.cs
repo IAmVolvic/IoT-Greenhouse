@@ -7,14 +7,14 @@ namespace Greenhouse.Infrastructure.MqttServices;
 
 public class MqttPublisher(HiveMQClient client) : IMqttPublisher
 {
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+
     public async Task Publish(object dto, string topic, QualityOfService qos)
     {
-        var json = JsonSerializer.Serialize(dto, new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        });
-
+        var json = JsonSerializer.Serialize(dto, JsonOptions);
         await client.PublishAsync(topic, json, qos);
     }
-
 }

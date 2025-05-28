@@ -59,12 +59,12 @@ public class JwtManager(IOptions<JwtSettings> jwtSettings) : IJwtManager
         };
         
         var result = tokenHandler.ValidateTokenAsync(token, validationParameters).Result;
-        
-        if (result.IsValid)
+
+        if (!result.IsValid)
         {
-            return new ClaimsPrincipal(result.ClaimsIdentity);
+            throw new SecurityTokenException("Invalid JWT token.");
         }
 
-        return null;
+        return new ClaimsPrincipal(result.ClaimsIdentity);
     }
 }

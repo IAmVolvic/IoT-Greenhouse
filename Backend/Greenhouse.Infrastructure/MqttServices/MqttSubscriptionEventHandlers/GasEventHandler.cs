@@ -11,18 +11,21 @@ namespace Greenhouse.Infrastructure.MqttServices.MqttSubscriptionEventHandlers;
 
 public class GasEventHandler(ILogService logService) : IMqttMessageHandler
 {
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
     public string TopicFilter { get; } = "sensor/gas";
     public QualityOfService QoS { get; } = QualityOfService.AtLeastOnceDelivery;
 
     public void Handle(object? sender, OnMessageReceivedEventArgs args)
     {
-        var dto = JsonSerializer.Deserialize<DeviceLogDto>(args.PublishMessage.PayloadAsString,
-            new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            }) ?? throw new Exception("Could not deserialize into DeviceLogDto from " +
-                                      args.PublishMessage.PayloadAsString);
-        
+        var dto = JsonSerializer.Deserialize<DeviceLogDto>(
+                      args.PublishMessage.PayloadAsString,
+                      JsonOptions)
+                  ?? throw new JsonException($"Failed to deserialize payload into DeviceLogDto: {args.PublishMessage.PayloadAsString}");
+
         var context = new ValidationContext(dto);
         Validator.ValidateObject(dto, context);
 

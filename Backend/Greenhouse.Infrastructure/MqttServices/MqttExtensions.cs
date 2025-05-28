@@ -60,12 +60,11 @@ public static class MqttExtensions
             {
                 try
                 {
-                    logger.LogInformation("Attempting to connect to MQTT broker (attempt {attempt}/{maxRetries})",
-                        attempt, maxRetries);
+                    logger.LogInformation("Attempting to connect to MQTT broker (attempt {Attempt}/{MaxRetries})", attempt, maxRetries);
 
                     var connectResult = client.ConnectAsync().GetAwaiter().GetResult();
 
-                    logger.LogInformation("Connection successful on attempt {attempt}. Result: {result}",
+                    logger.LogInformation("Connection successful on attempt {Attempt}. Result: {Result}",
                         attempt,
                         JsonSerializer.Serialize(new
                         {
@@ -77,7 +76,7 @@ public static class MqttExtensions
                 }
                 catch (HiveMQttClientException ex)
                 {
-                    logger.LogError(ex, "Error connecting to MQTT broker on attempt {attempt}", attempt);
+                    logger.LogError(ex, "Error connecting to MQTT broker on attempt {Attempt}", attempt);
 
                     if (attempt == maxRetries)
                         logger.LogError("Max retries reached");
@@ -110,7 +109,7 @@ public static class MqttExtensions
                 var handler = (IMqttMessageHandler)scope.ServiceProvider
                     .GetRequiredService(handlerType);
 
-                logger.LogInformation("Subscribing to topic: {topic} with QoS: {qos}",
+                logger.LogInformation("Subscribing to topic: {Topic} with QoS: {Gos}",
                     handler.TopicFilter, handler.QoS);
 
                 builder.WithSubscription(
