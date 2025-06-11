@@ -39,6 +39,7 @@ public class UserService(IPasswordHasher<User> passwordHasher, IJwtManager jwtMa
         if (passwordHasher.VerifyHashedPassword(userFromDb, userFromDb.Passwordhash, request.Password) ==
             PasswordVerificationResult.Failed)
         {
+            MonitorService.log.Error("Invalid password");
             throw new ErrorException("Password", "Password does not match");
         }
         

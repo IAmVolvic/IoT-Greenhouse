@@ -7,12 +7,23 @@ services:
     environment:
       POSTGRES_DB: greenhouse_db
       POSTGRES_USER: greenhouseAPI
-      POSTGRES_PASSWORD: dev
+      POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     restart: unless-stopped
 
+  seq:
+    image: datalust/seq:latest
+    container_name: seq
+    ports:
+      - "5341:80"
+    environment:
+      - ACCEPT_EULA=Y
+    volumes:
+      - seq-data:/data
+
 volumes:
   postgres-data:
+  seq-data:
